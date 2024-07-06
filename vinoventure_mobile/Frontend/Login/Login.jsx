@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, Button, TextInput, Alert, StyleSheet} from "react-native";
 
 const Login = ({navigation}) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     return (
@@ -12,8 +12,8 @@ const Login = ({navigation}) => {
                 style={styles.input}
                 placeholder="email@example.com"
                 placeholderTextColor = {'#888'}
-                value={username}
-                onChangeText={(text) => setUsername(text)}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
             />
             <TextInput
                 style={styles.input}
