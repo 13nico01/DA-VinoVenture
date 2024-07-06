@@ -11,6 +11,7 @@ const Login = ({navigation}) => {
             <TextInput
                 style={styles.input}
                 placeholder="Username"
+                placeholderTextColor = {'#888'}
                 value={username}
                 onChangeText={(text) => setUsername(text)}
             />
@@ -19,6 +20,7 @@ const Login = ({navigation}) => {
                 placeholder="Password"
                 secureTextEntry
                 value={password}
+                placeholderTextColor = {'#888'}
                 onChangeText={(text) => setPassword(text)}
             />
             <Button title="Login"/>
