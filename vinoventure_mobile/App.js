@@ -12,7 +12,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login}/>
-          {/*<Stack.Screen name="Signup" component={Registry}/>*/}
+          <Stack.Screen name="Registry" component={Registry}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
