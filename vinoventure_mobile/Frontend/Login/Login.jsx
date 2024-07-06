@@ -10,7 +10,7 @@ const Login = ({navigation}) => {
             <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Username"
+                placeholder="email@example.com"
                 placeholderTextColor = {'#888'}
                 value={username}
                 onChangeText={(text) => setUsername(text)}
@@ -24,7 +24,7 @@ const Login = ({navigation}) => {
                 onChangeText={(text) => setPassword(text)}
             />
             <Button title="Login"/>
-            <Button title="Noch keinen Account?"/>
+            <Button title="Noch keinen Account?" onPress={() => navigation.navigate('Registry')}/>
         </View>
     );
 };
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#fff',
     },
     title: {
         fontSize: 24,
