@@ -7,7 +7,9 @@ const Login = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            <Text style={styles.title1}>VinoVenture</Text>
+            <Text style={styles.title2}>Log into your Account</Text>
+            <Text style={styles.title3}>Fill in the credentials to log into your account</Text>
             <TextInput
                 style={styles.input}
                 placeholder="email@example.com"
@@ -17,7 +19,7 @@ const Login = ({navigation}) => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Password"
+                placeholder="password"
                 secureTextEntry
                 value={password}
                 placeholderTextColor = {'#bbb'}
@@ -32,12 +34,21 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#fff',
+        paddingTop: 50,
     },
-    title: {
+    title1: {
         fontSize: 24,
+        marginBottom: 16,
+    },
+    title2:{
+        marginTop: 150,
+      fontSize: 16,
+      marginBottom: 16,
+    },
+    title3:{
         marginBottom: 16,
     },
     input: {
