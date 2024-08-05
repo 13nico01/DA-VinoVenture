@@ -26,7 +26,7 @@ const Login = ({navigation}) => {
                 onChangeText={(text) => setPassword(text)}
             />
             <Button title="Login"/>
-            <Button title="Noch keinen Account?" onPress={() => navigation.navigate('Registry')}/>
+            <Button title="No Account?" onPress={() => navigation.navigate('Registry')}/>
         </View>
     );
 };

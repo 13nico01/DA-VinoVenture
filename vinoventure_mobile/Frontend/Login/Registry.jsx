@@ -18,14 +18,14 @@ const Registry = ({navigation}) => {
             />
             <TextInput
                 style={styles.input}
-                placeholder={'Passwort'}
+                placeholder={'password'}
                 value={password}
                 placeholderTextColor={'#bbb'}
                 onChangeText={(text) => setPassword(text)}
             />
             <TextInput
                 style={styles.input}
-                placeholder={'Bestätigen Sie ihr Passwort'}
+                placeholder={'confirm password'}
                 value={password}
                 placeholderTextColor={'#bbb'}
                 onChangeText={(text) => setPassword(text)}
