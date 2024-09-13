@@ -1,6 +1,6 @@
 const db = require("../config/database")
 
-const createTable = () => {
+const createTables = () => {
     const createUserTable = `CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     firstname VARCHAR(60) NOT NULL,
@@ -11,3 +11,5 @@ const createTable = () => {
     created_at TIMESTAMP default CURRENT_TIMESTAMP
     )`
 };
+
+module.exports = {createTables}

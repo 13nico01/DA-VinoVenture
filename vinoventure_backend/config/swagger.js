@@ -5,9 +5,9 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Vinoventure API',
+            title: 'Quiz Order API',
             version: '1.0.0',
-            description: 'A simple API for VinoVenture',
+            description: 'API für Bestellungen von Quiz und Versand von QR-Codes per E-Mail',
         },
         servers: [
             {
@@ -15,7 +15,7 @@ const options = {
             },
         ],
     },
-    apis: ['./routes/*.js', './controllers/*.js'], // Pfad zu Ihren Routen- und Controller-Dateien
+    apis: ['./routes/*.js', './controllers/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
