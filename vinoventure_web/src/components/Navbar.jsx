@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/logo.png";
 import { navItems } from "../constants/index.jsx";
+import { Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -34,21 +36,19 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center flex-shrink-0">
                         <img className="h-10 w-10 mr-2" src={logo} alt="logo"/>
-                        <span className="text-xl tracking-tight">VinoVenture</span>
+                        <span className="text-2xl tracking-tight">VinoVenture</span>
                     </div>
-                    <ul className="hidden lg:flex ml-14 space-x-12">
-                        {navItems.map((item, index) => (
-                            <li key={index}>
-                                <a href={item.href}>{item.label}</a>
-                            </li>
-                        ))}
+                    <ul className="hidden lg:flex ml-14 space-x-12 text-md">
+                       <Link to="/Home">Home</Link>
+                       <Link to="/Shop">Shop</Link>
+                       <Link to="/About">About</Link>
                     </ul>
-                    <div className="hidden lg:flex justify-center space-x-12 items-center">
+                    <div className="hidden lg:flex justify-center space-x-12 items-center text-md">
                         <a href="#" className="py-2 px-3 border rounded-md">
-                            Sign in
+                            Login
                         </a>
-                        <a href="#" className="bg-gradient-to-r from-green-600 to-green-950 py-2 px-3 rounded-md">
-                            Create Account
+                        <a href="#" className="bg-gradient-to-r from-green-600 to-green-950 py-2 px-3 rounded-md text-md">
+                            Account erstellen
                         </a>
                     </div>
                     <div className="lg:hidden flex items-center">
