@@ -18,7 +18,7 @@ app.use(
     resave: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60,
+      maxAge: 6000,
       httpOnly: true,
     },
     rolling: true,
@@ -50,7 +50,7 @@ db.serialize(() => {
       (err) => {
         if (err) return console.error("Admin-User-Erstellungsfehler:", err);
         console.log("Admin-Benutzer erstellt oder existiert bereits.");
-        
+
         // Test-Benutzer erstellen oder bestätigen
         bcrypt.hash(testPassword, 10, (err, hash) => {
           if (err) return console.error("Hashing-Fehler:", err);
@@ -58,7 +58,8 @@ db.serialize(() => {
             `INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, 'user')`,
             [testUsername, hash],
             (err) => {
-              if (err) return console.error("Test-User-Erstellungsfehler:", err);
+              if (err)
+                return console.error("Test-User-Erstellungsfehler:", err);
               console.log("Test-Benutzer erstellt oder existiert bereits.");
             }
           );
@@ -90,11 +91,22 @@ app.post("/api", (req, res) => {
   );
 });
 
+app.post("/api/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: "Logout fehlgeschlagen" });
+    }
+    res.clearCookie("connect.sid"); // Session-Cookie löschen
+    res.status(200).json({ message: "Logout erfolgreich" });
+  });
+});
+
 app.get("/home", (req, res) => {
   if (!req.session.admin)
     return res.status(403).json({ error: "Kein Zugriff" });
   res.json({ message: "Willkommen im Admin-Bereich" });
 });
+
 
 const PORT = 8080;
 app.listen(PORT, () => {
