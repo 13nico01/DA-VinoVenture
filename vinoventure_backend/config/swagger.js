@@ -1,3 +1,5 @@
+// um auf swagger zuzugreifen diesen link (http://localhost:3000/api-docs/)
+
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
