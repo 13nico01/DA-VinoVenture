@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { swaggerUi, swaggerSpec } = require('./config/swagger');
-const createTables = require('./models/setup');
+const createTables = require('./models/setup.js');
 
 const app = express();
 const port = 3000;
