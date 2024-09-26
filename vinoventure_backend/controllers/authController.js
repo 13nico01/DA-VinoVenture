@@ -57,33 +57,46 @@ exports.signup = async (req, res) => {
     const { firstname, lastname, email, birthdate, created_at, password } = req.body;
 
     try {
+        // Überprüfen, ob der Benutzer bereits existiert
         const checkUserStmt = db.prepare('SELECT * FROM users WHERE email = ?');
         const existingUser = await new Promise((resolve, reject) => {
             checkUserStmt.get(email, (err, user) => {
-               if (err) {
-                   reject(err);
-               } else {
-                   resolve(user);
-               }
+                checkUserStmt.finalize();
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(user);
+                }
             });
+        });
 
-            if (existingUser) {
-                return res.status(400).json({
-                    error: "this user already exists"
+        // Benutzer existiert bereits
+        if (existingUser) {
+            return res.status(400).json({
+                error: "This user already exists",
+            });
+        }
+
+        // Passwort hashen
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Benutzer in die Datenbank einfügen
+        const insertStmt = db.prepare('INSERT INTO users (firstname, lastname, email, birthdate, password) VALUES (?,?,?,?,?)');
+        insertStmt.run(firstname, lastname, email, birthdate, hashedPassword, function (err) {
+            insertStmt.finalize();
+            if (err) {
+                console.error('Error inserting user', err);
+                return res.status(500).json({
+                    error: 'Internal Server Error',
                 });
             }
-
-            const hashedPassword = bcrypt.hash(password, 10)
-            const insertStmt = db.prepare('INSERT INTO users (firstname, lastname, email, birthdate, created_at, password) VALUES (?,?,?,?;?,?)');
-            insertStmt.run(firstname, lastname, email, birthdate, created_at, hashedPassword);
-            insertStmt.finalize();
 
             res.status(201).json({
                 message: 'User successfully created!',
             });
         });
-    } catch (err){
-        console.error('Error inserting user', err);
+    } catch (err) {
+        console.error('Error during signup', err);
         res.status(500).json({
             error: 'Internal Server Error',
         });
