@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
 const { swaggerUi, swaggerSpec } = require('./config/swagger');
-const createTables = require('./models/setup.js');
-const dropUserTable = require('./models/setup');
 const adminAuthController = require('./controllers/adminAuthController'); // Admin-Controller importieren
 const routes = require('./routes'); // Routen importieren
 
@@ -26,9 +24,6 @@ app.use(session({
 // Swagger-Dokumentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-dropUserTable();
-// Tabellen erstellen (falls nicht vorhanden)
-createTables();
 
 // Admin-Benutzer und Testbenutzer beim Start des Servers initialisieren (optional)
 // Dies ist nur für Demo-Zwecke, um sicherzustellen, dass ein Admin-Benutzer existiert

@@ -1,10 +1,11 @@
 -- Tabelle für Benutzer erstellen
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
     password TEXT NOT NULL,
+    username TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     birthdate DATE NOT NULL,
     street_address TEXT,
