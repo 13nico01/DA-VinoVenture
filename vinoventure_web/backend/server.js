@@ -3,12 +3,15 @@ const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const cors = require("cors");
+
 const corsOptions = {
   origin: "http://localhost:5173",
 };
 
 const app = express();
 app.use(cors(corsOptions));
+
+// Verbinde mit der SQLite-Datenbank
 const db = new sqlite3.Database("users.db");
 
 app.use(express.json());
@@ -25,8 +28,8 @@ app.use(
   })
 );
 
+// Tabelle erstellen, falls sie noch nicht existiert
 db.serialize(() => {
-  // Tabelle erstellen, falls sie noch nicht existiert
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -106,7 +109,6 @@ app.get("/home", (req, res) => {
     return res.status(403).json({ error: "Kein Zugriff" });
   res.json({ message: "Willkommen im Admin-Bereich" });
 });
-
 
 const PORT = 8080;
 app.listen(PORT, () => {
