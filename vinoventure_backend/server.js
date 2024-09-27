@@ -4,6 +4,7 @@ const cors = require('cors');
 const session = require('express-session');
 const { swaggerUi, swaggerSpec } = require('./config/swagger');
 const createTables = require('./models/setup.js');
+const dropUserTable = require('./models/setup');
 const adminAuthController = require('./controllers/adminAuthController'); // Admin-Controller importieren
 const routes = require('./routes'); // Routen importieren
 
@@ -25,17 +26,52 @@ app.use(session({
 // Swagger-Dokumentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+dropUserTable();
 // Tabellen erstellen (falls nicht vorhanden)
 createTables();
 
-// Admin-Benutzer beim Start des Servers initialisieren (optional)
+// Admin-Benutzer und Testbenutzer beim Start des Servers initialisieren (optional)
 // Dies ist nur für Demo-Zwecke, um sicherzustellen, dass ein Admin-Benutzer existiert
-const adminUsername = 'admin';
-const adminPassword = 'adminpassword';
-const testUsername = 'user';
-const testPassword = "userpassword"
-adminAuthController.initializeUser(adminUsername, adminPassword, 'admin');
-adminAuthController.initializeUser(testUsername, testPassword, 'user')
+const adminUser = {
+    firstname: 'Admin',
+    lastname: 'User',
+    email: 'admin@example.com',
+    birthdate: '1980-01-01',
+    username: 'admin',
+    password: 'adminpassword',
+    role: 'admin'
+};
+
+const testUser = {
+    firstname: 'Max',
+    lastname: 'Mustermann',
+    email: 'max.mustermann@example.com',
+    birthdate: '1990-01-01', // Beispiel-Geburtsdatum im YYYY-MM-DD-Format
+    username: 'user',
+    password: 'userpassword',
+    role: 'user'
+};
+
+// Admin-Benutzer und Testbenutzer initialisieren
+adminAuthController.initializeUser(
+    adminUser.firstname,
+    adminUser.lastname,
+    adminUser.email,
+    adminUser.birthdate,
+    adminUser.username,
+    adminUser.password,
+    adminUser.role
+);
+
+adminAuthController.initializeUser(
+    testUser.firstname,
+    testUser.lastname,
+    testUser.email,
+    testUser.birthdate,
+    testUser.username,
+    testUser.password,
+    testUser.role
+);
 
 // Routen verwenden
 app.use('/api', routes);  // Nutze die in ./routes definierten API-Routen

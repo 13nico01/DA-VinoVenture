@@ -1,8 +1,15 @@
-import { ShieldBan, Package, Users, LogOut, Menu } from "lucide-react";
+import { ShieldBan, Package, Users, LogOut, Menu, House } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import PackageManager from "./PackageManager";
+import AdminManager from "./AdminManager";
+import UserManager from "./UserManager";
+import AdminHome from "./AdminHome";
 
 function AdminDashboardSidebar() {
   const navigate = useNavigate();
+  // Set the default content to "Admin-Home" for the Home page
+  const [content, setContent] = useState("Admin-Home");
 
   const handleLogout = () => {
     const confirmLogout = window.confirm(
@@ -14,6 +21,10 @@ function AdminDashboardSidebar() {
 
       navigate("/home");
     }
+  };
+
+  const handleMenuClick = (newContent) => {
+    setContent(newContent);
   };
 
   return (
@@ -42,18 +53,33 @@ function AdminDashboardSidebar() {
             <li>
               <a
                 href="#"
+                onClick={() => handleMenuClick("Admin-Home")}
+                className="flex border-2 items-center p-2 transition-colors duration-50 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
+              >
+                <House
+                  className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
+                  aria-hidden="true"
+                />
+                <span className="ms-3">Home</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                onClick={() => handleMenuClick("Paket-Manager")}
                 className="flex border-2 items-center p-2 transition-colors duration-50 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
               >
                 <Package
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                 />
-                <span className="ms-3">Pakete</span>
+                <span className="ms-3">Paket-Manager</span>
               </a>
             </li>
             <li>
               <a
                 href="#"
+                onClick={() => handleMenuClick("Admin-Settings")}
                 className="flex border-2 items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
               >
                 <ShieldBan
@@ -68,6 +94,7 @@ function AdminDashboardSidebar() {
             <li>
               <a
                 href="#"
+                onClick={() => handleMenuClick("User-Overview")}
                 className="flex border-2 items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
               >
                 <Users
@@ -77,11 +104,12 @@ function AdminDashboardSidebar() {
                 <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
               </a>
             </li>
+            <hr class="border-t-2 border-gray-300" />
             <li>
               <a
                 href="#"
                 onClick={handleLogout}
-                className="flex border-2 items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
+                className="flex border-2 items-center p-2 bg-red-800 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
               >
                 <LogOut
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -94,11 +122,17 @@ function AdminDashboardSidebar() {
         </div>
       </aside>
 
-      <div className="sm:ml-64 ">
-        <div className=" rounded-lg dark:border-gray-700">
+      <div className="sm:ml-64">
+        <div className="rounded-lg dark:border-gray-700">
           <h2 className="text-4xl underline text-center font-bold">
-            Admin-Dashboard
+            {content}
           </h2>
+          <div className="p-6">
+            {content === "Paket-Manager" && <PackageManager />}
+            {content === "Admin-Home" && <AdminHome />}
+            {content === "Admin-Settings" && <AdminManager />}
+            {content === "User-Overview" && <UserManager />}
+          </div>
         </div>
       </div>
     </div>

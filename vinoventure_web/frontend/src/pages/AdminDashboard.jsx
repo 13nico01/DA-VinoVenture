@@ -1,12 +1,12 @@
-import Navbar from "../components/Navbar";
-import AdminDashboardSidebar from "../components/AdminDashboardMain";
+import Navbar from "../components/MainComponents/Navbar";
+import AdminDashboardMain from "../components/DashboardComponents/AdminDashboardMain";
 
 function AdminDashboard() {
   return (
     <>
       <Navbar />
       <div className="pt-20">
-        <AdminDashboardSidebar />
+        <AdminDashboardMain />
       </div>
     </>
   );
