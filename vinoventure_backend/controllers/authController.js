@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const db = require("../config/database.js");
 const jwt = require("jsonwebtoken");
 
+const secretKey = "geheimes-schluessel"; // Solltest du in einer Umgebungsvariablen speichern
+
 /**
  * @swagger
  * tags:
@@ -91,8 +93,16 @@ exports.signup = async (req, res) => {
                 });
             }
 
+            // JWT Token erstellen
+            const token = jwt.sign(
+                { email: email, userId: this.lastID }, // Payload mit userId und email
+                secretKey,
+                { expiresIn: "1h" } // Token Ablaufzeit
+            );
+
             res.status(201).json({
                 message: 'User successfully created!',
+                token: token, // jwt zurückgegeben
             });
         });
     } catch (err) {
