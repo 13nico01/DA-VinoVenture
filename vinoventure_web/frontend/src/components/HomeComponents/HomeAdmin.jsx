@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import backgroundHero from "/src/assets/Images/image21.jpg";
+import backgroundHero from "../../assets/Images/image21.jpg";
 
 function HomeAdmin() {
   const [username, setUsername] = useState("");

@@ -1,19 +1,19 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/MainComponents/Navbar";
 import { useState } from "react";
-import AdminLoginHero from "../components/AdminLoginHero";
+import AdminLoginHero from "../components/HomeComponents/AdminLoginHero";
 import { useNavigate } from "react-router-dom";
 
 function AdminLogin({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+
   // Verwende useNavigate anstelle von Navigate
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api", {
+      const response = await fetch("http://localhost:3000/api/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +23,7 @@ function AdminLogin({ onLogin }) {
 
       const data = await response.json();
       if (response.ok) {
-        onLogin(true); 
+        onLogin(true);
         localStorage.setItem("isAdminLoggedIn", true);
         localStorage.setItem("username", username);
         navigate("/admin-dashboard"); // Verwende navigate anstelle von Navigate()

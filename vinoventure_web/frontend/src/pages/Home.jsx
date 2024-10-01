@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/Navbar";
-import Hero from "../components/HomeHero";
-import HomeAdmin from "../components/HomeAdmin";
+import NavBar from "../components/MainComponents/Navbar";
+import HomeHero from "../components/HomeComponents/HomeHero";
+import HomeAdmin from "../components/HomeComponents/HomeAdmin";
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,7 +15,7 @@ function Home() {
   return (
     <>
       <NavBar />
-      {isLoggedIn ? <HomeAdmin /> : <Hero />}
+      {isLoggedIn ? <HomeAdmin /> : <HomeHero />}
     </>
   );
 }

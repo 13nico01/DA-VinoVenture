@@ -4,14 +4,14 @@ const db = require("../config/database.js");
 /**
  * Initialisieren des einzigen Benutzers (mit optionaler Admin-Rolle)
  */
-exports.initializeUser = (username, password, role = 'user') => {
+exports.initializeUser = (firstname, lastname, email, birthdate, username, password, role = 'users') => {
     bcrypt.hash(password, 10, (err, hash) => {
         if (err) return console.error("Hashing-Fehler:", err);
 
         // Einen einzigen Benutzer mit einer bestimmten Rolle erstellen oder bestätigen
         db.run(
-            `INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, ?)`,
-            [username, hash, role],
+            `INSERT OR IGNORE INTO users (firstname, lastname, email, birthdate, username, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [firstname, lastname, email, birthdate, username, hash, role],
             (err) => {
                 if (err) return console.error("User-Erstellungsfehler:", err);
                 console.log(`${role}-Benutzer erstellt oder existiert bereits.`);
@@ -21,7 +21,7 @@ exports.initializeUser = (username, password, role = 'user') => {
 };
 
 /**
- * Login für den einzigen Benutzer (Admin oder nicht)
+ * Login nur für Benutzer mit der Rolle "admin"
  */
 exports.login = (req, res) => {
     const { username, password } = req.body;
@@ -34,11 +34,19 @@ exports.login = (req, res) => {
             if (err) return res.status(500).json({ error: "Datenbankfehler" });
             if (!user) return res.status(400).json({ error: "Benutzer nicht gefunden" });
 
+            // Überprüfen, ob der Benutzer die Rolle "admin" hat
+            if (user.role !== "admin") {
+                return res.status(403).json({ error: "Nur Admins dürfen sich anmelden" });
+            }
+
+            // Passwort überprüfen
             bcrypt.compare(password, user.password, (err, result) => {
+                if (err) return res.status(500).json({ error: "Fehler bei der Passwortüberprüfung" });
+
                 if (result) {
-                    // Rolle setzen, je nachdem ob der Benutzer Admin ist
+                    // Session speichern, wenn erfolgreich
                     req.session.role = user.role;
-                    res.status(200).json({ message: `${user.role}-Login erfolgreich` });
+                    res.status(200).json({ message: "Admin-Login erfolgreich" });
                 } else {
                     res.status(400).json({ error: "Falsches Passwort" });
                 }
@@ -46,6 +54,7 @@ exports.login = (req, res) => {
         }
     );
 };
+
 
 /**
  * Admin-Logout

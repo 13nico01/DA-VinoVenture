@@ -1,10 +1,11 @@
 -- Tabelle für Benutzer erstellen
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
     password TEXT NOT NULL,
+    username TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     birthdate DATE NOT NULL,
     street_address TEXT,
@@ -17,7 +18,7 @@ CREATE TABLE users
 
 
 -- Weinpakete erstellen
-CREATE TABLE wine_packages
+CREATE TABLE IF NOT EXISTS wine_packages
 (
     package_id INTEGER PRIMARY KEY AUTOINCREMENT,
     package_name TEXT NOT NULL UNIQUE,
@@ -29,7 +30,7 @@ CREATE TABLE wine_packages
 );
 
 -- Bestellungen erstellen
-CREATE TABLE orders
+CREATE TABLE IF NOT EXISTS orders
 (
     order_id INTEGER PRIMARY KEY AUTOINCREMENT,
     ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -39,7 +40,7 @@ CREATE TABLE orders
 
 
 -- Verbindung zwischen orders und wine_packages
-CREATE TABLE order_wine_packages
+CREATE TABLE IF NOT EXISTS order_wine_packages
 (
     order_wine_id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
@@ -50,14 +51,14 @@ CREATE TABLE order_wine_packages
 );
 
 
-CREATE TABLE quizzes
+CREATE TABLE  IF NOT EXISTS quizzes
 (
     quiz_id INTEGER PRIMARY KEY AUTOINCREMENT,
     question TEXT NOT NULL
 );
 
 
-CREATE TABLE answers
+CREATE TABLE  IF NOT EXISTS answers
 (
     answer_id INTEGER PRIMARY KEY AUTOINCREMENT,
     quiz_id INTEGER NOT NULL,
