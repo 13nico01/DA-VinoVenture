@@ -1,9 +1,12 @@
+import AddPackage from "./PackageComponents/AddPackage";
+import Packagenavbar from "./PackageComponents/PackageNavbar";
+
 function PackageManager() {
   return (
     <div>
-        <h2>Hello World</h2>
+      <Packagenavbar />
     </div>
-  )
+  );
 }
 
-export default PackageManager
+export default PackageManager;

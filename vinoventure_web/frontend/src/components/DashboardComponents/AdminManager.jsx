@@ -1,5 +1,9 @@
+
 function AdminManager() {
-  return <div>AdminManager</div>;
+  return (
+    <div>
+    </div>
+  );
 }
 
 export default AdminManager;

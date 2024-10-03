@@ -11,11 +11,10 @@ function AdminLoginHero({
   error,
 }) {
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     let logoutTimer;
-  
+
     const resetTimer = () => {
       console.log("Timer wird zurückgesetzt"); // Konsolenausgabe für Debugging
       clearTimeout(logoutTimer);
@@ -24,13 +23,13 @@ function AdminLoginHero({
         handleLogout(); // Automatisches Logout nach 1 Minute Inaktivität
       }, 60000); // 1 Minute (60000 Millisekunden)
     };
-  
+
     // Timer bei jeder Benutzerinteraktion zurücksetzen
     window.addEventListener("mousemove", resetTimer);
     window.addEventListener("keydown", resetTimer);
-  
+
     resetTimer(); // Starte den Timer
-  
+
     return () => {
       clearTimeout(logoutTimer);
       window.removeEventListener("mousemove", resetTimer);

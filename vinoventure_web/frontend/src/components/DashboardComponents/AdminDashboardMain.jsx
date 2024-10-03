@@ -104,7 +104,7 @@ function AdminDashboardSidebar() {
                 <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
               </a>
             </li>
-            <hr class="border-t-2 border-gray-300" />
+            <hr className="border-t-2 border-gray-300" />
             <li>
               <a
                 href="#"
@@ -124,9 +124,6 @@ function AdminDashboardSidebar() {
 
       <div className="sm:ml-64">
         <div className="rounded-lg dark:border-gray-700">
-          <h2 className="text-4xl underline text-center font-bold">
-            {content}
-          </h2>
           <div className="p-6">
             {content === "Paket-Manager" && <PackageManager />}
             {content === "Admin-Home" && <AdminHome />}
