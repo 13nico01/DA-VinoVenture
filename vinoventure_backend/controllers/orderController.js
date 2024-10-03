@@ -5,12 +5,49 @@ const transporter = require('../config/nodemailerConfig');
 
 let orders = [];
 
+// Function to generate a unique link for the quiz
 const generateUniqueLink = () => {
     const uniqueID = uuidv4();
     return `https://example.com/quiz/${uniqueID}`;
 };
 
-// Neue Bestellung erstellen
+// Bestellbestätigungs E-Mail
+const sendOrderConfirmationEmail = (order) => {
+    const emailOptions = {
+        from: 'julianholzer12@gmail.com',
+        to: order.customerEmail,
+        subject: 'Deine Bestellung wurde erfolgreich aufgegeben!',
+        text: `Deine Bestellung mit der ID ${order.id} wurde erfolgreich aufgegeben. Du erhältst eine weitere E-Mail, sobald dein Paket versandt wird.`,
+    };
+
+    transporter.sendMail(emailOptions)
+        .then(() => {
+            console.log('Bestellbestätigung erfolgreich versendet.');
+        })
+        .catch(error => {
+            console.error('Fehler beim Senden der Bestellbestätigung:', error);
+        });
+};
+
+// Versandsbestätigungs E-Mail
+const sendShippingConfirmationEmail = (order) => {
+    const emailOptions = {
+        from: 'julianholzer12@gmail.com',
+        to: order.customerEmail,
+        subject: 'Deine Bestellung wurde versendet!',
+        text: `Deine Bestellung mit der ID ${order.id} wurde versandt.`
+    };
+
+    transporter.sendMail(emailOptions)
+        .then(() => {
+            console.log('Versandbestätigung erfolgreich versendet.');
+        })
+        .catch(error => {
+            console.error('Fehler beim Senden der Versandbestätigung:', error);
+        });
+};
+
+// Create a new order
 exports.createOrder = (req, res) => {
     const { customerEmail } = req.body;
 
@@ -21,10 +58,11 @@ exports.createOrder = (req, res) => {
     };
 
     orders.push(newOrder);
+    sendOrderConfirmationEmail(newOrder);
     res.status(201).json({ message: 'Order placed successfully!', orderId: newOrder.id });
 };
 
-// Bestellung verschicken und QR-Code senden
+// Function to ship an order and send QR code with shipping confirmation
 exports.shipOrder = async (req, res) => {
     const { orderId } = req.params;
 
@@ -45,11 +83,11 @@ exports.shipOrder = async (req, res) => {
             subject: 'Dein einmaliges Quiz',
             text: 'Hier ist der QR-Code zu deinem einmaligen Quiz.',
             html: `
-                <p>Hier ist der QR-Code zu deinem einmaligen Quiz:</p>
-                <p><a href="${uniqueLink}">Klicke hier, um das Quiz zu besuchen.</a></p>
-                <p>Oder scanne den QR-Code:</p>
-                <img src="cid:qrcode" alt="QR Code" />
-            `,
+          <p>Hier ist der QR-Code zu deinem einmaligen Quiz:</p>
+          <p><a href="${uniqueLink}">Klicke hier, um das Quiz zu besuchen.</a></p>
+          <p>Oder scanne den QR-Code:</p>
+          <img src="cid:qrcode" alt="QR Code" />
+      `,
             attachments: [
                 {
                     filename: 'qrcode.png',
@@ -61,6 +99,9 @@ exports.shipOrder = async (req, res) => {
 
         await transporter.sendMail(emailOptions);
         order.status = 'shipped';
+
+        sendShippingConfirmationEmail(order);
+
         res.status(200).json({ message: 'Quiz shipped successfully!' });
     } catch (error) {
         console.error('Error processing order:', error);
