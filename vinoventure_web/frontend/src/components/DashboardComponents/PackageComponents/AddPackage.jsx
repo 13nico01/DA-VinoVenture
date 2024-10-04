@@ -55,18 +55,19 @@ const AddPackage = () => {
         onSubmit={handleSubmit}
         className="w-full max-w-4xl bg-gray-300 p-8 shadow-md rounded-lg"
       >
-        <h2 className="text-2xl text-black font-bold mb-6 text-center">Weinpaket hinzufügen</h2>
+        <h2 className="text-2xl text-black font-bold mb-6 text-center">Weinpaket erstellen</h2>
 
         <div className="mb-4">
           <label className="block mb-2 text-gray-700">Paketname</label>
           <input
             type="text"
             name="package_name"
+            minLength={3}
             value={formData.package_name}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
-            placeholder="name"
+            placeholder="Name"
           />
         </div>
 
@@ -74,11 +75,12 @@ const AddPackage = () => {
           <label className="block mb-2 text-gray-700">Beschreibung</label>
           <textarea
             name="description"
+            minLength={10}
             value={formData.description}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
-            placeholder="Beschreibung"
+            placeholder="Beschreibung (min. 10 Zeichen)"
           />
         </div>
 
@@ -87,6 +89,8 @@ const AddPackage = () => {
           <input
             type="number"
             name="wine_count"
+            min="1"
+            max="20"
             value={formData.wine_count}
             onChange={handleChange}
             className="w-full p-2 border rounded"
@@ -100,6 +104,7 @@ const AddPackage = () => {
           <input
             type="text"
             name="vintner"
+            minLength={3}
             value={formData.vintner}
             onChange={handleChange}
             className="w-full p-2 border rounded"
@@ -114,6 +119,7 @@ const AddPackage = () => {
             type="number"
             step="0.01"
             name="price"
+            min="0.01"
             value={formData.price}
             onChange={handleChange}
             className="w-full p-2 border rounded"
@@ -129,6 +135,7 @@ const AddPackage = () => {
           <input
             type="number"
             name="suitable_for_persons"
+            min="1"
             value={formData.suitable_for_persons}
             onChange={handleChange}
             className="w-full p-2 border rounded"

@@ -7,4 +7,8 @@ router.post('/add-package', winePackageController.addWinePackage);
 
 router.get('/get-packages', winePackageController.getWinePackages);
 
+router.get('/get-package-count', winePackageController.getPackageCount);
+
+router.delete('/delete-package/:id',winePackageController.deleteWinePackage);
+
 module.exports = router;

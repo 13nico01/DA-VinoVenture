@@ -1,5 +1,5 @@
 import AddPackage from "./PackageComponents/AddPackage";
-import Packagenavbar from "./PackageComponents/PackageNavbar";
+import Packagenavbar from "./PackageComponents/PackageManagerMain";
 
 function PackageManager() {
   return (
