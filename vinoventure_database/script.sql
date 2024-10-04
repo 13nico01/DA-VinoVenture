@@ -1,9 +1,10 @@
 -- Tabelle für Benutzer erstellen
-CREATE TABLE users
+CREATE TABLE  IF NOT EXISTS users
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     birthdate DATE NOT NULL,
@@ -15,7 +16,7 @@ CREATE TABLE users
 );
 
 --Tabelle für die Lieferaddresse der einzelnen user
-CREATE TABLE shipping_address
+CREATE TABLE IF NOT EXISTS shipping_address
 (
     address_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
@@ -28,7 +29,7 @@ CREATE TABLE shipping_address
 
 
 -- Weinpakete erstellen
-CREATE TABLE wine_packages
+CREATE TABLE  IF NOT EXISTS wine_packages
 (
     package_id INTEGER PRIMARY KEY AUTOINCREMENT,
     package_name TEXT NOT NULL UNIQUE,
@@ -40,7 +41,7 @@ CREATE TABLE wine_packages
     image blob
 );
 
-CREATE TABLE orders
+CREATE TABLE  IF NOT EXISTS orders
 (
     order_id INTEGER PRIMARY KEY AUTOINCREMENT,
     ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -55,7 +56,7 @@ CREATE TABLE orders
 
 
 -- Verbindung zwischen orders und wine_packages
-CREATE TABLE order_wine_packages
+CREATE TABLE  IF NOT EXISTS order_wine_packages
 (
     order_wine_id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
@@ -66,7 +67,7 @@ CREATE TABLE order_wine_packages
 );
 
 -- Bewertungen der einzelnen Weinpakete
-CREATE TABLE wine_package_reviews
+CREATE TABLE  IF NOT EXISTS wine_package_reviews
 (
     review_id INTEGER PRIMARY KEY AUTOINCREMENT,
     package_id INTEGER NOT NULL,
@@ -79,7 +80,7 @@ CREATE TABLE wine_package_reviews
 );
 
 -- Tabelle für die quizzes der einzelnen Weinpakete
-CREATE TABLE quizzes
+CREATE TABLE IF NOT EXISTS quizzes
 (
     quiz_id INTEGER PRIMARY KEY AUTOINCREMENT,
     participant TEXT,
@@ -92,7 +93,7 @@ CREATE TABLE quizzes
 
 
 -- Antworten der quizzes
-CREATE TABLE answers
+CREATE TABLE  IF NOT EXISTS answers
 (
     answer_id INTEGER PRIMARY KEY AUTOINCREMENT,
     quiz_id INTEGER NOT NULL,
@@ -100,7 +101,6 @@ CREATE TABLE answers
     is_correct BOOLEAN NOT NULL,
     FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );
-
 
 
 
