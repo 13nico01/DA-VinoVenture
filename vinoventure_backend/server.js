@@ -24,6 +24,7 @@ app.use(session({
 // Swagger-Dokumentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+
 // Routen verwenden
 app.use('/api', routes);  // Nutze die in ./routes definierten API-Routen
 

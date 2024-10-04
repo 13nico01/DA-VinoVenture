@@ -23,7 +23,9 @@ INSERT INTO users (firstname, lastname, username, password, email, birthdate, ro
 ('Laura', 'Pichler', 'laura.pichler', 'AdminTop99!', 'laura.pichler@example.com', '1992-06-17', 'admin', '2024-09-17 12:00:00', 'active', NULL),
 ('Christian', 'Roth', 'christian.roth', 'User12345!', 'christian.roth@example.com', '1990-08-05', 'user', '2024-09-18 08:45:00', 'active', NULL),
 ('Eva', 'Brunner', 'eva.brunner', 'Brunner2024!', 'eva.brunner@example.com', '1993-12-30', 'user', '2024-09-18 10:20:00', 'active', NULL),
-('David', 'Holzer', 'david.holzer', 'David!2024', 'david.holzer@example.com', '1994-02-02', 'user', '2024-09-19 09:30:00', 'active', NULL);
+('David', 'Holzer', 'david.holzer', 'David!2024', 'david.holzer@example.com', '1994-02-02', 'user', '2024-09-19 09:30:00', 'active', NULL),
+('Admin', 'Admin', 'admin.admin', 'admin', 'admin@example.com', '1994-02-02', 'admin', '2024-09-19 09:30:00', 'active', NULL),
+('User', 'User', 'user.user', 'user', 'user@example.com', '1994-02-02', 'user', '2024-09-19 09:30:00', 'active', NULL);
 
 INSERT INTO shipping_address (user_id, street, house_number, postal_code, city) VALUES
 (1, 'Mariahilfer Straße', '100', 1070, 'Wien'),
