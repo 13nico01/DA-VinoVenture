@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 -- Tabelle für Benutzer erstellen
 CREATE TABLE  IF NOT EXISTS users
 (
