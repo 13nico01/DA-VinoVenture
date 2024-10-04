@@ -25,5 +25,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/vinoventure_backend/vinoventure.db
+/vinoventure_database/vinoventure.db
 /.idea
