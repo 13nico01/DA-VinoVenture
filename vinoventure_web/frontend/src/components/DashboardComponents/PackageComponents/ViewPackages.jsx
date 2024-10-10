@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Pencil, Trash2} from 'lucide-react';
+import { Trash2 } from "lucide-react";
 
 const ViewPackages = () => {
   const [packages, setPackages] = useState([]);
@@ -122,16 +122,12 @@ const ViewPackages = () => {
           <button
             onClick={handleDeleteButtonClick} // Löschmodus aktivieren
             className={`py-2 px-4 rounded mr-2 ${
-              isDeleteButtonActive ? "bg-red-950 text- transition duration-300" : "bg-red-500 transition duration-300"
+              isDeleteButtonActive
+                ? "bg-red-950 text- transition duration-300"
+                : "bg-red-500 transition duration-300"
             } text-white transition duration-300`}
           >
-            <Trash2/>
-          </button>
-          <button
-            onClick={() => setEditingPackage(null)}
-            className="bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            <Pencil/>
+            <Trash2 />
           </button>
         </div>
       </div>
@@ -214,7 +210,10 @@ const ViewPackages = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="py-2 px-4 text-center text-red-600 font-bold bg-gray-500">
+              <td
+                colSpan="6"
+                className="py-2 px-4 text-center text-red-600 font-bold bg-gray-500"
+              >
                 Keine Pakete verfügbar!
               </td>
             </tr>
