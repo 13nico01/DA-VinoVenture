@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const AddWinePackage = () => {
   return (
-    <div className="pt-16 pb-16">
+    <div className="pt-4 pb-6">
       <AddPackage />
     </div>
   );
