@@ -27,7 +27,7 @@ const ViewUsers = () => {
   }, []);
 
   return (
-    <div className="container mx-auto mt-4">
+    <div className="container mx-auto mt-2">
       <h2 className="text-2xl font-bold text-center mb-4">
         Verfügbare Benutzer
       </h2>
@@ -39,7 +39,7 @@ const ViewUsers = () => {
             <th className="py-2 px-4 border-b border-r">E-Mail</th>
             <th className="py-2 px-4 border-b border-r">Rolle</th>
             <th className="py-2 px-4 border-b border-r">Status</th>
-            <th className="py-2 px-4 border-b">Aktion</th>
+            <th className="py-2 px-4 border-b">Geburtsdatum</th>
           </tr>
         </thead>
         <tbody>
@@ -59,8 +59,8 @@ const ViewUsers = () => {
                 <td className="py-2 px-4 border-r border-black">
                   {user.status}
                 </td>
-                <td className="py-2 px-4 text-center">
-                  <button className="text-red-600">Löschen</button>
+                <td className="py-2 px-4 border-r border-black">
+                  {user.birthdate}
                 </td>
               </tr>
             ))

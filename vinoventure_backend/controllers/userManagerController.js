@@ -5,7 +5,7 @@ exports.getUsers = (req, res) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.json({ packages: rows });
+    res.json({ users: rows });
   });
 };
 

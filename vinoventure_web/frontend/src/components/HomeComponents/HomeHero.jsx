@@ -1,4 +1,5 @@
 import backgroundHero from "../../assets/Images/image21.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   return (

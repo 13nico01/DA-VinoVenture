@@ -68,20 +68,22 @@ const Navbar = () => {
           <div className="hidden lg:flex justify-center space-x-4 items-center text-md">
             {isLoggedIn ? (
               <>
-                <User className=""/>
-                <span className="text-white border-2 border-black rounded-lg p-1 bg-gradient-to-r from-green-600 to-green-950">{username}</span>
+                <User className="" />
+                <span className="text-white border-2 border-black rounded-lg p-1 bg-gradient-to-r from-green-600 to-green-950">
+                  {username}
+                </span>
               </>
             ) : (
               <>
-                <a href="#" className="py-2 px-3 border rounded-md">
+                <Link to="/login" className="py-2 px-3 border rounded-md">
                   Login
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/register"
                   className="bg-gradient-to-r from-green-600 to-green-950 py-2 px-3 rounded-md text-md"
                 >
                   Account erstellen
-                </a>
+                </Link>
               </>
             )}
           </div>

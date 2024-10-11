@@ -124,7 +124,7 @@ function AdminDashboardSidebar() {
 
       <div className="sm:ml-64">
         <div className="rounded-lg dark:border-gray-700">
-          <div className="p-6">
+          <div className="py-4 px-2">
             {content === "Paket-Manager" && <PackageManager />}
             {content === "Admin-Home" && <AdminHome />}
             {content === "Admin-Settings" && <AdminManager />}

@@ -6,6 +6,8 @@ import NoPage from "./pages/NoPage";
 import About from "./pages/About";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const App = () => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -35,17 +37,15 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="/admin" element={<AdminLogin onLogin={handleLogin} />} />
 
         {/* Protected Route */}
         <Route
           path="/admin-dashboard"
           element={
-            isAdminLoggedIn ? (
-              <AdminDashboard />
-            ) : (
-              <Navigate to="/admin" />
-            )
+            isAdminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin" />
           }
         />
 
