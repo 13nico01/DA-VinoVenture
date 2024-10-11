@@ -27,3 +27,5 @@ dist-ssr
 *.sw?
 /vinoventure_database/vinoventure.db
 /.idea
+/vinoventure_web/frontend/node_modules
+/vinoventure_backend/node_modules

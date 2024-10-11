@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PackageManager from "./PackageManager";
 import AdminManager from "./AdminManager";
-import UserManager from "./UserManager";
+import UserManagerMain from "../DashboardComponents/UserManager/UserManagerMain";
 import AdminHome from "./AdminHome";
 
 function AdminDashboardSidebar() {
@@ -128,7 +128,7 @@ function AdminDashboardSidebar() {
             {content === "Paket-Manager" && <PackageManager />}
             {content === "Admin-Home" && <AdminHome />}
             {content === "Admin-Settings" && <AdminManager />}
-            {content === "User-Overview" && <UserManager />}
+            {content === "User-Overview" && <UserManagerMain />}
           </div>
         </div>
       </div>
