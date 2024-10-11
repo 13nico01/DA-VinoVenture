@@ -16,13 +16,16 @@ function LoginComponent() {
 
     try {
       // Example API call for authentication (replace with your real API endpoint)
-      const response = await fetch("http://localhost:3000/api/user-login/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/user-login/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       const data = await response.json();
 
