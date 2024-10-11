@@ -11,6 +11,7 @@ const generateUniqueLink = () => {
     return `https://example.com/quiz/${uniqueID}`;
 };
 
+
 // Bestellbestätigungs E-Mail
 const sendOrderConfirmationEmail = (order) => {
     const emailOptions = {
@@ -28,6 +29,24 @@ const sendOrderConfirmationEmail = (order) => {
             console.error('Fehler beim Senden der Bestellbestätigung:', error);
         });
 };
+// Bestellbestätigungs E-Mail Vinter
+const sendOrderConfirmationEmailVinter = (order) => {
+    const emailOptions = {
+        from: 'julianholzer12@gmail.com',
+        to: order.customerEmail,
+        subject: 'Eine Bestellung wurde erfolgreich aufgegebn!',
+        text: `Die Bestellung mit der ID ${order.id} wurde erfolgreich aufgegeben`,
+    };
+
+    transporter.sendMail(emailOptions)
+        .then(() => {
+            console.log('Bestellbestätigung erfolgreich versendet.');
+        })
+        .catch(error => {
+            console.error('Fehler beim Senden der Bestellbestätigung:', error);
+        });
+};
+
 
 // Versandsbestätigungs E-Mail
 const sendShippingConfirmationEmail = (order) => {

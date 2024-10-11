@@ -1,6 +1,45 @@
 const db = require("../config/database.js");
 
 /**
+ * @swagger
+ * tags:
+ *      name: Authentication
+ *      description: Authentication and user management
+ */
+
+/**
+ * @swagger
+ * /admin/login:
+ *   post:
+ *     summary: Admin Login
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Username of the Admin
+ *               password:
+ *                 type: string
+ *                 description: Password of the Admin  
+ *     responses:
+ *       201:
+ *         description: User successfully created
+ *       400:
+ *         description: User already exists
+ *       500:
+ *         description: Internal server error
+ */
+
+
+/**
  * Initialisieren des einzigen Benutzers (mit optionaler Admin-Rolle)
  */
 exports.initializeUser = (firstname, lastname, email, birthdate, username, password, role = 'users') => {
