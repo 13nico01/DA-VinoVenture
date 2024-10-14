@@ -1,5 +1,71 @@
 const db = require('../config/database')
 
+
+/**
+ * @swagger
+ * tags:
+ *      name: WinePackage
+ *      description: WinePackages
+ */
+
+/**
+ * @swagger
+ * /wine-packages/add-packages:
+ *   post:
+ *     summary: Add WinePackage
+ *     tags: [WinePackage]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - package_name
+ *               - description
+ *               - wine_count
+ *               - vinter
+ *               - price
+ *               - suitable_for_persons
+ *               - image
+ *             properties:
+ *               package_name:
+ *                 type: string
+ *                 description: Name des Weinpackets
+ *               description:  
+ *                 type: string
+ *                 description: Beschreibung des Weinpaketes  
+ *     responses:
+ *       201:
+ *         description: Wine-Package created successfully
+ *       400:
+ *         description: WinePackage already Exists
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /wine-packages/get-packages:
+ *  get:
+ *    summary: Get all WinePackages
+ *    tags: [WinePackage]
+ *    responses:
+ *       200:
+ *         description: WinePackages retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/WinePackage'
+ *       404:
+ *         description: No WinePackages found
+ *       500:
+ *         description: Internal server error
+ */
+
+
 exports.addWinePackage = (req, res) => {
     const { package_name, description, wine_count, vintner, price, suitable_for_persons } = req.body;
 

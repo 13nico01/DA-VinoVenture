@@ -26,9 +26,10 @@ const secretKey = "geheimes-schluessel"; // Solltest du in einer Umgebungsvariab
  *             required:
  *               - firstname
  *               - lastname
+ *               - username
+ *               - password
  *               - email
  *               - birthdate
- *               - password
  *             properties:
  *               firstname:
  *                 type: string
