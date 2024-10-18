@@ -8,14 +8,14 @@ function LoginComponent() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // Simple validation
+    // Einfache Validierung
     if (username === "" || password === "") {
       setError("Username and Password are required");
       return;
     }
 
     try {
-      // Example API call for authentication (replace with your real API endpoint)
+      // Beispiel-API-Aufruf zur Authentifizierung (ersetze durch deinen tatsächlichen API-Endpunkt)
       const response = await fetch(
         "http://localhost:3000/api/user-login/login",
         {
@@ -30,12 +30,13 @@ function LoginComponent() {
       const data = await response.json();
 
       if (response.ok) {
-        // Assuming the API sends back a token or user information
-        // You can store token/user info in localStorage or state management solution
+        // JWT und Benutzernamen im Local Storage speichern
         localStorage.setItem("token", data.token);
-        navigate("/home"); // Redirect to dashboard on success
+        localStorage.setItem("username", username); // Speichere den Benutzernamen
+
+        navigate("/home"); // Bei Erfolg auf eine andere Seite weiterleiten (z. B. das Dashboard)
       } else {
-        // If login fails, set an error message
+        // Bei fehlgeschlagenem Login eine Fehlermeldung setzen
         setError(data.message || "Invalid username or password");
       }
     } catch (error) {
