@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const db = require("../config/database.js");
 const jwt = require("jsonwebtoken");
 
-const secretKey = "geheimes-schluessel"; // Solltest du in einer Umgebungsvariablen speichern
+const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Verwende eine Umgebungsvariable für den Schlüssel
 
 /**
  * @swagger
@@ -37,6 +37,12 @@ const secretKey = "geheimes-schluessel"; // Solltest du in einer Umgebungsvariab
  *               lastname:
  *                 type: string
  *                 description: Last name of the user
+ *               username:
+ *                 type: string
+ *                 description: Username of the user
+ *               password:
+ *                 type: string
+ *                 description: Password of the user
  *               email:
  *                 type: string
  *                 description: Email address of the user
@@ -44,9 +50,6 @@ const secretKey = "geheimes-schluessel"; // Solltest du in einer Umgebungsvariab
  *                 type: string
  *                 format: date
  *                 description: Birthdate of the user (YYYY-MM-DD)
- *               password:
- *                 type: string
- *                 description: User's password
  *     responses:
  *       201:
  *         description: User successfully created
@@ -57,7 +60,7 @@ const secretKey = "geheimes-schluessel"; // Solltest du in einer Umgebungsvariab
  */
 
 exports.signup = async (req, res) => {
-    const { firstname, lastname, email, birthdate, created_at, password } = req.body;
+    const { firstname, lastname, username, password, email, birthdate } = req.body;
 
     try {
         // Überprüfen, ob der Benutzer bereits existiert
@@ -83,9 +86,12 @@ exports.signup = async (req, res) => {
         // Passwort hashen
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Rolle des Benutzers auf 'user' setzen
+        const role = 'user'; // Standardrolle für neu registrierte Benutzer
+
         // Benutzer in die Datenbank einfügen
-        const insertStmt = db.prepare('INSERT INTO users (firstname, lastname, email, birthdate, password) VALUES (?,?,?,?,?)');
-        insertStmt.run(firstname, lastname, email, birthdate, hashedPassword, function (err) {
+        const insertStmt = db.prepare(`INSERT INTO users (firstname, lastname, username, password, email, birthdate, role) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+        insertStmt.run(firstname, lastname, username, hashedPassword, email, birthdate, role, function (err) {
             insertStmt.finalize();
             if (err) {
                 console.error('Error inserting user', err);
@@ -96,7 +102,7 @@ exports.signup = async (req, res) => {
 
             // JWT Token erstellen
             const token = jwt.sign(
-                { email: email, userId: this.lastID }, // Payload mit userId und email
+                { email: email, userId: this.lastID, role: role }, // Payload mit userId, email und Rolle
                 secretKey,
                 { expiresIn: "1h" } // Token Ablaufzeit
             );
@@ -112,4 +118,4 @@ exports.signup = async (req, res) => {
             error: 'Internal Server Error',
         });
     }
-}
+};

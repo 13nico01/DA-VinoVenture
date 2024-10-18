@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="DB-242.20224.385">
-    <data-source name="vinoventure.sqlite" uuid="b6b6150b-6d8a-4b23-ac4a-bec92e1138ee">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="SQLITE" />
-      <secret-storage>master_key</secret-storage>
-      <auth-provider>no-auth</auth-provider>
-      <schema-mapping />
-    </data-source>
+  <component name="dataSourceStorageLocal" created-in="IU-242.23339.11">
     <data-source name="vinoventure" uuid="473dbc65-c8ae-46d4-af16-959c069be1d8">
       <database-info product="SQLite" version="3.45.1" jdbc-version="4.2" driver-name="SQLite JDBC" driver-version="3.45.1.0" dbms="SQLITE" exact-version="3.45.1" exact-driver-version="3.45">
         <identifier-quote-string>&quot;</identifier-quote-string>

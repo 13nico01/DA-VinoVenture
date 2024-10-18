@@ -11,9 +11,9 @@ CREATE TABLE  IF NOT EXISTS users
     email TEXT NOT NULL UNIQUE,
     birthdate DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    role TEXT not null,
+    role TEXT DEFAULT 'user',
     last_login TIMESTAMP,
-    status TEXT NOT NULL,
+    status TEXT DEFAULT 'active',
     reset_token TEXT
 );
 
