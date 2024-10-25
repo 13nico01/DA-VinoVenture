@@ -1,9 +1,36 @@
-import React, {useState} from 'react';
-import {View, Text, Button, TextInput, Alert, StyleSheet} from "react-native";
+import React, { useState } from 'react';
+import { View, Text, Button, TextInput, Alert, StyleSheet } from "react-native";
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleLogin = async () => {
+        try {
+            const response = await fetch("http://172.20.10.2:3000/api/user-login/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                Alert.alert("Erfolg", data.message);
+                // Weiterleitung oder Navigation nach erfolgreichem Login
+            } else {
+                Alert.alert("Fehler", data.error || "Login fehlgeschlagen");
+            }
+        } catch (error) {
+            console.error("Fehler beim Login:", error);
+            Alert.alert("Fehler", "Es gab ein Problem mit der Verbindung.");
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -13,7 +40,7 @@ const Login = ({navigation}) => {
             <TextInput
                 style={styles.input}
                 placeholder="email@example.com"
-                placeholderTextColor = {'#bbb'}
+                placeholderTextColor={'#bbb'}
                 value={email}
                 onChangeText={(text) => setEmail(text)}
             />
@@ -22,11 +49,11 @@ const Login = ({navigation}) => {
                 placeholder="password"
                 secureTextEntry
                 value={password}
-                placeholderTextColor = {'#bbb'}
+                placeholderTextColor={'#bbb'}
                 onChangeText={(text) => setPassword(text)}
             />
-            <Button title="Login"/>
-            <Button title="No Account?" onPress={() => navigation.navigate('Registry')}/>
+            <Button title="Login" onPress={handleLogin} />
+            <Button title="No Account?" onPress={() => navigation.navigate('Registry')} />
         </View>
     );
 };
@@ -43,12 +70,12 @@ const styles = StyleSheet.create({
         fontSize: 24,
         marginBottom: 16,
     },
-    title2:{
+    title2: {
         marginTop: 150,
-      fontSize: 16,
-      marginBottom: 16,
+        fontSize: 16,
+        marginBottom: 16,
     },
-    title3:{
+    title3: {
         marginBottom: 16,
     },
     input: {
