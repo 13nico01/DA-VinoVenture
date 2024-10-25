@@ -1,8 +1,9 @@
-const bcrypt = require("bcrypt");
-const db = require("../config/database.js");
+const bcrypt = require("bcryptjs");
+const { db } = require("../config/database");
+require("mysql2/promise");
 const jwt = require("jsonwebtoken");
 
-const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Verwende eine Umgebungsvariable für den Schlüssel
+const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel aus Umgebungsvariablen laden
 
 /**
  * @swagger
@@ -37,12 +38,6 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Verwende e
  *               lastname:
  *                 type: string
  *                 description: Last name of the user
- *               username:
- *                 type: string
- *                 description: Username of the user
- *               password:
- *                 type: string
- *                 description: Password of the user
  *               email:
  *                 type: string
  *                 description: Email address of the user
@@ -50,6 +45,9 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Verwende e
  *                 type: string
  *                 format: date
  *                 description: Birthdate of the user (YYYY-MM-DD)
+ *               password:
+ *                 type: string
+ *                 description: User's password
  *     responses:
  *       201:
  *         description: User successfully created
@@ -60,62 +58,78 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Verwende e
  */
 
 exports.signup = async (req, res) => {
-    const { firstname, lastname, username, password, email, birthdate } = req.body;
+  const { firstname, lastname, username, email, birthdate, password } =
+    req.body;
 
-    try {
-        // Überprüfen, ob der Benutzer bereits existiert
-        const checkUserStmt = db.prepare('SELECT * FROM users WHERE email = ?');
-        const existingUser = await new Promise((resolve, reject) => {
-            checkUserStmt.get(email, (err, user) => {
-                checkUserStmt.finalize();
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(user);
-                }
-            });
-        });
+  try {
+    // Überprüfen, ob der Benutzer bereits existiert
+    const [existingUser] = await db.query(
+      "SELECT * FROM users WHERE email = ? OR username = ?",
+      [email, username]
+    );
 
-        // Benutzer existiert bereits
-        if (existingUser) {
-            return res.status(400).json({
-                error: "This user already exists",
-            });
-        }
-
-        // Passwort hashen
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Rolle des Benutzers auf 'user' setzen
-        const role = 'user'; // Standardrolle für neu registrierte Benutzer
-
-        // Benutzer in die Datenbank einfügen
-        const insertStmt = db.prepare(`INSERT INTO users (firstname, lastname, username, password, email, birthdate, role) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-        insertStmt.run(firstname, lastname, username, hashedPassword, email, birthdate, role, function (err) {
-            insertStmt.finalize();
-            if (err) {
-                console.error('Error inserting user', err);
-                return res.status(500).json({
-                    error: 'Internal Server Error',
-                });
-            }
-
-            // JWT Token erstellen
-            const token = jwt.sign(
-                { email: email, userId: this.lastID, role: role }, // Payload mit userId, email und Rolle
-                secretKey,
-                { expiresIn: "1h" } // Token Ablaufzeit
-            );
-
-            res.status(201).json({
-                message: 'User successfully created!',
-                token: token, // jwt zurückgegeben
-            });
-        });
-    } catch (err) {
-        console.error('Error during signup', err);
-        res.status(500).json({
-            error: 'Internal Server Error',
-        });
+    if (existingUser.length > 0) {
+      return res.status(400).json({
+        error: "Dieser Benutzer existiert bereits",
+      });
     }
+
+    // Passwort hashen
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Benutzer in die Datenbank einfügen
+    const [result] = await db.query(
+      "INSERT INTO users (firstname, lastname, username, email, birthdate, password) VALUES (?, ?, ?, ?, ?, ?)",
+      [firstname, lastname, username, email, birthdate, hashedPassword]
+    );
+
+    // JWT Token erstellen
+    const token = jwt.sign(
+      { email: email, userId: result.insertId },
+      secretKey,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json({
+      message: "Benutzer erfolgreich erstellt!",
+      token: token,
+    });
+  } catch (err) {
+    console.error("Error during signup", err);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+};
+
+exports.login = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const [user] = await db.query("SELECT * FROM users WHERE username = ?", [
+      username,
+    ]);
+
+    if (user.length === 0) {
+      return res.status(400).json({ error: "Ungültiger Benutzer/Passwort" });
+    }
+
+    const foundUser = user[0];
+    const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+
+    if (isPasswordValid) {
+      const token = jwt.sign(
+        { userId: foundUser.id, email: foundUser.email },
+        secretKey,
+        { expiresIn: "1h" }
+      );
+
+      return res.status(200).json({ message: "Login erfolgreich", token });
+    } else {
+      return res.status(400).json({ error: "Ungültiges Passwort" });
+    }
+  } catch (err) {
+    console.error("Error during login", err);
+    return res.status(500).json({ error: "Datenbankfehler" });
+  }
 };

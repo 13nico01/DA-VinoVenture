@@ -1,5 +1,5 @@
-const db = require('../config/database')
-
+const { db } = require("../config/database");
+require("mysql2/promise");
 
 /**
  * @swagger
@@ -32,9 +32,9 @@ const db = require('../config/database')
  *               package_name:
  *                 type: string
  *                 description: Name des Weinpackets
- *               description:  
+ *               description:
  *                 type: string
- *                 description: Beschreibung des Weinpaketes  
+ *                 description: Beschreibung des Weinpaketes
  *     responses:
  *       201:
  *         description: Wine-Package created successfully
@@ -65,48 +65,69 @@ const db = require('../config/database')
  *         description: Internal server error
  */
 
+exports.addWinePackage = async (req, res) => {
+  const {
+    package_name,
+    description,
+    wine_count,
+    vintner,
+    price,
+    suitable_for_persons,
+  } = req.body;
 
-exports.addWinePackage = (req, res) => {
-    const { package_name, description, wine_count, vintner, price, suitable_for_persons } = req.body;
-
-    db.run(
-        `INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons)
-        VALUES (?, ?, ?, ?, ?, ?)`,
-        [package_name, description, wine_count, vintner, price, suitable_for_persons],
-        function (err) {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            res.json({ message: "Weinpaket hinzugefügt!", id: this.lastID })
-        }
+  try {
+    const [result] = await db.query(
+      `INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons)
+            VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        package_name,
+        description,
+        wine_count,
+        vintner,
+        price,
+        suitable_for_persons,
+      ]
     );
-}
 
-exports.getWinePackages = (req, res) => {
-    db.all(`SELECT * FROM wine_packages`, [], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: err.message })
-        }
-        res.json({ packages: rows })
-    })
-}
-
-exports.getPackageCount = (req, res) => {
-    db.get(`SELECT COUNT(*) AS count FROM wine_packages`, [], (err, row) => {
-        if (err) {
-            return res.status(500).json({ error: err.message })
-        }
-        res.json({ count: row.count })
-    });
-}
-
-exports.deleteWinePackage = (req, res) => {
-    const { id } = req.params;
-    db.run(`DELETE FROM wine_packages WHERE package_id = ?`, [id], function (err) {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: "Weinpaket gelöscht!" });
-    });
+    res
+      .status(201)
+      .json({ message: "Weinpaket hinzugefügt!", id: result.insertId });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
 
+exports.getWinePackages = async (req, res) => {
+  try {
+    const [rows] = await db.query(`SELECT * FROM wine_packages`);
+    res.json({ packages: rows });
+  } catch (err) {
+    console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getPackageCount = (req, res) => {
+  db.query(`SELECT COUNT(*) AS count FROM wine_packages`, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ count: results[0].count });
+  });
+};
+
+exports.deleteWinePackage = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await db.query(
+      `DELETE FROM wine_packages WHERE package_id = ?`,
+      [id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Weinpaket nicht gefunden!" });
+    }
+    res.json({ message: "Weinpaket gelöscht!" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
