@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform, Alert } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Registry = ({ navigation }) => {
@@ -8,6 +8,7 @@ const Registry = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
+    const [username, setUsername] = useState('');  // Username hinzufügen
     const [choosenDate, setChoosenDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
 
@@ -23,6 +24,42 @@ const Registry = ({ navigation }) => {
 
     const showDatePicker = () => {
         setShowPicker(true); // Picker anzeigen
+    };
+
+    // Registrierungshandling
+    const registerUser = async () => {
+        if (password !== confirmPassword) {
+            return Alert.alert("Fehler", "Passwörter stimmen nicht überein");
+        }
+
+        try {
+            const response = await fetch("http://172.20.10.2:3000/api/users/signup", {  // Endpunkt anpassen, falls erforderlich
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    firstname,
+                    lastname,
+                    username,
+                    password,
+                    email,
+                    birthdate: choosenDate.toISOString().substring(0, 10),
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                Alert.alert("Erfolg", data.message);
+                navigation.navigate("Login"); // Navigiere zur Login-Seite
+            } else {
+                const errorData = await response.json();
+                Alert.alert("Fehler", errorData.error || "Registrierung fehlgeschlagen");
+            }
+        } catch (error) {
+            console.error("Fehler bei der Registrierung:", error);
+            Alert.alert("Fehler", "Serverfehler. Bitte später erneut versuchen.");
+        }
     };
 
     return (
@@ -42,20 +79,26 @@ const Registry = ({ navigation }) => {
                 placeholderTextColor={'#bbb'}
                 onChangeText={(text) => setLastname(text)}
             />
+            <TextInput
+                style={styles.input}
+                placeholder={'Username'}
+                value={username}
+                placeholderTextColor={'#bbb'}
+                onChangeText={(text) => setUsername(text)}
+            />
 
-            {/* Date Picker Button */}
             <TouchableOpacity onPress={showDatePicker} style={styles.dateButton}>
                 <Text style={styles.dateButtonText}>Geburtsdatum auswählen</Text>
             </TouchableOpacity>
-            {/* DateTimePicker - nur anzeigen, wenn showPicker true ist */}
+
             {showPicker && (
                 <DateTimePicker
                     value={choosenDate}
                     mode="date"
-                    display={Platform.OS === 'ios' ? 'default' : 'default'} // Standardanzeige für iOS und Android
+                    display={Platform.OS === 'ios' ? 'default' : 'default'}
                     onChange={handleConfirmDate}
-                    maximumDate={new Date()} // Optional: Maximaldatum auf heute setzen (z.B. für Geburtstagsauswahl)
-                    style={styles.datePicker} // Picker mit Stil
+                    maximumDate={new Date()}
+                    style={styles.datePicker}
                 />
             )}
             <Text style={styles.dateText}>Geburtsdatum: {choosenDate.toISOString().substring(0, 10)}</Text>
@@ -72,6 +115,7 @@ const Registry = ({ navigation }) => {
                 placeholder={'password'}
                 value={password}
                 placeholderTextColor={'#bbb'}
+                secureTextEntry
                 onChangeText={(text) => setPassword(text)}
             />
             <TextInput
@@ -79,18 +123,23 @@ const Registry = ({ navigation }) => {
                 placeholder={'confirm password'}
                 value={confirmPassword}
                 placeholderTextColor={'#bbb'}
+                secureTextEntry
                 onChangeText={(text) => setConfirmPassword(text)}
             />
+
+            <TouchableOpacity onPress={registerUser} style={styles.registerButton}>
+                <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff', // Weiße Hintergrundfarbe
+        backgroundColor: '#fff',
     },
     title: {
         fontSize: 24,
@@ -118,9 +167,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 10,
     },
-    datePicker: {
-        backgroundColor: '#fff', // Hintergrundfarbe für den Picker festlegen
-        width: '100%',
+    registerButton: {
+        backgroundColor: '#28a745',
+        padding: 12,
+        borderRadius: 5,
+        marginTop: 20,
+    },
+    registerButtonText: {
+        color: 'white',
+        fontSize: 16,
     },
 });
 
