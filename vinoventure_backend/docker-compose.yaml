@@ -1,30 +1,32 @@
-version: '3.8'
-
+version: '3'
 services:
-  app:
+  backend:
     build:
-      context: .
+      context: ./vinoventure_backend
       dockerfile: Dockerfile
-    volumes:
-      - .:/app
     ports:
-      - '3000:3000'
+      - "3000:3000"
+    volumes:
+      - ./vinoventure_backend:/app
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=yourpassword
-      - DB_NAME=vinoventure
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: vinoventure
+      DB_DATABASE: vinoventure
 
   db:
-    image: mysql:8.0
-    restart: always
+    image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: yourpassword
       MYSQL_DATABASE: vinoventure
+    ports:
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./vinoventure_database/script.sql:/docker-entrypoint-initdb.d/script.sql
+      - ./vinoventure_database/testData.sql:/docker-entrypoint-initdb.d/testData.sql
 
 volumes:
   db_data:
