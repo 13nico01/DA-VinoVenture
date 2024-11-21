@@ -78,7 +78,7 @@ exports.login = async (req, res) => {
 
   try {
     // Den Benutzer unabhängig von der Rolle abrufen
-    const [results] = await db.query(`SELECT * FROM users WHERE username = ?`, [
+    const [results] = await db.query("SELECT * FROM users WHERE username = ?", [
       username,
     ]);
 
@@ -88,17 +88,8 @@ exports.login = async (req, res) => {
 
     const user = results[0]; // Das erste Ergebnis ist der Benutzer
 
-    // Überprüfen, ob der Benutzer die Rolle "admin" hat
-    if (user.role !== "admin") {
-      return res
-        .status(403)
-        .json({
-          error: "Zugriff verweigert. Nur Admins dürfen sich einloggen.",
-        });
-    }
-
-    // Passwort überprüfen
-    if (await bcrypt.compare(password, user.password)) {
+    // Passwort direkt vergleichen (ohne Hashing)
+    if (password === user.password) {
       // Passwort ist korrekt
       req.session.role = user.role;
       res.status(200).json({ message: "Login erfolgreich" });
@@ -110,7 +101,6 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: "Datenbankfehler" });
   }
 };
-
 /**
  * Admin-Logout
  */
