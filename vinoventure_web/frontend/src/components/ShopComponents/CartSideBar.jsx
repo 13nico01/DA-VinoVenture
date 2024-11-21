@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useCart } from "./CartContext";
 
 const CartSidebar = () => {
     const { cart, removeFromCart, calculateTotal } = useCart();
