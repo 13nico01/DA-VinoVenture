@@ -1,7 +1,17 @@
+import { useEffect, useState } from "react";
 import backgroundHero from "../../assets/Images/image21.jpg";
 import { Link, useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
   return (
     <div className="relative">
       <div

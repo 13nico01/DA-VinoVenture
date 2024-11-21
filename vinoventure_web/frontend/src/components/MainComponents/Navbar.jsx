@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
@@ -32,20 +31,15 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Überprüfe Anmeldestatus beim Laden der Komponente
-    const loggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
     const storedUsername = localStorage.getItem("username") || "";
 
-    setIsLoggedIn(loggedIn);
-    setUsername(storedUsername);
+    setUsername(storedUsername || "");
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAdminLoggedIn");
     localStorage.removeItem("username");
-    setIsLoggedIn(false);
     setUsername("");
-    navigate("/home");
+    navigate("/");
   };
 
   return (
@@ -58,7 +52,9 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center flex-shrink-0">
             <img className="h-10 w-10 mr-2" src={logo} alt="logo" />
-            <Link to="/" className="text-2xl tracking-tight">VinoVenture</Link>
+            <Link to="/" className="text-2xl tracking-tight">
+              VinoVenture
+            </Link>
           </div>
           <ul className="hidden lg:flex ml-14 space-x-12 text-md">
             <Link to="/">Home</Link>
@@ -66,7 +62,7 @@ const Navbar = () => {
             <Link to="/About">About</Link>
           </ul>
           <div className="hidden lg:flex justify-center space-x-4 items-center text-md">
-            {isLoggedIn ? (
+            {username ? (
               <>
                 <User className="" />
                 <span className="text-white border-2 border-black rounded-lg p-1 bg-gradient-to-r from-green-600 to-green-950">
@@ -100,23 +96,32 @@ const Navbar = () => {
           >
             <ul>
               <li className="py-4">
-                <Link to="/home" className="px-2 items-center text-white text-md border rounded-md border-gray">
+                <Link
+                  to="/home"
+                  className="px-2 items-center text-white text-md border rounded-md border-gray"
+                >
                   Home
                 </Link>
               </li>
               <li className="py-4">
-                <Link to="/shop" className="px-2 items-center text-white text-md border rounded-md border-gray">
+                <Link
+                  to="/shop"
+                  className="px-2 items-center text-white text-md border rounded-md border-gray"
+                >
                   Shop
-                </Link> 
+                </Link>
               </li>
               <li className="py-4">
-                <Link to="/about" className="px-2 items-center text-white text-md border rounded-md border-gray">
+                <Link
+                  to="/about"
+                  className="px-2 items-center text-white text-md border rounded-md border-gray"
+                >
                   About
                 </Link>
               </li>
             </ul>
             <div className="flex space-x-6 m-4">
-              {isLoggedIn ? (
+              {username ? (
                 <>
                   <span className="text-white">{username}</span>
                   <button

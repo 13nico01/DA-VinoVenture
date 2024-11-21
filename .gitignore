@@ -25,3 +25,10 @@ dist-ssr
 *.sln
 *.sw?
 /.idea
+/node_modules
+/vinoventure_backend/node_modules
+/vinoventure_backend/package-lock.json
+/vinoventure_web/frontend/node_modules
+/vinoventure_web/frontend/package-lock.json
+/vinoventure_web/node_modules
+/vinoventure_web/package-lock.json
