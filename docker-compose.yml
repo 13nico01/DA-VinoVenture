@@ -1,0 +1,34 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./vinoventure_backend # Pfad zum Backend
+      dockerfile: Dockerfile # Dockerfile für das Backend
+    ports:
+      - "3000:3000" # Portweiterleitung
+    volumes:
+      - ./vinoventure_backend:/app # Code im Container verfügbar machen
+    depends_on:
+      - db # Warten auf die DB, bevor Backend gestartet wird
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: yourpassword
+      DB_DATABASE: vinoventure
+    # Starte das wait-for-it Skript, um auf die DB zu warten, bevor npm start ausgeführt wird
+    command: ["sh", "-c", "./wait-for-it.sh db:3306 -- npm start"]
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: vinoventure
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./vinoventure_database/script.sql:/docker-entrypoint-initdb.d/script.sql
+      - ./vinoventure_database/testData.sql:/docker-entrypoint-initdb.d/testData.sql
+
+volumes:
+  db_data:
