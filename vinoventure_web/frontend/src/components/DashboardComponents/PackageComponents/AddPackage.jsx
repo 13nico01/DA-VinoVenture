@@ -21,7 +21,7 @@ const AddPackage = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://51.20.68.176:3000/api/wine-packages/add-package",
+        "http://13.60.107.62:3000/api/wine-packages/add-package",
         {
           method: "POST",
           headers: {

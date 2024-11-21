@@ -13,7 +13,7 @@ function AdminLogin({ onLogin }) {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://51.20.68.176:3000/api/admin/login", {
+      const response = await fetch("http://13.60.107.62:3000/api/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

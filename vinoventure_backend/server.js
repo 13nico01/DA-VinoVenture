@@ -13,9 +13,10 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: ['http://vinoventure-frontend.s3-website.eu-north-1.amazonaws.com/'], // Erlaube nur die Frontend-Domain
+    origin: '*',  
     credentials: true
 }));
+
 
 // Session-Management
 app.use(session({

@@ -23,7 +23,7 @@ const ViewWinePackages = () => {
 const DefaultContent = () => {
   const [packageCount, setPackageCount] = useState(0);
   useEffect(() => {
-    fetch("http://51.20.68.176:300/api/wine-packages/get-package-count")
+    fetch("http://13.60.107.62:3000/api/wine-packages/get-package-count")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Netzwerkantwort war nicht in Ordnung");

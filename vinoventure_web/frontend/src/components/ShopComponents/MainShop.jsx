@@ -7,7 +7,7 @@ const MainShop = () => {
 
   useEffect(() => {
     axios
-      .get("http://51.20.68.176:3000/api/shop/products/")
+      .get("http://13.60.107.62:3000/api/shop/products")
       .then((response) => {
         console.log("API-Antwort:", response.data);
         if (Array.isArray(response.data.products)) {
