@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X, User } from "lucide-react";
 import logo from "../../assets/logo.png";
-import { navItems } from "../../constants/index";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
