@@ -21,7 +21,7 @@ function HomeAdmin() {
       localStorage.removeItem("isAdminLoggedIn");
       localStorage.removeItem("username");
 
-      navigate("/home"); // Weiterleitung zur /home Seite
+      navigate("/"); // Weiterleitung zur /home Seite
       window.location.reload(); // Seite neu laden
     }
   };

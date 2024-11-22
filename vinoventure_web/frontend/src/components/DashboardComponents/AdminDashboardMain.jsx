@@ -1,4 +1,4 @@
-import { ShieldBan, Package, Users, LogOut, Menu, House } from "lucide-react";
+import { ShieldBan, Package, Users, LogOut, Menu, Truck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PackageManager from "./PackageManager";
@@ -18,7 +18,7 @@ function AdminDashboardSidebar() {
       localStorage.removeItem("isAdminLoggedIn");
       localStorage.removeItem("username");
 
-      navigate("/home");
+      navigate("/");
     }
   };
 
@@ -65,16 +65,14 @@ function AdminDashboardSidebar() {
             <li>
               <a
                 href="#"
-                onClick={() => handleMenuClick("Admin-Settings")}
+                onClick={() => handleMenuClick("User-Overview")}
                 className="flex border-2 items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
               >
-                <ShieldBan
+                <Truck
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                 />
-                <span className="flex-1 ms-3 whitespace-nowrap">
-                  Admin-Settings
-                </span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Bestellungen</span>
               </a>
             </li>
             <li>
@@ -87,7 +85,22 @@ function AdminDashboardSidebar() {
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                 />
-                <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">User-Manager</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                onClick={() => handleMenuClick("Admin-Settings")}
+                className="flex border-2 items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
+              >
+                <ShieldBan
+                  className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
+                  aria-hidden="true"
+                />
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Admin-Settings
+                </span>
               </a>
             </li>
             <hr className="border-t-2 border-gray-300" />
