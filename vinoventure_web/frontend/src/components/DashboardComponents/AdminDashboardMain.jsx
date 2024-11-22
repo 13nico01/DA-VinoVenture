@@ -9,7 +9,7 @@ import AdminHome from "./AdminHome";
 function AdminDashboardSidebar() {
   const navigate = useNavigate();
   // Set the default content to "Admin-Home" for the Home page
-  const [content, setContent] = useState("Admin-Home");
+  const [content, setContent] = useState("Paket-Manager");
 
   const handleLogout = () => {
     const confirmLogout = window.confirm(
@@ -50,20 +50,7 @@ function AdminDashboardSidebar() {
       >
         <div className="h-full px-3 mt-16 py-6 overflow-y-auto bg-gradient-to-br from-green-800 to-green-950 dark:bg-gray-900">
           <ul className="space-y-4 font-medium">
-            <li>
-              <a
-                href="#"
-                onClick={() => handleMenuClick("Admin-Home")}
-                className="flex border-2 items-center p-2 transition-colors duration-50 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
-              >
-                <House
-                  className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
-                  aria-hidden="true"
-                />
-                <span className="ms-3">Home</span>
-              </a>
-            </li>
-            <li>
+          <li>
               <a
                 href="#"
                 onClick={() => handleMenuClick("Paket-Manager")}
@@ -126,7 +113,6 @@ function AdminDashboardSidebar() {
         <div className="rounded-lg dark:border-gray-700">
           <div className="py-4 px-2">
             {content === "Paket-Manager" && <PackageManager />}
-            {content === "Admin-Home" && <AdminHome />}
             {content === "Admin-Settings" && <AdminManager />}
             {content === "User-Overview" && <UserManagerMain />}
           </div>

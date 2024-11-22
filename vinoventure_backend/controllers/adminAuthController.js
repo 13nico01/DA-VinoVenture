@@ -88,6 +88,13 @@ exports.login = async (req, res) => {
 
     const user = results[0]; // Das erste Ergebnis ist der Benutzer
 
+    if (user.role !== "admin") {
+      return res
+        .status(403)
+        .json({
+          error: "Zugriff verweigert. Nur Admins dürfen sich einloggen.",
+        });
+    }
     // Passwort direkt vergleichen (ohne Hashing)
     if (password === user.password) {
       // Passwort ist korrekt
@@ -100,18 +107,6 @@ exports.login = async (req, res) => {
     console.error("Error during login", err);
     res.status(500).json({ error: "Datenbankfehler" });
   }
-};
-/**
- * Admin-Logout
- */
-exports.logout = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ error: "Logout fehlgeschlagen" });
-    }
-    res.clearCookie("connect.sid"); // Session-Cookie löschen
-    res.status(200).json({ message: "Logout erfolgreich" });
-  });
 };
 
 /**

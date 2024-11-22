@@ -21,57 +21,12 @@ const ViewWinePackages = () => {
 };
 
 const DefaultContent = () => {
-  const [packageCount, setPackageCount] = useState(0);
-  useEffect(() => {
-    fetch("http://13.60.107.62:3000/api/wine-packages/get-package-count")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Netzwerkantwort war nicht in Ordnung");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setPackageCount(data.count);
-      })
-      .catch((error) => {
-        console.error("Fehler beim Abrufen der Anzahl der Weinpakete:", error);
-      });
-  }, []);
-  return (
-    <div>
-      <h2 className="text-white md:text-4xl sm:text-2xl font-bold text-center pt-4">
-        Willkommen im Paket Manager
-      </h2>
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 sm:w-1/4 p-4 border-2 rounded mt-8 md:ml-8 sm:ml-4">
-          <h2 className="text-md text-white text-left pt-4 font-bold">
-            Anzahl Pakete:{" "}
-            <span className="text-green-500">{packageCount}</span>
-          </h2>
-        </div>
-        <div className="w-full md:w-1/2 px-6 pb-4 border-2 rounded mt-8 md:ml-8 sm:ml-4">
-          <p className="text-md text-white text-left pt-4">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem
-            sed perferendis numquam labore consectetur. Perferendis maxime magni
-            eum incidunt totam corporis sit esse, animi molestiae, recusandae
-            quas aperiam error quis. Lorem ipsum dolor, sit amet consectetur
-            adipisicing elit. Dolorem sed perferendis numquam labore
-            consectetur. Perferendis maxime magni eum incidunt totam corporis
-            sit esse, animi molestiae, recusandae quas aperiam error quis. Lorem
-            ipsum dolor, sit amet consectetur adipisicing elit. Dolorem sed
-            perferendis numquam labore consectetur. Perferendis maxime magni eum
-            incidunt totam corporis sit esse, animi molestiae, recusandae quas
-            aperiam error quis.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+ 
 };
 
 const PackageNavbar = () => {
   // Zustand für den aktuell ausgewählten Inhalt
-  const [activeContent, setActiveContent] = useState("start");
+  const [activeContent, setActiveContent] = useState("view");
 
   // Funktion zum Setzen des Inhalts basierend auf der Auswahl
   const handleContentChange = (content) => {
@@ -86,22 +41,16 @@ const PackageNavbar = () => {
           <div className="text-white text-xl font-bold">Package Manager</div>
           <div className="flex space-x-4">
             <button
-              onClick={() => handleContentChange("start")}
+              onClick={() => handleContentChange("view")}
               className="text-white text-md hover:text-gray-300 border rounded-md py-2 px-2"
             >
-              Start
+              Pakete anzeigen/bearbeiten
             </button>
             <button
               onClick={() => handleContentChange("add")}
               className="text-white text-md hover:text-gray-300 border rounded-md py-2 px-2"
             >
               Paket hinzufügen
-            </button>
-            <button
-              onClick={() => handleContentChange("view")}
-              className="text-white text-md hover:text-gray-300 border rounded-md py-2 px-2"
-            >
-              Pakete anzeigen/bearbeiten
             </button>
           </div>
         </div>
