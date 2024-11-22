@@ -7,8 +7,6 @@ export default function QrCodeScreen() {
     const [scanned, setScanned] = useState(false);
     const [qrData, setQrData] = useState(null);
 
-    let cameraRef = React.useRef(null);
-
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
@@ -36,9 +34,10 @@ export default function QrCodeScreen() {
                 style={StyleSheet.absoluteFillObject}
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 barCodeScannerSettings={{
-                    barCodeTypes: [Camera.Constants.BarCodeType.qr],
+                    barCodeTypes: Camera.Constants?.BarCodeType
+                        ? [Camera.Constants.BarCodeType.qr]
+                        : null, // Fallback, falls BarCodeType undefined ist
                 }}
-                ref={cameraRef}
             />
             {scanned && (
                 <View style={styles.buttonContainer}>

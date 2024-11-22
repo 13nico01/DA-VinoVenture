@@ -9,14 +9,22 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-navigation/native": "^6.1.17",
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.0",
-    "expo": "~51.0.14",
-    "expo-status-bar": "~1.12.1",
-    "react": "18.2.0",
-    "react-native": "0.74.2",
+    "expo": "^52.0.10",
+    "expo-barcode-scanner": "^13.0.1",
+    "expo-camera": "~16.0.6",
+    "expo-permissions": "^14.4.0",
+    "expo-status-bar": "~2.0.0",
+    "react": "^18.3.1",
+    "react-native": "^0.76.2",
     "react-native-autolink": "^4.2.0",
-    "@react-native-community/datetimepicker": "8.0.1"
+    "react-native-gesture-handler": "^2.21.2",
+    "react-native-reanimated": "^3.16.2",
+    "react-native-safe-area-context": "^4.14.0",
+    "react-native-screens": "^4.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
