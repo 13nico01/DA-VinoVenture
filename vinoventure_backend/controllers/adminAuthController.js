@@ -108,6 +108,18 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: "Datenbankfehler" });
   }
 };
+/**
+ * Admin-Logout
+ */
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: "Logout fehlgeschlagen" });
+    }
+    res.clearCookie("connect.sid"); // Session-Cookie löschen
+    res.status(200).json({ message: "Logout erfolgreich" });
+  });
+};
 
 /**
  * Zugriff auf den Admin-Bereich
