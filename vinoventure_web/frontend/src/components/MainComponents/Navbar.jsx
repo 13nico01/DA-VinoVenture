@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, User } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import CartSidebar from "../ShopComponents/CartSideBar";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -61,6 +62,7 @@ const Navbar = () => {
             <Link to="/About">About</Link>
           </ul>
           <div className="hidden lg:flex justify-center space-x-4 items-center text-md">
+          <CartSidebar/>
             {username ? (
               <>
                 <User className="" />

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import CartSidebar from "./CartSideBar";
 
 const MainShop = () => {
   const [products, setProducts] = useState([]);
@@ -27,7 +26,6 @@ const MainShop = () => {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-6">
-        <CartSidebar/>
       <h1 className="text-3xl font-bold text-center mb-6">Produkte</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {Array.isArray(products) ? (
@@ -46,11 +44,18 @@ const MainShop = () => {
                   {product.package_name}
                 </h3>
                 <p className="text-lg text-gray-700 mt-2"> {product.price} €</p>
-                <Link to={`/product/${product.package_id}`}>
-                  <button className="mt-4  w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-900">
-                    Details ansehen
-                  </button>
-                </Link>
+                <div className="justify-center">
+                  <Link to={`/product/${product.package_id}`}>
+                    <button className="mt-4 px-4 text-sm bg-green-700 text-white py-2 rounded-lg hover:bg-green-900">
+                      Details ansehen
+                    </button>
+                  </Link>
+                  <Link to={`/product/${product.package_id}`}>
+                    <button className="mt-4 px-2 mx-2 text-sm bg-green-900 text-white py-2 rounded-lg hover:bg-green-900">
+                      Warenkorb
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           ))
