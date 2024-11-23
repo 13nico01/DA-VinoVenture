@@ -15,7 +15,7 @@ function LoginComponent() {
 
     try {
       const response = await fetch(
-        "http://51.20.68.176:300/api/user-login/login",
+        "http://13.60.107.62:3000/api/user-login/login",
         {
           method: "POST",
           headers: {

@@ -7,7 +7,7 @@ const ViewUsers = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/user-manager/get-users"
+          "http://13.60.107.62:3000/api/user-manager/get-users"
         );
         if (!response.ok) {
           throw new Error("Fehler beim Abrufen der User!");

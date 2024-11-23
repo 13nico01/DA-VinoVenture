@@ -1,57 +1,57 @@
 import React, { useState } from "react";
+import { ShoppingBasket, X } from "lucide-react";
 import { useCart } from "./CartContext";
+import { Link } from "react-router-dom";
 
 const CartSidebar = () => {
-    const { cart, removeFromCart, calculateTotal } = useCart();
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const { cart, removeFromCart, calculateTotal } = useCart();
 
-    return (
-        <div>
-            {/* Toggle-Button für die Sidebar */}
-            <button onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? "Schließen" : "Warenkorb anzeigen"}
-            </button>
-
-            {/* Sidebar */}
-            {isOpen && (
-                <div
-                    style={{
-                        position: "fixed",
-                        right: 0,
-                        top: 0,
-                        width: "300px",
-                        height: "100%",
-                        backgroundColor: "#f8f8f8",
-                        boxShadow: "-2px 0 5px rgba(0,0,0,0.3)",
-                        padding: "20px",
-                        overflowY: "auto",
-                    }}
-                >
-                    <h2>Warenkorb</h2>
-                    {cart.length === 0 ? (
-                        <p>Dein Warenkorb ist leer.</p>
-                    ) : (
-                        <ul>
-                            {cart.map((item) => (
-                                <li key={item.package_id} style={{ marginBottom: "15px" }}>
-                                    <h4>{item.package_name}</h4>
-                                    <p>Preis: {item.price} EUR</p>
-                                    <p>Anzahl: {item.quantity}</p>
-                                    <button
-                                        onClick={() => removeFromCart(item.package_id)}
-                                        style={{ color: "red" }}
-                                    >
-                                        Entfernen
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    <h3>Gesamtsumme: {calculateTotal().toFixed(2)} EUR</h3>
-                </div>
-            )}
+  return (
+    <div className="relative">
+      {/* Sidebar */}
+      <div
+        className={`fixed top-16 right-0 h-full w-80 bg-gray-100 shadow-lg transform transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="p-4 bg-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-white">Warenkorb</h2>
+          {cart.length === 0 ? (
+            <p className="text-red-500">Dein Warenkorb ist leer.</p>
+          ) : (
+            <ul className="space-y-4">
+              {cart.map((item) => (
+                <li key={item.package_id} className="border-b pb-4 last:border-none">
+                  <h4 className="text-lg font-semibold">{item.package_name}</h4>
+                  <p className="text-sm text-gray-600">Preis: {item.price} EUR</p>
+                  <p className="text-sm text-gray-600">Anzahl: {item.quantity}</p>
+                  <button
+                    onClick={() => removeFromCart(item.package_id)}
+                    className="text-red-500 hover:text-red-700 text-sm mt-2"
+                  >
+                    Entfernen
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <h3 className="text-xl font-bold mt-4 text-white">
+            Gesamtsumme: {calculateTotal().toFixed(2)} EUR
+          </h3>
+          <button className="mt-4 w-full bg-gray-200 text-black py-2 rounded-xl">
+            <Link to="/cart">Zum Warenkorb</Link>
+          </button>
         </div>
-    );
+      </div>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-1.5 right-2 text-white p-2 rounded-full"
+      >
+        {isOpen ? <X size={35} /> : <ShoppingBasket size={35} />}
+      </button>
+    </div>
+  );
 };
 
 export default CartSidebar;

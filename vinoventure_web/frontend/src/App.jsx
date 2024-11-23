@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Products from "./pages/Products";
 import { CartProvider } from "./components/ShopComponents/CartContext";
+import Cart from "./pages/Cart";
 
 const App = () => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -32,20 +33,22 @@ const App = () => {
   }
 
   return (
+    <CartProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
+          {/* Public */}
           <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin-login" element={<AdminLogin/>}/>
+          <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLogin onLogin={handleLogin} />} />
 
-          {/* Protected Route */}
+          {/* Protected*/}
           <Route
             path="/admin-dashboard"
             element={
@@ -56,10 +59,11 @@ const App = () => {
           {/* Default Route */}
           <Route path="/" element={<Navigate to="/home" />} />
 
-          {/* Catch all unmatched routes */}
+          {/*unmatched routes */}
           <Route path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
+    </CartProvider>
   );
 };
 

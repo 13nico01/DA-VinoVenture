@@ -14,7 +14,7 @@ const ViewPackages = () => {
     const fetchPackages = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/wine-packages/get-packages"
+          "http://13.60.107.62:3000/api/wine-packages/get-packages"
         );
         const data = await response.json();
         if (response.ok) {
