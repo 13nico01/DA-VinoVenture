@@ -62,7 +62,7 @@ const Navbar = () => {
             <Link to="/About">About</Link>
           </ul>
           <div className="hidden lg:flex justify-center space-x-4 items-center text-md">
-          <CartSidebar/>
+            <CartSidebar />
             {username ? (
               <>
                 <User className="" />
@@ -84,22 +84,23 @@ const Navbar = () => {
               </>
             )}
           </div>
-          <div className="lg:hidden flex items-center">
-            <button onClick={toggleNavbar} className="text-white">
-              {mobileDrawerOpen ? <X size={24} /> : <Menu size={24} />}
+          <div className="lg:hidden flex items-center space-x-6">
+            <button onClick={toggleNavbar} className="text-white z-50">
+              {mobileDrawerOpen ? <X size={30} /> : <Menu size={30} />}
             </button>
+            <CartSidebar />
           </div>
         </div>
         {mobileDrawerOpen && (
           <div
-            className="fixed top-0 right-0 w-full h-screen bg-neutral-900 p-12 flex flex-col justify-center items-center lg:hidden"
+            className="fixed top-0 right-0 w-full h-screen bg-neutral-900 p-2 flex flex-col justify-center items-center lg:hidden z-40"
             onClick={() => setMobileDrawerOpen(false)}
           >
             <ul>
-              <li className="py-4">
+              <li className="pb-4">
                 <Link
                   to="/home"
-                  className="px-2 items-center text-white text-md border rounded-md border-gray"
+                  className="px-2 items-center text-white text-xl"
                 >
                   Home
                 </Link>
@@ -107,7 +108,7 @@ const Navbar = () => {
               <li className="py-4">
                 <Link
                   to="/shop"
-                  className="px-2 items-center text-white text-md border rounded-md border-gray"
+                  className="px-2 items-center text-white text-xl"
                 >
                   Shop
                 </Link>
@@ -115,13 +116,13 @@ const Navbar = () => {
               <li className="py-4">
                 <Link
                   to="/about"
-                  className="px-2 items-center text-white text-md border rounded-md border-gray"
+                  className="px-2 items-center text-white text-xl"
                 >
                   About
                 </Link>
               </li>
             </ul>
-            <div className="flex space-x-6 m-4">
+            <div className="flex space-x-6 m-4 text-center">
               {username ? (
                 <>
                   <span className="text-white">{username}</span>
@@ -136,7 +137,7 @@ const Navbar = () => {
                 <>
                   <a
                     href="#"
-                    className="py-2 px-3 border rounded-md text-white"
+                    className="py-2 px-3 border rounded-lg border-black bg-gray-400 text-black font-extrabold"
                   >
                     Login
                   </a>
