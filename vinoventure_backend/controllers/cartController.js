@@ -58,14 +58,12 @@ exports.addToCart = async (req, res) => {
       [cartId, package_id, quantity]
     );
 
-    res
-      .status(201)
-      .json({
-        message: "Weinpaket hinzugefügt",
-        cart_id: cartId,
-        package_id,
-        quantity,
-      });
+    res.status(201).json({
+      message: "Weinpaket hinzugefügt",
+      cart_id: cartId,
+      package_id,
+      quantity,
+    });
   } catch (err) {
     console.error("Fehler beim Hinzufügen des Weinpakets:", err);
     return res.status(500).json({ error: err.message });
@@ -139,8 +137,8 @@ exports.removeFromCart = async (req, res) => {
     // Entferne das Produkt aus dem Warenkorb
     const [deleteResult] = await db.query(
       `
-            DELETE FROM cart_wine_packages
-            WHERE cart_id = ? AND package_id = ?`,
+              DELETE FROM cart_wine_packages
+              WHERE cart_id = ? AND package_id = ?`,
       [cartId, packageId]
     );
 
