@@ -30,6 +30,7 @@ function LoginComponent() {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", username);
+        localStorage.setItem("userID", response.user_id)
 
         navigate("/home"); 
       } else {

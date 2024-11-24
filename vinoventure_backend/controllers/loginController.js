@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
   try {
     // Den Benutzer unabhängig von der Rolle abrufen
     const [results] = await db.query(`SELECT * FROM users WHERE username = ?`, [
-      username,
+      username, user_id
     ]);
 
     if (results.length === 0) {

@@ -19,7 +19,7 @@ export const CartProvider = ({ children }) => {
   const getCart = async () => {
     if (userId) {
       try {
-        const response = await axios.get(`/api/cart/${userId}`);
+        const response = await axios.get(`http://13.60.107.62:3000/api/cart/${userId}`);
         setCart(response.data.cart);
       } catch (error) {
         console.error("Fehler beim Abrufen des Warenkorbs:", error);
@@ -43,7 +43,7 @@ export const CartProvider = ({ children }) => {
     if (existingProduct) {
       // Wenn das Produkt schon im Warenkorb ist, die Menge erhöhen
       try {
-        await axios.put(`/api/cart/${userId}`, {
+        await axios.put(`http://13.60.107.62:3000/api/cart/${userId}`, {
           package_id: product.package_id,
           quantity: existingProduct.quantity + 1,
         });
@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
     } else {
       // Andernfalls das Produkt zum Warenkorb hinzufügen
       try {
-        await axios.post(`/api/cart/${userId}`, {
+        await axios.post(`http://13.60.107.62:3000/api/cart/${userId}`, {
           package_id: product.package_id,
           quantity: 1,
         });
@@ -76,7 +76,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = async (id) => {
     try {
-      await axios.delete(`/api/cart/${userId}`, {
+      await axios.delete(`http://13.60.107.62:3000/api/cart/${userId}`, {
         data: { package_id: id },
       });
       setCart((prevCart) => prevCart.filter((item) => item.package_id !== id));
