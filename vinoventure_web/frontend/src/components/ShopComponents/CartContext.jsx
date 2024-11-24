@@ -55,10 +55,13 @@ export const CartProvider = ({ children }) => {
     if (existingProduct) {
       // Wenn das Produkt schon im Warenkorb ist, die Menge erhöhen
       try {
-        await axios.put(`http://13.60.107.62:3000/api/cart/update-cart/${userId}`, {
-          package_id: product.package_id,
-          quantity: existingProduct.quantity + 1,
-        });
+        await axios.put(
+          `http://13.60.107.62:3000/api/cart/update-cart/${userId}`,
+          {
+            package_id: product.package_id,
+            quantity: existingProduct.quantity + 1,
+          }
+        );
         setCart((prevCart) =>
           prevCart.map((item) =>
             item.package_id === product.package_id
@@ -72,10 +75,13 @@ export const CartProvider = ({ children }) => {
     } else {
       // Andernfalls das Produkt zum Warenkorb hinzufügen
       try {
-        await axios.post(`http://13.60.107.62:3000/api/cart/add-cart/${userId}`, {
-          package_id: product.package_id,
-          quantity: 1,
-        });
+        await axios.post(
+          `http://13.60.107.62:3000/api/cart/add-cart/${userId}`,
+          {
+            package_id: product.package_id,
+            quantity: 1,
+          }
+        );
         setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
       } catch (error) {
         console.error(
@@ -94,9 +100,10 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.delete(`http://13.60.107.62:3000/api/cart/delete-cart/${userId}`, {
-        data: { package_id: id },
-      });
+      // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
+      await axios.delete(
+        `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${id}`
+      );
       setCart((prevCart) => prevCart.filter((item) => item.package_id !== id));
     } catch (error) {
       console.error(
