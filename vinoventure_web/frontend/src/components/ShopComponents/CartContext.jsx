@@ -7,19 +7,24 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [userId, setUserId] = useState(null); // Hier speicherst du die Benutzer-ID
+  const [userId, setUserId] = useState(null); // Benutzer-ID wird aus localStorage abgerufen
   const [isCartLoaded, setIsCartLoaded] = useState(false); // Flag, um zu wissen, ob der Warenkorb geladen wurde
 
-  // Setze die Benutzer-ID beim Login
-  const setUser = (id) => {
-    setUserId(id);
-  };
+  // Funktion zum Abrufen der Benutzer-ID aus localStorage
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userID");
+    if (storedUserId) {
+      setUserId(storedUserId); // Wenn userID im localStorage vorhanden ist, setze sie
+    }
+  }, []);
 
-  // Funktion zum Abrufen des Warenkorbs des Benutzers bei der Anmeldung
+  // Funktion zum Abrufen des Warenkorbs des Benutzers
   const getCart = async () => {
     if (userId) {
       try {
-        const response = await axios.get(`http://13.60.107.62:3000/api/cart/${userId}`);
+        const response = await axios.get(
+          `http://13.60.107.62:3000/api/cart/get-cart/${userId}`
+        );
         setCart(response.data.cart);
       } catch (error) {
         console.error("Fehler beim Abrufen des Warenkorbs:", error);
@@ -29,13 +34,20 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  // Abrufen des Warenkorbs, wenn die Benutzer-ID gesetzt wurde
   useEffect(() => {
     if (userId && !isCartLoaded) {
       getCart();
     }
   }, [userId, isCartLoaded]);
 
+  // Funktion zum Hinzufügen von Produkten zum Warenkorb
   const addToCart = async (product) => {
+    if (!userId) {
+      console.error("Fehler: Keine Benutzer-ID im localStorage gefunden.");
+      return;
+    }
+
     const existingProduct = cart.find(
       (item) => item.package_id === product.package_id
     );
@@ -43,7 +55,7 @@ export const CartProvider = ({ children }) => {
     if (existingProduct) {
       // Wenn das Produkt schon im Warenkorb ist, die Menge erhöhen
       try {
-        await axios.put(`http://13.60.107.62:3000/api/cart/${userId}`, {
+        await axios.put(`http://13.60.107.62:3000/api/cart/update-cart/${userId}`, {
           package_id: product.package_id,
           quantity: existingProduct.quantity + 1,
         });
@@ -60,7 +72,7 @@ export const CartProvider = ({ children }) => {
     } else {
       // Andernfalls das Produkt zum Warenkorb hinzufügen
       try {
-        await axios.post(`http://13.60.107.62:3000/api/cart/${userId}`, {
+        await axios.post(`http://13.60.107.62:3000/api/cart/add-cart/${userId}`, {
           package_id: product.package_id,
           quantity: 1,
         });
@@ -74,9 +86,15 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  // Funktion zum Entfernen eines Produkts aus dem Warenkorb
   const removeFromCart = async (id) => {
+    if (!userId) {
+      console.error("Fehler: Keine Benutzer-ID im localStorage gefunden.");
+      return;
+    }
+
     try {
-      await axios.delete(`http://13.60.107.62:3000/api/cart/${userId}`, {
+      await axios.delete(`http://13.60.107.62:3000/api/cart/delete-cart/${userId}`, {
         data: { package_id: id },
       });
       setCart((prevCart) => prevCart.filter((item) => item.package_id !== id));
@@ -88,6 +106,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  // Berechnung des Gesamtbetrags des Warenkorbs
   const calculateTotal = () =>
     cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -98,7 +117,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         calculateTotal,
-        setUser, // Damit der Benutzer sich einloggen und seine ID setzen kann
+        userId, // Die Benutzer-ID wird auch bereitgestellt, falls benötigt
       }}
     >
       {children}
