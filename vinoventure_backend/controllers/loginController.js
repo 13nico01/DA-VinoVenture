@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
   try {
     // Den Benutzer unabhängig von der Rolle abrufen
     const [results] = await db.query(`SELECT * FROM users WHERE username = ?`, [
-      username, user_id
+      username,
     ]);
 
     if (results.length === 0) {
@@ -21,7 +21,11 @@ exports.login = async (req, res) => {
     if (user.password === password) {
       // Session speichern, wenn erfolgreich
       req.session.role = user.role;
-      res.status(200).json({ message: "Login erfolgreich" });
+      res.status(200).json({
+        message: "Login erfolgreich",
+        user_id: user.user_id,
+        });
+
     } else {
       res.status(400).json({ error: "Falsches Passwort" });
     }
