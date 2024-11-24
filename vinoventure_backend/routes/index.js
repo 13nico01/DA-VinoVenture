@@ -9,6 +9,7 @@ const userManagerRoutes = require("./userManagerRoutes");
 const loginRoutes = require("./loginRoutes");
 const shopRoutes = require("./shopRoutes");
 const orderManagerRoutes = require("./orderManagerRoutes");
+const cartRoutes = require("./cartRoutes");
 
 router.use("/", orderRoutes);
 router.use("/users", authRoutes);
@@ -16,7 +17,8 @@ router.use("/admin", adminAuthRoutes);
 router.use("/wine-packages", winePackageRoutes);
 router.use("/user-manager", userManagerRoutes);
 router.use("/user-login", loginRoutes);
-router.use("/shop", shopRoutes)
+router.use("/shop", shopRoutes);
 router.use("/order-manager", orderManagerRoutes);
+router.use("/cart", cartRoutes);
 
 module.exports = router;
