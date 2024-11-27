@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 const QuizTestScreen = () => {
     const [selectedAnswers, setSelectedAnswers] = useState({
@@ -9,7 +9,12 @@ const QuizTestScreen = () => {
         finish: ''
     });
 
+    const [showPoints, setShowPoints] = useState(false);
+    const [points, setPoints] = useState(0);
+
     const toggleAnswer = (category, answer) => {
+        if (showPoints) return; // Blockiert Änderungen nach Punkteberechnung
+
         setSelectedAnswers(prev => {
             if (category === 'smell' || category === 'taste') {
                 const currentAnswers = prev[category];
@@ -30,6 +35,38 @@ const QuizTestScreen = () => {
             }
             return prev;
         });
+    };
+
+    const calculatePoints = (answers) => {
+        const correctAnswers = {
+            smell: ['MARACUJA', 'JOHANNISBEERE'],
+            taste: ['MARZIPAN', 'HASELNUSS'],
+            acidity: 'HOCH',
+            finish: 'MINERALISCH - FRISCH'
+        };
+
+        let points = 0;
+
+        if (JSON.stringify(answers.smell.sort()) === JSON.stringify(correctAnswers.smell.sort())) {
+            points += 2;
+        }
+        if (JSON.stringify(answers.taste.sort()) === JSON.stringify(correctAnswers.taste.sort())) {
+            points += 2;
+        }
+        if (answers.acidity === correctAnswers.acidity) {
+            points += 1;
+        }
+        if (answers.finish === correctAnswers.finish) {
+            points += 1;
+        }
+
+        return points;
+    };
+
+    const handleCalculatePoints = () => {
+        const calculatedPoints = calculatePoints(selectedAnswers);
+        setPoints(calculatedPoints);
+        setShowPoints(true); // Sperrt Änderungen
     };
 
     const renderOption = (category, answer) => (
@@ -75,37 +112,18 @@ const QuizTestScreen = () => {
                 <Text style={styles.sectionTitle}>ABGANG (wähle die richtige Antwort)</Text>
                 {['VOLLMUNDIG - CREMIG', 'MINERALISCH - FRISCH'].map(answer => renderOption('finish', answer))}
             </View>
+            <View>
+                <Text style={styles.footer}>(antworten sind nach dem berechnen nicht mehr änderbar)</Text>
 
-            <Text style={styles.footer}>Punkteanzahl: {calculatePoints(selectedAnswers)}</Text>
+                <TouchableOpacity style={styles.calculateButton} onPress={handleCalculatePoints}>
+                    <Text style={styles.calculateButtonText}>Punkte berechnen</Text>
+                </TouchableOpacity>
+                {showPoints && (
+                    <Text style={styles.footer}>Punkteanzahl: {points}</Text>
+                )}
+            </View>
         </ScrollView>
     );
-};
-
-const calculatePoints = (answers) => {
-    // Dummy logic for points calculation
-    const correctAnswers = {
-        smell: ['MARACUJA', 'JOHANNISBEERE'],
-        taste: ['MARZIPAN', 'HASELNUSS'],
-        acidity: 'HOCH',
-        finish: 'MINERALISCH - FRISCH'
-    };
-
-    let points = 0;
-
-    if (JSON.stringify(answers.smell.sort()) === JSON.stringify(correctAnswers.smell.sort())) {
-        points += 2;
-    }
-    if (JSON.stringify(answers.taste.sort()) === JSON.stringify(correctAnswers.taste.sort())) {
-        points += 2;
-    }
-    if (answers.acidity === correctAnswers.acidity) {
-        points += 1;
-    }
-    if (answers.finish === correctAnswers.finish) {
-        points += 1;
-    }
-
-    return points;
 };
 
 const styles = StyleSheet.create({
@@ -151,6 +169,18 @@ const styles = StyleSheet.create({
     optionText: {
         color: '#fff',
         fontSize: 14
+    },
+    calculateButton: {
+        backgroundColor: '#109132',
+        padding: 16,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 16,
+    },
+    calculateButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     footer: {
         fontSize: 16,
