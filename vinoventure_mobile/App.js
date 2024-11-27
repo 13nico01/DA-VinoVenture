@@ -15,8 +15,8 @@ const App = () => {
     <NavigationContainer>
         <Stack.Navigator
             screenOptions={{
-                headerStyle: { backgroundColor: '#222' }, // Hintergrundfarbe der Navigationsleiste
-                headerTintColor: '#fff', // Textfarbe der Navigationsleiste
+                headerStyle: { backgroundColor: '#109132' }, // Hintergrundfarbe der Navigationsleiste
+                headerTintColor: '#222', // Textfarbe der Navigationsleiste
                 headerTitleStyle: { fontWeight: 'bold' }, // Textstil
             }}
         >

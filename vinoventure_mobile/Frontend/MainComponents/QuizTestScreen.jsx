@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     selectedOption: {
-        backgroundColor: '#4caf50',
-        borderColor: '#4caf50'
+        backgroundColor: '#109132',
+        borderColor: '#109132'
     },
     optionText: {
         color: '#fff',
