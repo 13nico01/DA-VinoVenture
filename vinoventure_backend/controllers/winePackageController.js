@@ -64,6 +64,83 @@ require("mysql2/promise");
  *       500:
  *         description: Internal server error
  */
+ 
+ /**
+ * @swagger
+ * /wine-packages/delete-package/{id}:
+ *   delete:
+ *     summary: Delete a WinePackage
+ *     tags: [WinePackage]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the WinePackage to delete
+ *     responses:
+ *       200:
+ *         description: WinePackage deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   
+ *       404:
+ *         description: WinePackage not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                  
+ */
+
+/**
+ * @swagger
+ * /wine-packages/count:
+ *   get:
+ *     summary: Get the count of WinePackages
+ *     tags: [WinePackage]
+ *     responses:
+ *       200:
+ *         description: WinePackage count retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+
 
 exports.addWinePackage = async (req, res) => {
   const {
