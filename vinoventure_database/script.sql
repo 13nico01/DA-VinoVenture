@@ -40,6 +40,27 @@ CREATE TABLE
         image BLOB
     );
 
+-- Tabelle für den Warenkorb eines Benutzers
+CREATE TABLE
+    IF NOT EXISTS shopping_cart (
+        cart_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+    );
+
+-- Verbindung zwischen Warenkorb und Weinpaketen
+CREATE TABLE
+    IF NOT EXISTS cart_wine_packages (
+        cart_wine_id INT AUTO_INCREMENT PRIMARY KEY,
+        cart_id INT NOT NULL,
+        package_id INT NOT NULL,
+        quantity INT NOT NULL DEFAULT 1,
+        FOREIGN KEY (cart_id) REFERENCES shopping_cart (cart_id) ON DELETE CASCADE,
+        FOREIGN KEY (package_id) REFERENCES wine_packages (package_id) ON DELETE CASCADE
+    );
+
 -- Tabelle für Bestellungen
 CREATE TABLE
     IF NOT EXISTS orders (
@@ -101,4 +122,3 @@ CREATE TABLE
         is_correct TINYINT (1) NOT NULL, -- BOOLEAN als TINYINT(1)
         FOREIGN KEY (quiz_id) REFERENCES quizzes (quiz_id) ON DELETE CASCADE
     );
-    

@@ -31,7 +31,13 @@ function LoginComponent() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", username);
 
-        navigate("/home"); 
+        if (data.user_id) {
+          localStorage.setItem("userID", data.user_id); // user_id aus dem `data`-Objekt
+        } else {
+          console.error("user_id fehlt in der Antwort");
+        }
+
+        navigate("/home");
       } else {
         setError(data.message || "Invalid username or password");
       }
