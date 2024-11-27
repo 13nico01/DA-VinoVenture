@@ -13,7 +13,13 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: { backgroundColor: '#222' }, // Hintergrundfarbe der Navigationsleiste
+                headerTintColor: '#fff', // Textfarbe der Navigationsleiste
+                headerTitleStyle: { fontWeight: 'bold' }, // Textstil
+            }}
+        >
           {/*<Stack.Screen name="Login" component={Login}/>*/}
           {/*<Stack.Screen name="Registry" component={Registry}/>*/}
           {/*<Stack.Screen name="QrCodeScreen" component={QrCodeScreen}/>*/}

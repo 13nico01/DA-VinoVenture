@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 
-const QuizScreen = () => {
+const QuizTestScreen = () => {
     const [selectedAnswers, setSelectedAnswers] = useState({
         smell: [],
         taste: [],
@@ -111,19 +111,21 @@ const calculatePoints = (answers) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#222',
         padding: 16
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 8
+        marginBottom: 8,
+        color: '#fff',
     },
     subtitle: {
         fontSize: 16,
         textAlign: 'center',
-        marginBottom: 16
+        marginBottom: 16,
+        color: '#fff',
     },
     section: {
         marginBottom: 16
@@ -131,7 +133,8 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 8
+        marginBottom: 8,
+        color: '#fff',
     },
     option: {
         padding: 12,
@@ -146,15 +149,16 @@ const styles = StyleSheet.create({
         borderColor: '#4caf50'
     },
     optionText: {
-        color: '#000',
+        color: '#fff',
         fontSize: 14
     },
     footer: {
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 16
+        marginTop: 16,
+        color: '#fff',
     }
 });
 
-export default QuizScreen;
+export default QuizTestScreen;
