@@ -1,4 +1,4 @@
-// Diesen Scren brauchen wir warscheinlich nicht
+// Diesen Screen brauchen wir warscheinlich nicht
 
 import React from 'react';
 import { View, Button, StyleSheet, Alert } from "react-native";
