@@ -67,6 +67,17 @@ const QuizTestScreen = () => {
         const calculatedPoints = calculatePoints(selectedAnswers);
         setPoints(calculatedPoints);
         setShowPoints(true); // Sperrt Änderungen
+
+        // JSON generieren und in der Konsole ausgeben
+        generateQuizJSON(selectedAnswers, calculatedPoints);
+    };
+
+    const generateQuizJSON = (answers, points) => {
+        const quizData = {
+            answers,
+            points
+        };
+        console.log(JSON.stringify(quizData, null, 2)); // JSON in der Konsole ausgeben
     };
 
     const renderOption = (category, answer) => (
