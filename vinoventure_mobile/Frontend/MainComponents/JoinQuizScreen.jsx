@@ -1,8 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 
 const JoinQuiz = ({ navigation }) => {
     const [inputValue, setInputValue] = useState('');
+
+    const handleJoinQuiz = async () => {
+        try {
+            const response = await fetch(`http://vinoventure-frontend.s3-website.eu-north-1.amazonaws.com/checkAuthNumber`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ authNumber: parseInt(inputValue, 10) }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                // Navigiere zum QuizTestScreen und übergib wineId
+                navigation.navigate('QuizTestScreen', { wineId: data.wineId });
+            } else {
+                Alert.alert('Fehler', data.message || 'Ungültige Authentifizierungsnummer');
+            }
+        } catch (error) {
+            Alert.alert('Fehler', 'Es gab ein Problem beim Verbinden mit dem Server.');
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -14,9 +36,10 @@ const JoinQuiz = ({ navigation }) => {
                     placeholder="Code..."
                     placeholderTextColor="#bbb"
                     value={inputValue}
+                    keyboardType="numeric"
                     onChangeText={(text) => setInputValue(text)}
                 />
-                <TouchableOpacity style={styles.button} onPress={() => {/* Handle button logic */}}>
+                <TouchableOpacity style={styles.button} onPress={handleJoinQuiz}>
                     <Text style={styles.buttonText}>Quiz beitreten</Text>
                 </TouchableOpacity>
             </View>
