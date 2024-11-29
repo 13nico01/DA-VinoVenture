@@ -7,6 +7,8 @@ import Registry from "./Frontend/Login/Registry";
 import QrCodeScreen from "./Frontend/MainComponents/QrCodeScreen";
 import StartScreen from "./Frontend/MainComponents/StartScreen";
 import QuizTestScreen from "./Frontend/MainComponents/QuizTestScreen";
+import JoinQuizScreen from "./Frontend/MainComponents/JoinQuizScreen";
+
 
 const Stack = createStackNavigator();
 
@@ -22,6 +24,7 @@ const App = () => {
         >
             <Stack.Screen name="Startscreen" component={StartScreen}/>
             <Stack.Screen name="Login" component={Login}/>
+            <Stack.Screen name="JoinQuiz" component={JoinQuizScreen}/>
           {/*<Stack.Screen name="Registry" component={Registry}/>*/}
           {/*<Stack.Screen name="QrCodeScreen" component={QrCodeScreen}/>*/}
           <Stack.Screen name= "Quiz" component={QuizTestScreen}/>
