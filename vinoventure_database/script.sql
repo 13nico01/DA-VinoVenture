@@ -1,6 +1,6 @@
 CREATE DATABASE if not exists VinoVenture;
 use VinoVenture;
-ALTER DATABASE VinoVenture CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+-- ALTER DATABASE VinoVenture CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS users
 (

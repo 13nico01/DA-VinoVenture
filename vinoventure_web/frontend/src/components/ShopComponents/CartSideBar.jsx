@@ -59,7 +59,7 @@ const CartSidebar = () => {
       >
         <ShoppingBasket size={35} />
         {totalItems > 0 && (
-          <span className="absolute top-0 right-0 inline-block w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+          <span className="animate-bounce absolute top-0 right-0 inline-block w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
             {totalItems}
           </span>
         )}
