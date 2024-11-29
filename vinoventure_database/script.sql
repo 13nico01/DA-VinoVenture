@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users
     lastname    varchar(250)             NOT NULL,
     password    varchar(250)             NOT NULL,
     email       varchar(250)             NOT NULL UNIQUE,
-    birthday    DATE                     NOT NULL,
+    birthdate    DATE                     NOT NULL,
     status      VARCHAR(255)             NOT NULL,
     reset_token VARCHAR(255),
     role        ENUM ('user', 'vintner') NOT NULL,
