@@ -21,6 +21,7 @@ exports.getAnswers
     const quizData = {
       wineName: "Sauvignon Blanc | Scharl Vulkanland 2022",
       wineId: 3,
+      authNumber: 1111,
       quiz: {
         smell: {
           "MARACUJA": true,
