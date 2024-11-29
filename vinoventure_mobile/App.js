@@ -23,11 +23,11 @@ const App = () => {
             }}
         >
             <Stack.Screen name="Startscreen" component={StartScreen}/>
-            <Stack.Screen name="Login" component={Login}/>
             <Stack.Screen name="JoinQuiz" component={JoinQuizScreen}/>
-          {/*<Stack.Screen name="Registry" component={Registry}/>*/}
+            <Stack.Screen name="Login" component={Login}/>
+            <Stack.Screen name="Registry" component={Registry}/>
           {/*<Stack.Screen name="QrCodeScreen" component={QrCodeScreen}/>*/}
-          <Stack.Screen name= "Quiz" component={QuizTestScreen}/>
+            <Stack.Screen name= "Quiz" component={QuizTestScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
