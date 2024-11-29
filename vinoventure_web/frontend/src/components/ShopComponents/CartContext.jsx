@@ -100,6 +100,8 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
+      console.log(`Lösche Produkt mit package_id: ${id}`);
+
       // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
       await axios.delete(
         `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${id}`

@@ -14,6 +14,7 @@ exports.getCart = async (req, res) => {
     );
 
     if (rows.length === 0) {
+      
       return res.status(404).json({ message: "Warenkorb nicht gefunden" });
     }
 

@@ -56,7 +56,7 @@ CREATE TABLE
         cart_wine_id INT AUTO_INCREMENT PRIMARY KEY,
         cart_id INT NOT NULL,
         package_id INT NOT NULL,
-        quantity INT NOT NULL DEFAULT 1,
+        quantity INT,
         FOREIGN KEY (cart_id) REFERENCES shopping_cart (cart_id) ON DELETE CASCADE,
         FOREIGN KEY (package_id) REFERENCES wine_packages (package_id) ON DELETE CASCADE
     );

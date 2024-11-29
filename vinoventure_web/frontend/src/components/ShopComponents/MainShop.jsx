@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 const MainShop = () => {
   const [products, setProducts] = useState([]);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     axios
@@ -50,11 +52,13 @@ const MainShop = () => {
                       Details ansehen
                     </button>
                   </Link>
-                  <Link to={`/product/${product.package_id}`}>
-                    <button className="mt-4 px-2 mx-2 text-sm bg-green-900 text-white py-2 rounded-lg hover:bg-green-900">
-                      Warenkorb
-                    </button>
-                  </Link>
+
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="mt-4 px-2 mx-2 text-sm bg-green-900 text-white py-2 rounded-lg hover:bg-green-900"
+                  >
+                    Warenkorb
+                  </button>
                 </div>
               </div>
             </div>
