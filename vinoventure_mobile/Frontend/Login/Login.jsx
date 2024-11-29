@@ -8,8 +8,8 @@ const Login = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title1}>VinoVenture</Text>
-            <Text style={styles.title2}>Log into your Account</Text>
-            <Text style={styles.title3}>Fill in the credentials to log into your account</Text>
+            <Text style={styles.title2}>In deinen Account einloggen</Text>
+            <Text style={styles.title3}>Gib deine email und dein Passwort</Text>
             <TextInput
                 style={styles.input}
                 placeholder="email@example.com"
@@ -26,11 +26,11 @@ const Login = ({ navigation }) => {
                 onChangeText={(text) => setPassword(text)}
             />
             <TouchableOpacity style={styles.button} onPress={() => {/* Handle login logic */}}>
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.buttonText}>Einloggen</Text>
             </TouchableOpacity>
             <View style={styles.spacer} />
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Registry')}>
-                <Text style={styles.buttonText}>No Account?</Text>
+                <Text style={styles.buttonText}>Noch keinen Account?</Text>
             </TouchableOpacity>
         </View>
     );
