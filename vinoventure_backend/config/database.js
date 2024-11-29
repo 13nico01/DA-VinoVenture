@@ -1,5 +1,5 @@
-const mysql = require("mysql2/promise"); 
-const fs = require("fs").promises; 
+const mysql = require("mysql2/promise");
+const fs = require("fs").promises;
 
 const db = mysql.createPool({
   host: "db",
@@ -8,7 +8,8 @@ const db = mysql.createPool({
   database: "vinoventure",
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  charset: "utf8mb4" // Hier das Charset explizit setzen
 });
 
 // Test database connection
@@ -33,7 +34,7 @@ const runSQLScript = async () => {
   try {
     const data = await fs.readFile(
       "./vinoventure_database/script.sql",
-      "utf8"
+      "utf8mb4"
     );
     await db.query(data);
     console.log("SQL-Skript erfolgreich ausgeführt.");
@@ -51,7 +52,7 @@ const runTestDataScript = async () => {
     } else {
       const data = await fs.readFile(
         "./vinoventure_database/testData.sql",
-        "utf8"
+        "utf8mb4"
       );
       await db.query(data);
       console.log("Testdaten erfolgreich eingefügt.");
