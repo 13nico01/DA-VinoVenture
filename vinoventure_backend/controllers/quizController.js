@@ -12,7 +12,17 @@ exports.createQuiz = async (req, res) => {
       return res.status(500).json({ error: err.message });
     }
   };
-  
+
+// Check Auth Number
+exports.checkAuthNumber = async (req, res) => {
+  const { authNumber } = req.body; // Authentifizierungsnummer aus Anfrage
+
+  if (authNumber === 1111) {
+    res.json({ success: true, wineId: 3 }); // Beispiel: Wein-ID 3
+  } else {
+    res.status(401).json({ success: false, message: "Ungültige Authentifizierungsnummer" });
+  }
+};
 
 
 exports.getAnswers
