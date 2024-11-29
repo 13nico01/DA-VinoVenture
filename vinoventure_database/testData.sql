@@ -1,179 +1,231 @@
--- Testdaten für Benutzer, Admins und Vintner
 INSERT INTO users (username, firstname, lastname, password, email, birthdate, status, role)
 VALUES
--- 15 Benutzer
-('user', 'Max', 'Mustermann', 'user', 'max.mustermann@example.at', '1990-01-01', 'active', 'user'),
-('anna.schmidt', 'Anna', 'Schmidt', 'Test1234', 'anna.schmidt@example.at', '1985-05-15', 'active', 'user'),
-('lena.mayer', 'Lena', 'Mayer', 'Test1234', 'lena.mayer@example.at', '1992-08-30', 'active', 'user'),
-('tom.oberhofer', 'Tom', 'Oberhofer', 'Test1234', 'tom.oberhofer@example.at', '1988-03-22', 'active', 'user'),
-('hannah.fischer', 'Hannah', 'Fischer', 'Test1234', 'hannah.fischer@example.at', '1995-12-10', 'active', 'user'),
-('karl.bauer', 'Karl', 'Bauer', 'Test1234', 'karl.bauer@example.at', '1987-06-12', 'active', 'user'),
-('eva.schneider', 'Eva', 'Schneider', 'Test1234', 'eva.schneider@example.at', '1993-11-21', 'active', 'user'),
-('martin.wagner', 'Martin', 'Wagner', 'Test1234', 'martin.wagner@example.at', '1991-04-13', 'active', 'user'),
-('nina.schuster', 'Nina', 'Schuster', 'Test1234', 'nina.schuster@example.at', '1989-07-25', 'active', 'user'),
-('alexander.pohl', 'Alexander', 'Pohl', 'Test1234', 'alexander.pohl@example.at', '1994-02-17', 'active', 'user'),
-('julian.koch', 'Julian', 'Koch', 'Test1234', 'julian.koch@example.at', '1990-10-03', 'active', 'user'),
-('sophia.huber', 'Sophia', 'Huber', 'Test1234', 'sophia.huber@example.at', '1996-01-29', 'active', 'user'),
-('benjamin.klein', 'Benjamin', 'Klein', 'Test1234', 'benjamin.klein@example.at', '1986-09-08', 'active', 'user'),
-('maria.weiß', 'Maria', 'Weiß', 'Test1234', 'maria.weiss@example.at', '1984-11-02', 'active', 'user'),
-('oliver.schwarz', 'Oliver', 'Schwarz', 'Test1234', 'oliver.schwarz@example.at', '1992-05-17', 'active', 'user'),
+('user', 'Johann', 'Müller', 'user', 'johann.mueller@gmail.com', '1990-05-14', 'active', 'user'),
+('katl95', 'Katharina', 'Lechner', 'securepass1', 'katharina.lechner@gmail.com', '1995-03-20', 'active', 'user'),
+('franziskahuber', 'Franziska', 'Huber', 'securepass2', 'franziska.huber@gmail.com', '1987-07-12', 'active', 'user'),
+('maximilian.k', 'Maximilian', 'Klein', 'securepass3', 'max.klein@gmail.com', '1992-11-23', 'inactive', 'user'),
+('lauragruber', 'Laura', 'Gruber', 'securepass4', 'laura.gruber@gmail.com', '1998-01-30', 'active', 'user'),
+('lukas.k', 'Lukas', 'Koller', 'securepass5', 'lukas.koller@gmail.com', '1985-06-25', 'inactive', 'user'),
+('anna.schmidt', 'Anna', 'Schmidt', 'securepass6', 'anna.schmidt@gmail.com', '1990-04-15', 'active', 'user'),
+('petermaier', 'Peter', 'Maier', 'securepass7', 'peter.maier@gmail.com', '1983-09-10', 'active', 'user'),
+('sabrinafischer', 'Sabrina', 'Fischer', 'securepass8', 'sabrina.fischer@gmail.com', '1997-08-18', 'active', 'user'),
+('philiplang', 'Philipp', 'Lang', 'securepass9', 'philipp.lang@gmail.com', '1989-12-05', 'active', 'user'),
+('marie.kaufmann', 'Marie', 'Kaufmann', 'securepass10', 'marie.kaufmann@gmail.com', '1993-03-28', 'inactive', 'user'),
+('daniel.p', 'Daniel', 'Pichler', 'securepass11', 'daniel.pichler@gmail.com', '1986-07-22', 'active', 'user'),
+('jacqueline.hofer', 'Jacqueline', 'Hofer', 'securepass12', 'jacqueline.hofer@gmail.com', '1994-09-14', 'active', 'user'),
+('fabianbrenner', 'Fabian', 'Brenner', 'securepass13', 'fabian.brenner@gmail.com', '1991-11-19', 'inactive', 'user'),
+('monika.k', 'Monika', 'Kreuzer', 'securepass14', 'monika.kreuzer@gmail.com', '1988-02-11', 'active', 'user'),
+('andreasteiner', 'Andreas', 'Steiner', 'securepass15', 'andreas.steiner@gmail.com', '1984-05-30', 'active', 'user'),
+('karin.obermayer', 'Karin', 'Obermayer', 'securepass16', 'karin.obermayer@gmail.com', '1996-12-03', 'active', 'user'),
+('sebastian.b', 'Sebastian', 'Bauer', 'securepass17', 'sebastian.bauer@gmail.com', '1995-01-17', 'active', 'user'),
+('elisabeth.schwarz', 'Elisabeth', 'Schwarz', 'securepass18', 'elisabeth.schwarz@gmail.com', '1987-10-07', 'inactive', 'user'),
+('christoph.wagner', 'Christoph', 'Wagner', 'securepass19', 'christoph.wagner@gmail.com', '1992-06-02', 'active', 'user'),
 
+('admin', 'Alexander', 'Meier', 'admin', 'alexander.meier@gmail.com', '1980-04-20', 'active', 'admin'),
+('admin2', 'Verena', 'Weiss', 'adminpass2', 'verena.weiss@gmail.com', '1982-07-14', 'active', 'admin'),
+('admin3', 'Bernhard', 'Eder', 'adminpass3', 'bernhard.eder@gmail.com', '1979-09-09', 'active', 'admin'),
+('admin4', 'Claudia', 'Holzer', 'adminpass4', 'claudia.holzer@gmail.com', '1983-01-25', 'active', 'admin'),
+('admin5', 'Thomas', 'Rauch', 'adminpass5', 'thomas.rauch@gmail.com', '1978-10-12', 'active', 'admin');
 
-('admin', 'Johann', 'Weinbauer', 'admin', 'weinbauer1@example.at', '1970-10-18', 'active', 'admin');
-
--- Testdaten für Weinpakete
-INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons, image)
+INSERT INTO shipping_address (user_id, street, house_number, postal_code, city)
 VALUES
--- 1. Paket
-('Wiener Gemischter Satz', 'Eine Mischung aus verschiedenen weißen Rebsorten, typisch für Wien.', 6, 'Weingut Mayer am Pfarrplatz', 49.99, 2, NULL),
--- 2. Paket
-('Grüner Veltliner', 'Frisch und fruchtig, der typische österreichische Grüner Veltliner.', 6, 'Weingut Knoll', 59.99, 4, NULL),
--- 3. Paket
-('Krems Pinot Blanc', 'Elegant und mild, ideal für ein Glas zu besonderen Anlässen.', 6, 'Weingut Lang', 45.00, 2, NULL),
--- 4. Paket
-('Wachauer Riesling', 'Der Wachauer Riesling ist bekannt für seine Frische und Mineralität.', 6, 'Weingut F.X. Pichler', 75.00, 4, NULL),
--- 5. Paket
-('Zweigelt aus dem Burgenland', 'Ein kräftiger und würziger Rotwein aus dem Burgenland.', 6, 'Weingut Juris', 39.50, 4, NULL),
--- 6. Paket
-('Steirischer Schilcher', 'Ein erfrischender Rosé-Wein aus der Steiermark.', 6, 'Weingut Tement', 55.00, 2, NULL),
--- 7. Paket
-('Poysdorfer Blaufränkisch', 'Vollmundiger Rotwein mit feinen Tanninen, typisch für das Weinviertel.', 6, 'Weingut Schloss Gobelsburg', 48.00, 4, NULL),
--- 8. Paket
-('Niederösterreichische Cuvée', 'Eine rote Cuvée aus verschiedenen Rebsorten aus Niederösterreich.', 6, 'Weingut Christ', 65.00, 4, NULL),
--- 9. Paket
-('Kremser Terroir', 'Ein Wein, der die Mineralität und das Terroir der Region Krems widerspiegelt.', 6, 'Weingut Jamek', 69.00, 4, NULL),
--- 10. Paket
-('Südsteiermark Chardonnay', 'Ein frischer, fruchtiger Chardonnay aus der Südsteiermark.', 6, 'Weingut Erich & Walter Polz', 42.00, 2, NULL),
--- 11. Paket
-('Rosé aus der Südsteiermark', 'Ein eleganter Rosé-Wein, ideal für den Sommer.', 6, 'Weingut Hannes Sabathi', 50.00, 2, NULL),
--- 12. Paket
-('Wiener Nussberg Grüner Veltliner', 'Der Wiener Grüner Veltliner aus dem Nussberg, fruchtig und mineralisch.', 6, 'Weingut Wieninger', 58.00, 4, NULL),
--- 13. Paket
-('Burgenland Cuvée', 'Eine rote Cuvée mit intensiven Fruchtaromen, typisch für das Burgenland.', 6, 'Weingut Heinrich', 62.00, 4, NULL),
--- 14. Paket
-('Tullnerfelder Welschriesling', 'Ein spritziger und fruchtiger Weißwein aus dem Tullnerfeld.', 6, 'Weingut Ecker', 45.00, 2, NULL),
--- 15. Paket
-('Weinviertler Zweigelt', 'Ein klassischer Rotwein mit würzigen Aromen, typisch für das Weinviertel.', 6, 'Weingut Leth', 52.00, 4, NULL),
--- 16. Paket
-('Steirerland Sauvignon Blanc', 'Ein aromatischer Weißwein aus der Steiermark, ideal für Fischgerichte.', 6, 'Weingut Knauss', 58.00, 2, NULL),
--- 18. Paket
-('Pannonischer Blaufränkisch', 'Kräftiger Rotwein aus dem pannonischen Raum, vollmundig und harmonisch.', 6, 'Weingut Heinz Schindler', 60.00, 4, NULL),
--- 19. Paket
-('Österreichische Klassik', 'Ein Set aus den bekanntesten österreichischen Weinen.', 6, 'Weingut Schloss Halbturn', 79.00, 4, NULL),
--- 20. Paket
-('Südtiroler Lagrein', 'Kräftiger, fruchtiger Rotwein aus Südtirol, ideal für Grillabende.', 6, 'Weingut Alois Lageder', 65.00, 4, NULL),
--- 21. Paket
-('Wachau Grüner Veltliner', 'Fruchtig und frisch mit einer schönen Säure, ideal zu Fisch.', 6, 'Weingut Franz Hirtzberger', 55.00, 4, NULL),
--- 22. Paket
-('Zweigelt Classic', 'Ein eleganter Rotwein aus der österreichischen Rebsorte Zweigelt.', 6, 'Weingut Ott', 46.00, 4, NULL),
--- 23. Paket
-('Steirerland Muskateller', 'Fruchtig und blumig, der perfekte Aperitif aus der Steiermark.', 6, 'Weingut Erich Polz', 53.00, 2, NULL),
--- 24. Paket
-('Weißburgunder aus der Südsteiermark', 'Ein harmonischer Weißwein, der typisch für die Südsteiermark ist.', 6, 'Weingut Sattlerhof', 47.00, 2, NULL),
--- 25. Paket
-('Kremser Grüner Veltliner', 'Erfrischend und ausgewogen, ideal für jedes Essen.', 6, 'Weingut Hiedler', 50.00, 4, NULL);
+-- Regular users
+(1, 'Hauptstraße', '12A', 1010, 'Wien'),
+(2, 'Kirchgasse', '7', 5020, 'Salzburg'),
+(3, 'Linzergasse', '34', 4020, 'Linz'),
+(4, 'Münchner Straße', '21', 6020, 'Innsbruck'),
+(5, 'Berggasse', '9', 8010, 'Graz'),
+(6, 'Bahnhofstraße', '5', 3100, 'St. Pölten'),
+(7, 'Schulstraße', '17', 3500, 'Krems an der Donau'),
+(8, 'Parkstraße', '14B', 6900, 'Bregenz'),
+(9, 'Seestraße', '3', 7000, 'Eisenstadt'),
+(10, 'Altstadtgasse', '18', 5020, 'Salzburg'),
+(11, 'Neubaugasse', '12', 7400, 'Oberwart'),
+(12, 'Graben', '8', 1010, 'Wien'),
+(13, 'Landstraße', '4', 4020, 'Linz'),
+(14, 'Marktplatz', '20', 4050, 'Traun'),
+(15, 'Zehnergasse', '13', 2700, 'Wiener Neustadt'),
+(16, 'Rathausplatz', '11', 4400, 'Steyr'),
+(17, 'Hofgasse', '22A', 9500, 'Villach'),
+(18, 'Ringstraße', '9', 6800, 'Feldkirch'),
+(19, 'Rosengasse', '19', 6850, 'Dornbirn'),
+(20, 'Schlossallee', '5', 2340, 'Mödling'),
 
--- Testdaten für Weine
+-- Admins
+(21, 'Kaiserstraße', '1', 6020, 'Innsbruck'),
+(22, 'Mariahilfer Straße', '101', 1070, 'Wien'),
+(23, 'Spittelbergplatz', '8', 1080, 'Wien'),
+(24, 'Feldgasse', '4B', 7201, 'Neudörfl'),
+(25, 'Steindlgasse', '15', 8010, 'Graz');
+
+INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons)
+VALUES
+('Viennese Classic', 'Ein Paket mit den besten klassischen Wiener Weinen.', 6, 'Weingut Mayer am Pfarrplatz', 89.90, 4),
+('Styrian Whites', 'Frische Weißweine aus der Steiermark.', 3, 'Weingut Tement', 45.50, 2),
+('Burgenland Reds', 'Kräftige Rotweine aus dem Burgenland.', 4, 'Weingut Heinrich', 65.00, 4),
+('Lower Austria Selection', 'Gemischte Weine aus Niederösterreich.', 5, 'Weingut Bründlmayer', 75.30, 5),
+('Grüner Veltliner Premium', 'Hochwertiger Grüner Veltliner.', 3, 'Weingut Prager', 54.90, 2),
+('Wachau Gold', 'Exklusive Rieslinge aus der Wachau.', 3, 'Weingut FX Pichler', 99.00, 3),
+('Thermenregion Trio', 'Weine aus der Thermenregion mit Charakter.', 3, 'Weingut Reinisch', 49.90, 2),
+('Kamptal Classics', 'Typische Weine aus dem Kamptal.', 4, 'Weingut Schloss Gobelsburg', 65.00, 4),
+('Carnuntum Reds', 'Fruchtige Rotweine aus Carnuntum.', 3, 'Weingut Glatzer', 44.50, 3),
+('Steirische Vielfalt', 'Bunte Mischung aus der Steiermark.', 5, 'Weingut Neumeister', 70.00, 5),
+('Burgenland Süßweine', 'Dessertweine aus dem Burgenland.', 2, 'Weingut Kracher', 95.00, 2),
+('Bio-Weine Österreich', 'Biologisch erzeugte Weine.', 4, 'Weingut Loimer', 79.90, 4),
+('Junge Talente', 'Weine von jungen Winzern.', 4, 'Verschiedene Winzer', 59.90, 4),
+('Wiener Heuriger Paket', 'Typische Weine vom Wiener Heurigen.', 6, 'Weingut Christ', 85.00, 6),
+('Exklusive Reserve', 'Ausgewählte Reserve-Weine.', 3, 'Weingut Moric', 129.90, 3),
+('Zweigelt Selection', 'Beste Zweigelt aus Österreich.', 4, 'Weingut Pfaffl', 55.00, 4),
+('Südsteirische Klassiker', 'Regionale Weine aus der Südsteiermark.', 4, 'Weingut Gross', 64.50, 4),
+('Rotwein Cuvée', 'Cuvée aus besten Rotweinen.', 3, 'Weingut Nittnaus', 75.00, 3),
+('Grüner Genuss', 'Grüner Veltliner für jeden Anlass.', 5, 'Weingut Nigl', 49.90, 5),
+('Steirische Sauvignon Blancs', 'Frische Sauvignon Blancs aus der Steiermark.', 3, 'Weingut Sattlerhof', 69.90, 3),
+('Klassiker der Wachau', 'Smaragde aus der Wachau.', 3, 'Weingut Knoll', 119.90, 3),
+('Familienpaket Österreich', 'Vielfältige Weine für die ganze Familie.', 6, 'Verschiedene Winzer', 89.90, 6),
+('Weißwein für Genießer', 'Elegante Weißweine aus verschiedenen Regionen.', 4, 'Weingut Ott', 72.50, 4),
+('Rotwein für zwei', 'Perfekt für einen romantischen Abend.', 2, 'Weingut Gernot Heinrich', 39.90, 2),
+('Premium Selection Österreich', 'Das Beste, was Österreich zu bieten hat.', 6, 'Verschiedene Top-Winzer', 199.90, 6);
+
 INSERT INTO wine (wine_name)
 VALUES
--- 1. Wein
 ('Grüner Veltliner'),
--- 2. Wein
 ('Riesling Wachau'),
--- 3. Wein
 ('Zweigelt'),
--- 4. Wein
-('Blaufränkisch'),
--- 5. Wein
 ('Sauvignon Blanc Steiermark'),
--- 6. Wein
-('Weißburgunder'),
--- 7. Wein
-('Pinot Noir'),
--- 8. Wein
-('Welschriesling'),
--- 9. Wein
-('Chardonnay'),
--- 10. Wein
-('Muskateller'),
--- 11. Wein
-('Cabernet Sauvignon'),
--- 12. Wein
-('Syrah'),
--- 13. Wein
-('Grüner Veltliner Federspiel'),
--- 14. Wein
-('Pinot Blanc'),
--- 15. Wein
-('Blauer Portugieser'),
--- 16. Wein
-('Sangiovese'),
--- 17. Wein
-('Tempranillo'),
--- 18. Wein
-('Lemberger'),
--- 19. Wein
-('Garnacha'),
--- 20. Wein
-('Merlot'),
--- 21. Wein
-('Cuvée Rot'),
--- 22. Wein
-('Cuvée Weiß'),
--- 23. Wein
-('Rosé aus Zweigelt'),
--- 24. Wein
-('Trollinger'),
--- 25. Wein
-('Grüner Veltliner Kamptal');
+('Blaufränkisch Burgenland'),
+('Chardonnay Niederösterreich'),
+('Merlot Burgenland'),
+('Cabernet Sauvignon Weinviertel'),
+('Pinot Noir Niederösterreich'),
+('Sankt Laurent'),
+('Muskateller Steiermark'),
+('Welschriesling Burgenland'),
+('Riesling Kamptal'),
+('Syrah Burgenland'),
+('Gamay Niederösterreich'),
+('Weißburgunder Burgenland'),
+('Rotgipfler Thermenregion'),
+('Pinot Gris Südsteiermark'),
+('Scheurebe Kamptal'),
+('Grüner Veltliner Kamptal'),
+('Blaufränkisch Mittelburgenland'),
+('Sauvignon Blanc Südsteiermark'),
+('Grüner Veltliner Wachau'),
+('Cabernet Franc Burgenland'),
+('Riesling Kremstal'),
+('Grauburgunder Steiermark');
 
--- Testdaten für wine_package_wine
 INSERT INTO wine_package_wine (wine_package_id, wine_id, quantity)
 VALUES
--- Weinpaket 1
-(1, 1, 3),  -- Grüner Veltliner in Weinpaket 1, Menge: 3 Flaschen
-(1, 2, 2),  -- Riesling Wachau in Weinpaket 1, Menge: 2 Flaschen
-(1, 3, 5),  -- Zweigelt in Weinpaket 1, Menge: 5 Flaschen
+(1, 1, 2), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 7, 1),
+(2, 4, 1), (2, 11, 1), (2, 22, 1),
+(3, 3, 2), (3, 5, 1), (3, 6, 1),
+(4, 1, 1), (4, 6, 1), (4, 9, 1), (4, 19, 1), (4, 12, 1),
+(5, 1, 1), (5, 20, 2),
+(6, 2, 1), (6, 25, 2),
+(7, 17, 1), (7, 19, 1), (7, 10, 1),
+(8, 1, 2), (8, 13, 1), (8, 19, 1),
+(9, 3, 1), (9, 7, 1), (9, 8, 1),
+(10, 4, 1), (10, 11, 2), (10, 18, 1), (10, 22, 1),
+(11, 12, 1), (11, 25, 1),
+(12, 1, 1), (12, 4, 1), (12, 20, 2),
+(13, 3, 1), (13, 5, 1), (13, 7, 2),
+(14, 1, 1), (14, 4, 2), (14, 6, 1), (14, 19, 1), (14, 22, 1),
+(15, 3, 1), (15, 5, 1), (15, 8, 1),
+(16, 3, 2), (16, 5, 1), (16, 21, 1),
+(17, 4, 1), (17, 11, 1),  (17, 18, 2),
+(18, 3, 1), (18, 5, 1), (18, 8, 1),
+(19, 1, 2), (19, 20, 1), (19, 6, 1), (19, 12, 1),
+(20, 4, 1), (20, 18, 2),
+(21, 2, 1), (21, 13, 1), (21, 25, 1),
+(22, 3, 1), (22, 5, 2), (22, 7, 1), (22, 9, 1), (22, 21, 1),
+(23, 1, 1), (23, 4, 1), (23, 6, 2),
+(24, 3, 1), (24, 5, 1),
+(25, 2, 1), (25, 3, 1), (25, 4, 2), (25, 11, 1), (25, 19, 1);
 
--- Weinpaket 2
-(2, 4, 4),  -- Blaufränkisch in Weinpaket 2, Menge: 4 Flaschen
-(2, 5, 3),  -- Sauvignon Blanc Steiermark in Weinpaket 2, Menge: 3 Flaschen
-(2, 6, 6),  -- Weißburgunder in Weinpaket 2, Menge: 6 Flaschen
+INSERT INTO shipping_cart (user_id, quantity)
+VALUES
+(1, 89),     
+(2, 150),    
+(3, 45),     
+(4, 120),   
+(5, 60),   
+(6, 300),   
+(7, 75),     
+(8, 110),    
+(9, 200),    
+(10, 95),   
+(11, 220),  
+(12, 50),  
+(13, 35),   
+(14, 80),    
+(15, 130);   
 
--- Weinpaket 3
-(3, 7, 2),  -- Pinot Noir in Weinpaket 3, Menge: 2 Flaschen
-(3, 8, 4),  -- Welschriesling in Weinpaket 3, Menge: 4 Flaschen
-(3, 9, 5),  -- Chardonnay in Weinpaket 3, Menge: 5 Flaschen
+INSERT INTO wine_packages_shipping_cart (wine_package_id, shipping_cart_id, quantity)
+VALUES
+(1, 1, 2),
+(5, 1, 1),
 
--- Weinpaket 4
-(4, 10, 3),  -- Muskateller in Weinpaket 4, Menge: 3 Flaschen
-(4, 11, 2),  -- Cabernet Sauvignon in Weinpaket 4, Menge: 2 Flaschen
-(4, 12, 4),  -- Syrah in Weinpaket 4, Menge: 4 Flaschen
+-- Benutzer 2 hat drei unterschiedliche Pakete im Warenkorb
+(2, 2, 1),
+(6, 2, 1),
+(9, 2, 2),
 
--- Weinpaket 5
-(5, 13, 6),  -- Grüner Veltliner Federspiel in Weinpaket 5, Menge: 6 Flaschen
-(5, 14, 3),  -- Pinot Blanc in Weinpaket 5, Menge: 3 Flaschen
-(5, 15, 4),  -- Blauer Portugieser in Weinpaket 5, Menge: 4 Flaschen
+-- Benutzer 3 hat zwei Pakete im Warenkorb
+(3, 3, 3),  -- 3x "Burgenland Reds"
+(7, 3, 1),  -- 1x "Thermenregion Trio"
 
--- Weinpaket 6
-(6, 16, 2),  -- Sangiovese in Weinpaket 6, Menge: 2 Flaschen
-(6, 17, 3),  -- Tempranillo in Weinpaket 6, Menge: 3 Flaschen
-(6, 18, 5),  -- Lemberger in Weinpaket 6, Menge: 5 Flaschen
+-- Benutzer 4 hat ein Paket im Warenkorb
+(4, 4, 2),  -- 2x "Lower Austria Selection"
 
--- Weinpaket 7
-(7, 19, 4),  -- Garnacha in Weinpaket 7, Menge: 4 Flaschen
-(7, 20, 6),  -- Merlot in Weinpaket 7, Menge: 6 Flaschen
-(7, 21, 2),  -- Cuvée Rot in Weinpaket 7, Menge: 2 Flaschen
+-- Benutzer 5 hat zwei Pakete im Warenkorb
+(8, 5, 1),  -- 1x "Kamptal Classics"
+(10, 5, 1), -- 1x "Steirische Vielfalt"
 
--- Weinpaket 8
-(8, 22, 3),  -- Cuvée Weiß in Weinpaket 8, Menge: 3 Flaschen
-(8, 23, 5),  -- Rosé aus Zweigelt in Weinpaket 8, Menge: 5 Flaschen
-(8, 24, 4),  -- Trollinger in Weinpaket 8, Menge: 4 Flaschen
+-- Benutzer 6 hat vier Pakete im Warenkorb
+(5, 6, 2),  -- 2x "Grüner Veltliner Premium"
+(6, 6, 1),  -- 1x "Wachau Gold"
+(11, 6, 1), -- 1x "Burgenland Süßweine"
 
--- Weinpaket 9
-(9, 25, 2),  -- Grüner Veltliner Kamptal in Weinpaket 9, Menge: 2 Flaschen
-(9, 1, 3),   -- Grüner Veltliner in Weinpaket 9, Menge: 3 Flaschen
-(9, 2, 4);   -- Riesling Wachau in Weinpaket 9, Menge: 4 Flaschen
+-- Benutzer 7 hat drei unterschiedliche Pakete im Warenkorb
+(3, 7, 1),  -- 1x "Burgenland Reds"
+(9, 7, 1),  -- 1x "Carnuntum Reds"
+(12, 7, 1), -- 1x "Bio-Weine Österreich"
 
+-- Benutzer 8 hat zwei Pakete im Warenkorb
+(7, 8, 2),  -- 2x "Thermenregion Trio"
+(13, 8, 1), -- 1x "Junge Talente"
 
+-- Benutzer 9 hat ein Paket im Warenkorb
+(14, 9, 3), -- 3x "Wiener Heuriger Paket"
 
+-- Benutzer 10 hat drei unterschiedliche Pakete im Warenkorb
+(1, 10, 1), -- 1x "Viennese Classic"
+(6, 10, 2), -- 2x "Wachau Gold"
+(15, 10, 1);-- 1x "Exklusive Reserve"
+
+INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
+VALUES
+(1, 159.90, 'In Bearbeitung', 1),
+(2, 249.80, 'Abgeschlossen', 2),
+(3, 89.50, 'In Bearbeitung', 3),
+(4, 145.30, 'Abgeschlossen', 4),
+(5, 199.90, 'Abgebrochen', 5),
+(6, 249.00, 'In Bearbeitung', 6),
+(7, 99.80, 'Abgeschlossen', 7),
+(8, 79.70, 'Abgebrochen', 8),
+(9, 329.60, 'In Bearbeitung', 9),
+(10, 49.90, 'Abgeschlossen', 10),
+(11, 189.50, 'Abgebrochen', 11),
+(12, 259.70, 'In Bearbeitung', 12),
+(13, 169.90, 'Abgeschlossen', 13),
+(14, 129.90, 'Abgebrochen', 14),
+(15, 89.50, 'In Bearbeitung', 15);
+
+INSERT INTO wine_package_reviews (wine_package_id, user_id, rating, review_text)
+VALUES
+(1, 2, 5, 'Exzellente Auswahl an Wiener Weinen. Sehr guter Geschmack und Preis-Leistungs-Verhältnis!'),
+(2, 5, 4, 'Frische und hochwertige Weißweine aus der Steiermark. Etwas teurer, aber definitiv lohnenswert.'),
+(3, 8, 3, 'Die Rotweine aus dem Burgenland sind gut, aber ich hatte mir mehr erwartet. Der Preis ist in Ordnung.'),
+(4, 1, 5, 'Niederösterreich bietet eine tolle Mischung aus Weinen. Sehr gutes Paket für Weinliebhaber!'),
+(5, 10, 2, 'Der Grüner Veltliner war okay, aber die restlichen Weine waren nicht nach meinem Geschmack. Zu teuer für die Qualität.');
