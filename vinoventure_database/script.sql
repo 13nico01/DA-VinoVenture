@@ -66,11 +66,11 @@ CREATE TABLE IF NOT EXISTS wine
 
 CREATE TABLE IF NOT EXISTS wine_package_wine
 (
-    package_id INT NOT NULL,
-    wine_id    INT NOT NULL,
-    quantity   INT NOT NULL,
-    PRIMARY KEY (package_id, wine_id),
-    FOREIGN KEY (package_id) REFERENCES wine_packages (package_id) ON DELETE CASCADE,
+    wine_package_id INT NOT NULL,
+    wine_id         INT NOT NULL,
+    quantity        INT NOT NULL,
+    PRIMARY KEY (wine_package_id, wine_id),
+    FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE CASCADE,
     FOREIGN KEY (wine_id) REFERENCES wine (wine_id) ON DELETE CASCADE
 );
 
