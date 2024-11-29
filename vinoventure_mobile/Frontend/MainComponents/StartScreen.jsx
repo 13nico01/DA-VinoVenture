@@ -6,7 +6,7 @@ const StartScreen = ({ navigation }) => {
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => Alert.alert("Quiz mit Code Hosten")}
+                onPress={() => navigation.navigate('Login')}
             >
                 <Text style={styles.buttonText}>Quiz mit Code Hosten</Text>
             </TouchableOpacity>
