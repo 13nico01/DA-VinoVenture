@@ -1,139 +1,53 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 
-const QuizTestScreen = () => {
-    const [selectedAnswers, setSelectedAnswers] = useState({
-        smell: [],
-        taste: [],
-        acidity: '',
-        finish: ''
-    });
+const QuizTestScreen = ({ route }) => {
+    const { wineId } = route.params; // Wine-ID aus Navigation
+    const [quizData, setQuizData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const [showPoints, setShowPoints] = useState(false);
-    const [points, setPoints] = useState(0);
-
-    const toggleAnswer = (category, answer) => {
-        if (showPoints) return; // Blockiert Änderungen nach Punkteberechnung
-
-        setSelectedAnswers(prev => {
-            if (category === 'smell' || category === 'taste') {
-                const currentAnswers = prev[category];
-                const isSelected = currentAnswers.includes(answer);
-                if (isSelected) {
-                    return {
-                        ...prev,
-                        [category]: currentAnswers.filter(a => a !== answer)
-                    };
-                } else if (currentAnswers.length < 2) {
-                    return {
-                        ...prev,
-                        [category]: [...currentAnswers, answer]
-                    };
+    useEffect(() => {
+        const fetchQuizData = async () => {
+            try {
+                const response = await fetch(`http://vinoventure-frontend.s3-website.eu-north-1.amazonaws.com/getQuizData/${wineId}`);
+                const data = await response.json();
+                if (response.ok) {
+                    setQuizData(data);
+                } else {
+                    Alert.alert('Fehler', 'Quizdaten konnten nicht geladen werden.');
                 }
-            } else {
-                return { ...prev, [category]: answer };
+            } catch (error) {
+                Alert.alert('Fehler', 'Serververbindung fehlgeschlagen.');
+            } finally {
+                setLoading(false);
             }
-            return prev;
-        });
-    };
-
-    const calculatePoints = (answers) => {
-        const correctAnswers = {
-            smell: ['MARACUJA', 'JOHANNISBEERE'],
-            taste: ['MARZIPAN', 'HASELNUSS'],
-            acidity: 'HOCH',
-            finish: 'MINERALISCH - FRISCH'
         };
 
-        let points = 0;
+        fetchQuizData();
+    }, [wineId]);
 
-        if (JSON.stringify(answers.smell.sort()) === JSON.stringify(correctAnswers.smell.sort())) {
-            points += 2;
-        }
-        if (JSON.stringify(answers.taste.sort()) === JSON.stringify(correctAnswers.taste.sort())) {
-            points += 2;
-        }
-        if (answers.acidity === correctAnswers.acidity) {
-            points += 1;
-        }
-        if (answers.finish === correctAnswers.finish) {
-            points += 1;
-        }
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#109132" />
+                <Text style={styles.loadingText}>Laden...</Text>
+            </View>
+        );
+    }
 
-        return points;
-    };
-
-    const handleCalculatePoints = () => {
-        const calculatedPoints = calculatePoints(selectedAnswers);
-        setPoints(calculatedPoints);
-        setShowPoints(true); // Sperrt Änderungen
-
-        // JSON generieren und in der Konsole ausgeben
-        generateQuizJSON(selectedAnswers, calculatedPoints);
-    };
-
-    const generateQuizJSON = (answers, points) => {
-        const quizData = {
-            answers,
-            points
-        };
-        console.log(JSON.stringify(quizData, null, 2)); // JSON in der Konsole ausgeben
-    };
-
-    const renderOption = (category, answer) => (
-        <TouchableOpacity
-            key={answer}
-            style={[
-                styles.option,
-                selectedAnswers[category]?.includes(answer) || selectedAnswers[category] === answer
-                    ? styles.selectedOption
-                    : null
-            ]}
-            onPress={() => toggleAnswer(category, answer)}
-        >
-            <Text style={styles.optionText}>{answer}</Text>
-        </TouchableOpacity>
-    );
+    if (!quizData) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Keine Daten verfügbar</Text>
+            </View>
+        );
+    }
 
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.title}>Sauvignon Blanc | Scharl Vulkanland 2022</Text>
-            <Text style={styles.subtitle}>WEIN 3</Text>
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>GERUCH (wähle die 2 richtigen Antworten)</Text>
-                {['MARACUJA', 'TOMATENRISPEN (STIELE)', 'PAPRIKA', 'JOHANNISBEERE'].map(answer =>
-                    renderOption('smell', answer)
-                )}
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>GESCHMACK (wähle die 2 richtigen Antworten)</Text>
-                {['MARZIPAN', 'RAUCHIG', 'HASELNUSS', 'ROTE RÜBEN (ERDIG)'].map(answer =>
-                    renderOption('taste', answer)
-                )}
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>SÄURE (wähle die richtige Antwort)</Text>
-                {['WENIG', 'HOCH'].map(answer => renderOption('acidity', answer))}
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>ABGANG (wähle die richtige Antwort)</Text>
-                {['VOLLMUNDIG - CREMIG', 'MINERALISCH - FRISCH'].map(answer => renderOption('finish', answer))}
-            </View>
-            <View>
-                <Text style={styles.footer}>(antworten sind nach dem berechnen nicht mehr änderbar)</Text>
-
-                <TouchableOpacity style={styles.calculateButton} onPress={handleCalculatePoints}>
-                    <Text style={styles.calculateButtonText}>Punkte berechnen</Text>
-                </TouchableOpacity>
-                {showPoints && (
-                    <Text style={styles.footer}>Punkteanzahl: {points}</Text>
-                )}
-            </View>
-        </ScrollView>
+        <View style={styles.container}>
+            <Text style={styles.title}>{quizData.wineName}</Text>
+            {/* Dein existierender Code für Quizfragen */}
+        </View>
     );
 };
 
@@ -141,65 +55,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#222',
-        padding: 16
+        padding: 16,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#222',
+    },
+    loadingText: {
+        marginTop: 8,
+        color: '#fff',
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#222',
+    },
+    errorText: {
+        color: '#fff',
+        fontSize: 16,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 8,
-        color: '#fff',
-    },
-    subtitle: {
-        fontSize: 16,
-        textAlign: 'center',
         marginBottom: 16,
         color: '#fff',
     },
-    section: {
-        marginBottom: 16
-    },
-    sectionTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        color: '#fff',
-    },
-    option: {
-        padding: 12,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        marginBottom: 8,
-        alignItems: 'center'
-    },
-    selectedOption: {
-        backgroundColor: '#109132',
-        borderColor: '#109132'
-    },
-    optionText: {
-        color: '#fff',
-        fontSize: 14
-    },
-    calculateButton: {
-        backgroundColor: '#109132',
-        padding: 16,
-        borderRadius: 8,
-        alignItems: 'center',
-        marginTop: 16,
-    },
-    calculateButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    footer: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: 16,
-        color: '#fff',
-    }
 });
 
 export default QuizTestScreen;
