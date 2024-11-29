@@ -16,14 +16,15 @@ const App = () => {
         <Stack.Navigator
             screenOptions={{
                 headerStyle: { backgroundColor: '#109132' }, // Hintergrundfarbe der Navigationsleiste
-                headerTintColor: '#222', // Textfarbe der Navigationsleiste
+                headerTintColor: '#fff', // Textfarbe der Navigationsleiste
                 headerTitleStyle: { fontWeight: 'bold' }, // Textstil
             }}
         >
+            <Stack.Screen name="Startscreen" component={StartScreen}/>
           {/*<Stack.Screen name="Login" component={Login}/>*/}
           {/*<Stack.Screen name="Registry" component={Registry}/>*/}
           {/*<Stack.Screen name="QrCodeScreen" component={QrCodeScreen}/>*/}
-          <Stack.Screen name= "QuizTestScreen" component={QuizTestScreen}/>
+          <Stack.Screen name= "Quiz" component={QuizTestScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
