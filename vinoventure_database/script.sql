@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users
     birthdate    DATE                     NOT NULL,
     status      VARCHAR(255)             NOT NULL,
     reset_token VARCHAR(255),
-    role        ENUM ('user', 'vintner') NOT NULL,
+    role        ENUM ('user', 'vintner', 'admin') NOT NULL,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login  TIMESTAMP default CURRENT_TIMESTAMP
 );
