@@ -1,20 +1,22 @@
-// Diesen Screen brauchen wir warscheinlich nicht
-
 import React from 'react';
-import { View, Button, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 
 const StartScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Button
-                title="Quiz mit QR-Code starten"
-                onPress={() => Alert.alert("Button 1 pressed")}
-            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => Alert.alert("Quiz mit Code Hosten")}
+            >
+                <Text style={styles.buttonText}>Quiz mit Code Hosten</Text>
+            </TouchableOpacity>
             <View style={styles.spacer} />
-            <Button
-                title="mit Code Quiz beitreten"
-                onPress={() => Alert.alert("Button 2 pressed")}
-            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => Alert.alert("Quiz beitreten")}
+            >
+                <Text style={styles.buttonText}>Quiz beitreten</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -24,7 +26,19 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center', // Zentriert den Inhalt vertikal
         alignItems: 'center', // Zentriert den Inhalt horizontal
-        backgroundColor: '#fff',
+        backgroundColor: '#222',
+    },
+    button: {
+        backgroundColor: '#109132',
+        paddingVertical: 14,
+        paddingHorizontal: 30,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     spacer: {
         height: 20, // Abstand zwischen den Buttons
