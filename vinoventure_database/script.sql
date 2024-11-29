@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS wine
 (
     wine_id   INT AUTO_INCREMENT PRIMARY KEY,
     wine_name VARCHAR(100) NOT NULL
-
 );
 
 CREATE TABLE IF NOT EXISTS wine_package_wine
@@ -74,6 +73,7 @@ CREATE TABLE IF NOT EXISTS wine_package_wine
     FOREIGN KEY (wine_id) REFERENCES wine (wine_id) ON DELETE CASCADE
 );
 
+
 CREATE TABLE IF NOT EXISTS shipping_cart (
     shipping_cart_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id          INT NOT NULL UNIQUE,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS wine_packages_shipping_cart
 (
     wine_package_id  INT NOT NULL,
     shipping_cart_id INT NOT NULL,
-    quantity         INT DEFAULT 1,
+    quantity         INT,
     PRIMARY KEY (wine_package_id, shipping_cart_id),
     FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE CASCADE,
     FOREIGN KEY (shipping_cart_id) REFERENCES shipping_cart (shipping_cart_id) ON DELETE CASCADE
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS orders (
     ordered_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(10, 2) NOT NULL,
     status       VARCHAR(255)   NOT NULL,
-    shipping_cart_id INT UNIQUE, -- Ensure 1:1 relationship with shipping_cart
+    shipping_cart_id INT UNIQUE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (shipping_cart_id) REFERENCES shipping_cart (shipping_cart_id) ON DELETE CASCADE
 );
@@ -108,24 +108,13 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS wine_package_reviews
 (
     review_id         INT AUTO_INCREMENT PRIMARY KEY,
-    package_id        INT NOT NULL,
+    wine_package_id        INT NOT NULL,
     user_id           INT NOT NULL,
     rating            INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
     review_text       VARCHAR(500),
     review_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (package_id) REFERENCES wine_packages (package_id) ON DELETE CASCADE,
+    FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS quizzes (
-    quizzes_id   INT AUTO_INCREMENT PRIMARY KEY,
-    host         VARCHAR(255) NOT NULL,
-    status       BOOLEAN NOT NULL,
-    quiz_key     INT,
-    answers_id   INT UNIQUE,
-    wine_package_id INT UNIQUE,
-    FOREIGN KEY (answers_id) REFERENCES answers (answer_id) ON DELETE CASCADE,
-    FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS answers (
@@ -142,6 +131,16 @@ CREATE TABLE IF NOT EXISTS answers (
     FOREIGN KEY (wine_id) REFERENCES wine (wine_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS quizzes (
+    quizzes_id    INT AUTO_INCREMENT PRIMARY KEY,
+    host          VARCHAR(255) NOT NULL,
+    status        BOOLEAN NOT NULL,
+    quiz_key      INT,
+    answer_id     INT,
+    wine_package_id INT,
+    FOREIGN KEY (answer_id) REFERENCES answers (answer_id) ON DELETE CASCADE,
+    FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE SET NULL
+);
 
 CREATE TABLE IF NOT EXISTS score
 (
