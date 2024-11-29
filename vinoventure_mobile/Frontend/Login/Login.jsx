@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {View, Text, Button, TextInput, Alert, StyleSheet} from "react-native";
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -13,7 +13,7 @@ const Login = ({navigation}) => {
             <TextInput
                 style={styles.input}
                 placeholder="email@example.com"
-                placeholderTextColor = {'#bbb'}
+                placeholderTextColor="#bbb"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
             />
@@ -22,11 +22,16 @@ const Login = ({navigation}) => {
                 placeholder="password"
                 secureTextEntry
                 value={password}
-                placeholderTextColor = {'#bbb'}
+                placeholderTextColor="#bbb"
                 onChangeText={(text) => setPassword(text)}
             />
-            <Button title="Login"/>
-            <Button title="No Account?" onPress={() => navigation.navigate('Registry')}/>
+            <TouchableOpacity style={styles.button} onPress={() => {/* Handle login logic */}}>
+                <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <View style={styles.spacer} />
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Registry')}>
+                <Text style={styles.buttonText}>No Account?</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -36,28 +41,51 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#222', // Dunkler Hintergrund
         paddingTop: 50,
     },
     title1: {
         fontSize: 24,
+        fontWeight: 'bold',
+        color: '#fff', // Weiße Schrift
         marginBottom: 16,
     },
-    title2:{
+    title2: {
+        fontSize: 16,
+        color: '#fff', // Weiße Schrift
         marginTop: 150,
-      fontSize: 16,
-      marginBottom: 16,
-    },
-    title3:{
         marginBottom: 16,
+    },
+    title3: {
+        color: '#bbb', // Hellere Schrift
+        marginBottom: 16,
+        textAlign: 'center',
     },
     input: {
-        height: 40,
+        height: 50,
         width: '80%',
-        borderColor: 'gray',
+        borderColor: '#555', // Anpassung an dunkles Thema
         borderWidth: 1,
+        borderRadius: 8, // Abgerundete Ecken
         marginBottom: 16,
-        padding: 8,
+        padding: 10,
+        color: '#fff', // Weiße Eingabetextfarbe
+        backgroundColor: '#333', // Dunkler Hintergrund für das Eingabefeld
+    },
+    button: {
+        backgroundColor: '#109132', // Grüner Button
+        paddingVertical: 14,
+        paddingHorizontal: 30,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff', // Weiße Schrift
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    spacer: {
+        height: 20, // Abstand zwischen den Buttons
     },
 });
 
