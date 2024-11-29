@@ -13,7 +13,7 @@ const StartScreen = ({ navigation }) => {
             <View style={styles.spacer} />
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => Alert.alert("Quiz beitreten")}
+                onPress={() => navigation.navigate('JoinQuiz')}
             >
                 <Text style={styles.buttonText}>Quiz beitreten</Text>
             </TouchableOpacity>
