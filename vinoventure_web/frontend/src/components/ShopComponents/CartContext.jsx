@@ -49,7 +49,7 @@ export const CartProvider = ({ children }) => {
     }
 
     const existingProduct = cart.find(
-      (item) => item.package_id === product.package_id
+      (item) => item.wine_package_id === product.wine_package_id
     );
 
     if (existingProduct) {
@@ -58,13 +58,13 @@ export const CartProvider = ({ children }) => {
         await axios.put(
           `http://13.60.107.62:3000/api/cart/update-cart/${userId}`,
           {
-            package_id: product.package_id,
+            wine_package_id: product.wine_package_id,
             quantity: existingProduct.quantity + 1,
           }
         );
         setCart((prevCart) =>
           prevCart.map((item) =>
-            item.package_id === product.package_id
+            item.wine_package_id === product.wine_package_id
               ? { ...item, quantity: item.quantity + 1 }
               : item
           )
@@ -78,7 +78,7 @@ export const CartProvider = ({ children }) => {
         await axios.post(
           `http://13.60.107.62:3000/api/cart/add-cart/${userId}`,
           {
-            package_id: product.package_id,
+            wine_package_id: product.wine_package_id,
             quantity: 1,
           }
         );
@@ -106,7 +106,7 @@ export const CartProvider = ({ children }) => {
       await axios.delete(
         `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${id}`
       );
-      setCart((prevCart) => prevCart.filter((item) => item.package_id !== id));
+      setCart((prevCart) => prevCart.filter((item) => item.wine_package_id !== id));
     } catch (error) {
       console.error(
         "Fehler beim Entfernen des Produkts aus dem Warenkorb:",
