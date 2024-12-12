@@ -25,9 +25,9 @@ exports.checkAuthNumber = async (req, res) => {
 };
 
 
-exports.getAnswers
-   // Daten basierend auf der wineId
-  if (wineId === 3) {
+exports.getAnswers = async (req, res) => {
+  const { wineId } = req.params; // Erhalte wineId aus Anfrage
+  if (wineId === '3') { // `wineId` ist als String aus der URL
     const quizData = {
       wineName: "Sauvignon Blanc | Scharl Vulkanland 2022",
       wineId: 3,
@@ -55,10 +55,8 @@ exports.getAnswers
         }
       }
     };
-
-    // Daten zurückgeben
     res.json(quizData);
   } else {
-    // Fehler für unbekannte wineId
     res.status(404).json({ error: "Wein-Quiz nicht gefunden." });
-  };
+  }
+};
