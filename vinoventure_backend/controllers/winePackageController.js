@@ -197,7 +197,7 @@ exports.deleteWinePackage = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query(
-      `DELETE FROM wine_packages WHERE package_id = ?`,
+      `DELETE FROM wine_packages WHERE wine_package_id = ?`,
       [id]
     );
     if (result.affectedRows === 0) {
