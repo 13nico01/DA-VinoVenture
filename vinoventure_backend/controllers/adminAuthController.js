@@ -121,6 +121,7 @@ exports.logout = (req, res) => {
   });
 };
 
+
 /**
  * Zugriff auf den Admin-Bereich
  */

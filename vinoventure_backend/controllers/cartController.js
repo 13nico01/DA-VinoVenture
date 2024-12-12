@@ -1,6 +1,5 @@
 const { db } = require("../config/database");
 
-
 /**
  * @swagger
  * /cart/{user_id}:
@@ -244,24 +243,20 @@ const { db } = require("../config/database");
  *                   type: string
  */
 
-
-
-
 exports.getCart = async (req, res) => {
   const userId = req.params.user_id;
   try {
     const [rows] = await db.query(
       `
-            SELECT wp.package_name, wp.price, cwp.quantity, (wp.price * cwp.quantity) AS total_price
-            FROM shopping_cart sc
-            JOIN cart_wine_packages cwp ON sc.cart_id = cwp.cart_id
-            JOIN wine_packages wp ON cwp.package_id = wp.package_id
-            WHERE sc.user_id = ?`,
+      SELECT wp.package_name, wp.price, wpsc.quantity, (wp.price * wpsc.quantity) AS total_price
+      FROM shipping_cart sc
+      JOIN wine_packages_shipping_cart wpsc ON sc.shipping_cart_id = wpsc.shipping_cart_id
+      JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
+      WHERE sc.user_id = ?`,
       [userId]
     );
 
     if (rows.length === 0) {
-      
       return res.status(404).json({ message: "Warenkorb nicht gefunden" });
     }
 
@@ -274,9 +269,9 @@ exports.getCart = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   const userId = req.params.user_id;
-  const { package_id, quantity } = req.body;
+  const { wine_package_id, quantity } = req.body;
 
-  if (!package_id || !quantity) {
+  if (!wine_package_id || !quantity) {
     return res
       .status(400)
       .json({ message: "Package ID und Menge sind erforderlich" });
@@ -284,32 +279,33 @@ exports.addToCart = async (req, res) => {
 
   try {
     const [cartResult] = await db.query(
-      "SELECT cart_id FROM shopping_cart WHERE user_id = ?",
+      "SELECT shipping_cart_id FROM shipping_cart WHERE user_id = ?",
       [userId]
     );
 
-    let cartId;
+    let shippingCartId;
     if (cartResult.length === 0) {
       const [createCartResult] = await db.query(
-        "INSERT INTO shopping_cart (user_id) VALUES (?)",
+        "INSERT INTO shipping_cart (user_id, quantity) VALUES (?, 0)",
         [userId]
       );
-      cartId = createCartResult.insertId;
+      shippingCartId = createCartResult.insertId;
     } else {
-      cartId = cartResult[0].cart_id;
+      shippingCartId = cartResult[0].shipping_cart_id;
     }
 
     const [addPackageResult] = await db.query(
       `
-            INSERT INTO cart_wine_packages (cart_id, package_id, quantity)
-            VALUES (?, ?, ?)`,
-      [cartId, package_id, quantity]
+      INSERT INTO wine_packages_shipping_cart (shipping_cart_id, wine_package_id, quantity)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)`,
+      [shippingCartId, wine_package_id, quantity]
     );
 
     res.status(201).json({
       message: "Weinpaket hinzugefügt",
-      cart_id: cartId,
-      package_id,
+      shipping_cart_id: shippingCartId,
+      wine_package_id,
       quantity,
     });
   } catch (err) {
@@ -320,9 +316,9 @@ exports.addToCart = async (req, res) => {
 
 exports.updateCartItem = async (req, res) => {
   const userId = req.params.user_id;
-  const { package_id, quantity } = req.body;
+  const { wine_package_id, quantity } = req.body;
 
-  if (!package_id || !quantity) {
+  if (!wine_package_id || !quantity) {
     return res
       .status(400)
       .json({ message: "Package ID und Menge sind erforderlich" });
@@ -330,7 +326,7 @@ exports.updateCartItem = async (req, res) => {
 
   try {
     const [cartResult] = await db.query(
-      "SELECT cart_id FROM shopping_cart WHERE user_id = ?",
+      "SELECT shipping_cart_id FROM shipping_cart WHERE user_id = ?",
       [userId]
     );
 
@@ -338,14 +334,14 @@ exports.updateCartItem = async (req, res) => {
       return res.status(404).json({ message: "Warenkorb nicht gefunden" });
     }
 
-    const cartId = cartResult[0].cart_id;
+    const shippingCartId = cartResult[0].shipping_cart_id;
 
     const [updateResult] = await db.query(
       `
-            UPDATE cart_wine_packages
-            SET quantity = ?
-            WHERE cart_id = ? AND package_id = ?`,
-      [quantity, cartId, package_id]
+      UPDATE wine_packages_shipping_cart
+      SET quantity = ?
+      WHERE shipping_cart_id = ? AND wine_package_id = ?`,
+      [quantity, shippingCartId, wine_package_id]
     );
 
     if (updateResult.affectedRows === 0) {
@@ -363,42 +359,42 @@ exports.updateCartItem = async (req, res) => {
 
 exports.removeFromCart = async (req, res) => {
   const userId = req.params.user_id;
-  const packageId = req.params.package_id; // package_id wird aus der URL entnommen
+  const winePackageId = req.params.wine_package_id;
 
-  if (!packageId) {
+  if (!winePackageId) {
     return res.status(400).json({ message: "Package ID ist erforderlich" });
   }
 
   try {
-    // Prüfe, ob der Benutzer einen Warenkorb hat
+    // Überprüfen, ob der Benutzer einen Warenkorb hat
     const [cartResult] = await db.query(
-      "SELECT cart_id FROM shopping_cart WHERE user_id = ?",
+      "SELECT shipping_cart_id FROM shipping_cart WHERE user_id = ?",
       [userId]
     );
 
-    if (cartResult.length === 0) {
+    if (!cartResult || cartResult.length === 0) {
       return res.status(404).json({ message: "Warenkorb nicht gefunden" });
     }
 
-    const cartId = cartResult[0].cart_id;
+    const shippingCartId = cartResult[0].shipping_cart_id;
 
-    // Entferne das Produkt aus dem Warenkorb
+    // Löschen des Weinpakets aus dem Warenkorb
     const [deleteResult] = await db.query(
       `
-              DELETE FROM cart_wine_packages
-              WHERE cart_id = ? AND package_id = ?`,
-      [cartId, packageId]
+      DELETE FROM wine_packages_shipping_cart
+      WHERE shipping_cart_id = ? AND wine_package_id = ?`,
+      [shippingCartId, winePackageId]
     );
 
-    if (deleteResult.affectedRows === 0) {
+    if (!deleteResult.affectedRows) {
       return res
         .status(404)
         .json({ message: "Weinpaket nicht im Warenkorb gefunden" });
     }
 
-    res.json({ message: "Weinpaket aus dem Warenkorb entfernt" });
+    return res.json({ message: "Weinpaket aus dem Warenkorb entfernt" });
   } catch (err) {
     console.error("Fehler beim Entfernen des Weinpakets:", err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Interner Serverfehler" });
   }
 };

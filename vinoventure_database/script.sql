@@ -1,5 +1,6 @@
+CREATE DATABASE IF NOT EXISTS vinoventure;
+use vinoventure;
 ALTER DATABASE vinoventure CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-
 CREATE TABLE IF NOT EXISTS users
 (
     user_id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -74,15 +75,15 @@ CREATE TABLE IF NOT EXISTS wine_package_wine
 
 CREATE TABLE IF NOT EXISTS shipping_cart (
     shipping_cart_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT NOT NULL UNIQUE,
-    quantity         INT NOT NULL,
+    user_id          INT,
+    quantity         INT,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS wine_packages_shipping_cart
 (
-    wine_package_id  INT NOT NULL,
-    shipping_cart_id INT NOT NULL,
+    wine_package_id  INT,
+    shipping_cart_id INT,
     quantity         INT,
     PRIMARY KEY (wine_package_id, shipping_cart_id),
     FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE CASCADE,
@@ -92,10 +93,10 @@ CREATE TABLE IF NOT EXISTS wine_packages_shipping_cart
 
 CREATE TABLE IF NOT EXISTS orders (
     order_id     INT AUTO_INCREMENT PRIMARY KEY,
-    user_id      INT            NOT NULL,
+    user_id      INT            ,
     ordered_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    total_amount DECIMAL(10, 2) NOT NULL,
-    status       VARCHAR(255)   NOT NULL,
+    total_amount DECIMAL(10, 2),
+    status       VARCHAR(255),
     shipping_cart_id INT UNIQUE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (shipping_cart_id) REFERENCES shipping_cart (shipping_cart_id) ON DELETE CASCADE

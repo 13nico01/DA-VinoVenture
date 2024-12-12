@@ -131,7 +131,7 @@ exports.getProducts = async (req, res) => {
   exports.getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const [rows] = await db.query('SELECT * FROM wine_packages WHERE package_id = ?', [id]);
+        const [rows] = await db.query('SELECT * FROM wine_packages WHERE wine_package_id = ?', [id]);
         
         if (rows.length === 0) {
             return res.status(404).json({ error: 'Produkt nicht gefunden' });

@@ -33,7 +33,7 @@ const MainShop = () => {
         {Array.isArray(products) ? (
           products.map((product) => (
             <div
-              key={product.package_id}
+              key={product.wine_package_id}
               className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
             >
               <img
