@@ -248,7 +248,7 @@ exports.getCart = async (req, res) => {
   try {
     const [rows] = await db.query(
       `
-      SELECT wp.package_name, wp.price, wpsc.quantity, (wp.price * wpsc.quantity) AS total_price
+      SELECT wp.wine_package_id, wp.package_name, wp.price, wpsc.quantity, (wp.price * wpsc.quantity) AS total_price
       FROM shipping_cart sc
       JOIN wine_packages_shipping_cart wpsc ON sc.shipping_cart_id = wpsc.shipping_cart_id
       JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id

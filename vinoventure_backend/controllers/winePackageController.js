@@ -193,18 +193,20 @@ exports.getPackageCount = (req, res) => {
   });
 };
 
-exports.deleteWinePackage = async (req, res) => {
-  const { id } = req.params;
+exports.deleteWinePackageById = async (req, res) => {
+  const { wine_package_id } = req.params;
   try {
     const [result] = await db.query(
-      `DELETE FROM wine_packages WHERE package_id = ?`,
-      [id]
+      `DELETE FROM wine_packages WHERE WinePackageID = ?`,
+      [wine_package_id]
     );
+
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Weinpaket nicht gefunden!" });
     }
-    res.json({ message: "Weinpaket gelöscht!" });
+
+    res.json({ message: "Weinpaket erfolgreich gelöscht!" });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Ein Fehler ist aufgetreten: " + err.message });
   }
 };
