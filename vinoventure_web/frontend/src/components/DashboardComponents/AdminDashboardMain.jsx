@@ -17,6 +17,7 @@ function AdminDashboardSidebar() {
     if (confirmLogout) {
       localStorage.removeItem("isAdminLoggedIn");
       localStorage.removeItem("username");
+      localStorage.removeItem("shipping_cart")
 
       navigate("/");
     }
