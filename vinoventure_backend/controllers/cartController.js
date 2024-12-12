@@ -366,17 +366,19 @@ exports.removeFromCart = async (req, res) => {
   }
 
   try {
+    // Überprüfen, ob der Benutzer einen Warenkorb hat
     const [cartResult] = await db.query(
       "SELECT shipping_cart_id FROM shipping_cart WHERE user_id = ?",
       [userId]
     );
 
-    if (cartResult.length === 0) {
+    if (!cartResult || cartResult.length === 0) {
       return res.status(404).json({ message: "Warenkorb nicht gefunden" });
     }
 
     const shippingCartId = cartResult[0].shipping_cart_id;
 
+    // Löschen des Weinpakets aus dem Warenkorb
     const [deleteResult] = await db.query(
       `
       DELETE FROM wine_packages_shipping_cart
@@ -384,15 +386,15 @@ exports.removeFromCart = async (req, res) => {
       [shippingCartId, winePackageId]
     );
 
-    if (deleteResult.affectedRows === 0) {
+    if (!deleteResult.affectedRows) {
       return res
         .status(404)
         .json({ message: "Weinpaket nicht im Warenkorb gefunden" });
     }
 
-    res.json({ message: "Weinpaket aus dem Warenkorb entfernt" });
+    return res.json({ message: "Weinpaket aus dem Warenkorb entfernt" });
   } catch (err) {
     console.error("Fehler beim Entfernen des Weinpakets:", err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Interner Serverfehler" });
   }
 };
