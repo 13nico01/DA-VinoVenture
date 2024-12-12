@@ -100,7 +100,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      console.log(`Lösche Produkt mit package_id: ${id}`);
+      console.log(`Lösche Produkt mit wine_package_id: ${wine_package_id}`);
 
       // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
       await axios.delete(
