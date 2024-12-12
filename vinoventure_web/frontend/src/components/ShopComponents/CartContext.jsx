@@ -93,7 +93,7 @@ export const CartProvider = ({ children }) => {
   };
 
   // Funktion zum Entfernen eines Produkts aus dem Warenkorb
-  const removeFromCart = async (id) => {
+  const removeFromCart = async (wine_package_id) => {
     if (!userId) {
       console.error("Fehler: Keine Benutzer-ID im localStorage gefunden.");
       return;
@@ -104,9 +104,9 @@ export const CartProvider = ({ children }) => {
 
       // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
       await axios.delete(
-        `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${id}`
+        `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${wine_package_id}`
       );
-      setCart((prevCart) => prevCart.filter((item) => item.wine_package_id !== id));
+      setCart((prevCart) => prevCart.filter((item) => item.wine_package_id !== wine_package_id));
     } catch (error) {
       console.error(
         "Fehler beim Entfernen des Produkts aus dem Warenkorb:",
