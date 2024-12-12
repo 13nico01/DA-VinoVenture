@@ -92,28 +92,32 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Funktion zum Entfernen eines Produkts aus dem Warenkorb
   const removeFromCart = async (wine_package_id) => {
+    const userId = localStorage.getItem('userId');
     if (!userId) {
       console.error("Fehler: Keine Benutzer-ID im localStorage gefunden.");
       return;
     }
-
+  
+    // Debugging: Prüfe, ob wine_package_id korrekt ist
+    console.log("Wine Package ID zum Entfernen:", wine_package_id);
+    if (!wine_package_id) {
+      console.error("Fehler: wine_package_id ist nicht definiert.");
+      return;
+    }
+  
+    const url = `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${wine_package_id}`;
+    console.log("Generierte URL:", url);
+  
     try {
-      console.log(`Lösche Produkt mit wine_package_id: ${wine_package_id}`);
-
-      // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
-      await axios.delete(
-        `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${wine_package_id}`
-      );
-      setCart((prevCart) => prevCart.filter((item) => item.wine_package_id !== wine_package_id));
+      console.log(`Sende DELETE-Request an URL: ${url}`);
+      await axios.delete(url);
+      console.log("Produkt erfolgreich gelöscht.");
     } catch (error) {
-      console.error(
-        "Fehler beim Entfernen des Produkts aus dem Warenkorb:",
-        error
-      );
+      console.error("Fehler beim Löschen des Produkts:", error.response || error.message);
     }
   };
+  
 
   // Berechnung des Gesamtbetrags des Warenkorbs
   const calculateTotal = () =>
