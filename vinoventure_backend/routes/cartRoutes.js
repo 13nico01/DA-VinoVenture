@@ -9,6 +9,6 @@ router.post("/add-cart/:user_id", cartController.addToCart);
 
 router.put("/update-cart/:user_id", cartController.updateCartItem);
 
-router.delete("/delete-cart/:user_id/:package_id", cartController.removeFromCart);
+router.delete("/delete-cart/:user_id/:wine_package_id", cartController.removeFromCart);
 
 module.exports = router;
