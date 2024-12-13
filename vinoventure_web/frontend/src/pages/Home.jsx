@@ -7,7 +7,6 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Überprüfe Anmeldestatus beim Laden der Komponente
     const loggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);

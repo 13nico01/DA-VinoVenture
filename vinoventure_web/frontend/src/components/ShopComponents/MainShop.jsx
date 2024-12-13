@@ -47,7 +47,7 @@ const MainShop = () => {
                 </h3>
                 <p className="text-lg text-gray-700 mt-2"> {product.price} €</p>
                 <div className="justify-center">
-                  <Link to={`/product/${product.package_id}`}>
+                  <Link to={`/product/${product.wine_package_id}`}>
                     <button className="mt-4 px-4 text-sm bg-green-700 text-white py-2 rounded-lg hover:bg-green-900">
                       Details ansehen
                     </button>
