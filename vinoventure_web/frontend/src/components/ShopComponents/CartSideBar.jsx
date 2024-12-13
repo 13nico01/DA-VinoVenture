@@ -25,7 +25,7 @@ const CartSidebar = () => {
             <ul className="space-y-4">
               {cart.map((item) => (
                 <li
-                  key={item.package_id}
+                  key={item.wine_package_id}
                   className="border-b pb-4 last:border-none"
                 >
                   <h4 className="text-lg font-semibold">{item.package_name}</h4>
