@@ -60,87 +60,41 @@ VALUES
 
 INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons)
 VALUES
-('Viennese Classic', 'Ein Paket mit den besten klassischen Wiener Weinen.', 6, 'Weingut Mayer am Pfarrplatz', 89.90, 4),
-('Styrian Whites', 'Frische Weißweine aus der Steiermark.', 3, 'Weingut Tement', 45.50, 2),
-('Burgenland Reds', 'Kräftige Rotweine aus dem Burgenland.', 4, 'Weingut Heinrich', 65.00, 4),
-('Lower Austria Selection', 'Gemischte Weine aus Niederösterreich.', 5, 'Weingut Bründlmayer', 75.30, 5),
-('Grüner Veltliner Premium', 'Hochwertiger Grüner Veltliner.', 3, 'Weingut Prager', 54.90, 2),
-('Wachau Gold', 'Exklusive Rieslinge aus der Wachau.', 3, 'Weingut FX Pichler', 99.00, 3),
-('Thermenregion Trio', 'Weine aus der Thermenregion mit Charakter.', 3, 'Weingut Reinisch', 49.90, 2),
-('Kamptal Classics', 'Typische Weine aus dem Kamptal.', 4, 'Weingut Schloss Gobelsburg', 65.00, 4),
-('Carnuntum Reds', 'Fruchtige Rotweine aus Carnuntum.', 3, 'Weingut Glatzer', 44.50, 3),
-('Steirische Vielfalt', 'Bunte Mischung aus der Steiermark.', 5, 'Weingut Neumeister', 70.00, 5),
-('Burgenland Süßweine', 'Dessertweine aus dem Burgenland.', 2, 'Weingut Kracher', 95.00, 2),
-('Bio-Weine Österreich', 'Biologisch erzeugte Weine.', 4, 'Weingut Loimer', 79.90, 4),
-('Junge Talente', 'Weine von jungen Winzern.', 4, 'Verschiedene Winzer', 59.90, 4),
-('Wiener Heuriger Paket', 'Typische Weine vom Wiener Heurigen.', 6, 'Weingut Christ', 85.00, 6),
-('Exklusive Reserve', 'Ausgewählte Reserve-Weine.', 3, 'Weingut Moric', 129.90, 3),
-('Zweigelt Selection', 'Beste Zweigelt aus Österreich.', 4, 'Weingut Pfaffl', 55.00, 4),
-('Südsteirische Klassiker', 'Regionale Weine aus der Südsteiermark.', 4, 'Weingut Gross', 64.50, 4),
-('Rotwein Cuvée', 'Cuvée aus besten Rotweinen.', 3, 'Weingut Nittnaus', 75.00, 3),
-('Grüner Genuss', 'Grüner Veltliner für jeden Anlass.', 5, 'Weingut Nigl', 49.90, 5),
-('Steirische Sauvignon Blancs', 'Frische Sauvignon Blancs aus der Steiermark.', 3, 'Weingut Sattlerhof', 69.90, 3),
-('Klassiker der Wachau', 'Smaragde aus der Wachau.', 3, 'Weingut Knoll', 119.90, 3),
-('Familienpaket Österreich', 'Vielfältige Weine für die ganze Familie.', 6, 'Verschiedene Winzer', 89.90, 6),
-('Weißwein für Genießer', 'Elegante Weißweine aus verschiedenen Regionen.', 4, 'Weingut Ott', 72.50, 4),
-('Rotwein für zwei', 'Perfekt für einen romantischen Abend.', 2, 'Weingut Gernot Heinrich', 39.90, 2),
-('Premium Selection Österreich', 'Das Beste, was Österreich zu bieten hat.', 6, 'Verschiedene Top-Winzer', 199.90, 6);
+('Weinviertel', 'Das größte heimische Weinbaugebiet trumpft mit einer Fülle an Bodentypen und Kleinklimata auf – und daher mit einer großen Weinvielfalt.', 8, '', 66.53, 2),
+('Wagram', 'Der Wagram ist flächen- wie auch mengenmäßig eine durchaus bedeutende Weinregion mit einem ganz eigenen Charakter und einer ganz besonderen Sortenspezialität.', 6, '', 156.55, 2),
+('Burgenland', 'Mehr als 2.000 Sonnenstunden und das vom Neusiedler See geprägte Mikroklima machen das Burgenland zum Weinland par excellence.', 15, '', 310.365, 3),
+('Toskana', 'So vielfältig die Reize der Toskana auch sind, untrennbar verbunden ist sie stets mit dem Wein – und der zeigt sich im eleganten Chianti Classico genauso wie bei den Weinen von Montepulciano, Montalcino oder der toskanischen Küste.', 12, '', 121, 2);
 
 INSERT INTO wine (wine_name)
 VALUES
-('Grüner Veltliner'),
-('Riesling Wachau'),
-('Zweigelt'),
-('Sauvignon Blanc Steiermark'),
-('Blaufränkisch Burgenland'),
-('Chardonnay Niederösterreich'),
-('Merlot Burgenland'),
-('Cabernet Sauvignon Weinviertel'),
-('Pinot Noir Niederösterreich'),
-('Sankt Laurent'),
-('Muskateller Steiermark'),
-('Welschriesling Burgenland'),
-('Riesling Kamptal'),
-('Syrah Burgenland'),
-('Gamay Niederösterreich'),
-('Weißburgunder Burgenland'),
-('Rotgipfler Thermenregion'),
-('Pinot Gris Südsteiermark'),
-('Scheurebe Kamptal'),
-('Grüner Veltliner Kamptal'),
-('Blaufränkisch Mittelburgenland'),
-('Sauvignon Blanc Südsteiermark'),
-('Grüner Veltliner Wachau'),
-('Cabernet Franc Burgenland'),
-('Riesling Kremstal'),
-('Grauburgunder Steiermark');
+('Grüner Veltliner Ried Längen 2023'),
+('Grüner Veltliner Ried Antlasbergen 2023'),
+('Roter Veltliner Da Capo 2023/knackig-frisch'),
+('Grüner Veltliner Ried Diermannsee Alte Rebe 2023'),
+
+('Roter Veltliner Ried Steinberg 1ÖTW Erste Lage 2022'),
+('Grüner Veltliner Ried Himmelreich 2023'),
+('Grüner Veltliner Ried Spiegel 1ÖTW Erste Lage 2022'),
+
+('Tiefschwarz 2020'),
+('The Legends 2022'),
+('Nordrand 2018'),
+('Haideboden 2021'),
+('Bela Rex 2020'),
+
+('Chianti Riserva 2021'),
+('Le Volte dell’ Ornellaia 2022'),
+('Chianti Classico Discorsi 2020'),
+('Brunello di Montalcino CastelGiocondo 2019'),
+('Rosso di Montalcino 2021'),
+('Vino Nobile di Montepulciano 2021');
+
+
+
 
 INSERT INTO wine_package_wine (wine_package_id, wine_id, quantity)
 VALUES
-(1, 1, 2), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 7, 1),
-(2, 4, 1), (2, 11, 1), (2, 22, 1),
-(3, 3, 2), (3, 5, 1), (3, 6, 1),
-(4, 1, 1), (4, 6, 1), (4, 9, 1), (4, 19, 1), (4, 12, 1),
-(5, 1, 1), (5, 20, 2),
-(6, 2, 1), (6, 25, 2),
-(7, 17, 1), (7, 19, 1), (7, 10, 1),
-(8, 1, 2), (8, 13, 1), (8, 19, 1),
-(9, 3, 1), (9, 7, 1), (9, 8, 1),
-(10, 4, 1), (10, 11, 2), (10, 18, 1), (10, 22, 1),
-(11, 12, 1), (11, 25, 1),
-(12, 1, 1), (12, 4, 1), (12, 20, 2),
-(13, 3, 1), (13, 5, 1), (13, 7, 2),
-(14, 1, 1), (14, 4, 2), (14, 6, 1), (14, 19, 1), (14, 22, 1),
-(15, 3, 1), (15, 5, 1), (15, 8, 1),
-(16, 3, 2), (16, 5, 1), (16, 21, 1),
-(17, 4, 1), (17, 11, 1),  (17, 18, 2),
-(18, 3, 1), (18, 5, 1), (18, 8, 1),
-(19, 1, 2), (19, 20, 1), (19, 6, 1), (19, 12, 1),
-(20, 4, 1), (20, 18, 2),
-(21, 2, 1), (21, 13, 1), (21, 25, 1),
-(22, 3, 1), (22, 5, 2), (22, 7, 1), (22, 9, 1), (22, 21, 1),
-(23, 1, 1), (23, 4, 1), (23, 6, 2),
-(24, 3, 1), (24, 5, 1),
-(25, 2, 1), (25, 3, 1), (25, 4, 2), (25, 11, 1), (25, 19, 1);
-
-
+(1, 1, 2), (1, 2, 2), (1, 3, 2), (1, 4, 2),
+(2, 5, 2), (2, 6, 2), (2, 7, 2),
+(3, 8, 3), (3, 9, 3), (3, 10, 3), (3, 11, 3), (3, 12, 3),
+(4, 13, 2), (4, 14, 2), (4, 15, 2), (4, 16, 2), (4, 17, 2), (4, 18, 2);
