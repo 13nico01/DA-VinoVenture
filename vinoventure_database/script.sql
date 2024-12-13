@@ -1,5 +1,3 @@
-CREATE DATABASE IF NOT EXISTS vinoventure;
-use vinoventure;
 ALTER DATABASE vinoventure CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE TABLE IF NOT EXISTS users
 (
@@ -75,8 +73,8 @@ CREATE TABLE IF NOT EXISTS wine_package_wine
 
 CREATE TABLE IF NOT EXISTS shipping_cart (
     shipping_cart_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT,
-    quantity         INT,
+    user_id          INT  UNIQUE,
+    quantity         INT ,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
