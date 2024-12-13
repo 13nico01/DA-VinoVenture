@@ -36,7 +36,7 @@ const CartSidebar = () => {
                     Anzahl: {item.quantity}
                   </p>
                   <button
-                    onClick={() => removeFromCart(item.package_id)}
+                    onClick={() => removeFromCart(item.wine_package_id)}
                     className="text-red-500 hover:text-red-700 text-sm mt-2"
                   >
                     Entfernen
