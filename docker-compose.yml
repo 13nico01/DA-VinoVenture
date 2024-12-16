@@ -16,7 +16,7 @@ services:
       DB_PASSWORD: yourpassword
       DB_DATABASE: vinoventure
     # Starte das wait-for-it Skript, um auf die DB zu warten, bevor npm start ausgeführt wird
-    command: ["sh", "-c", "./wait-for-it.sh db:3306 -- npm start"]
+    command: [ "sh", "-c", "./wait-for-it.sh db:3306 -- npm start" ]
 
   db:
     image: mysql:8

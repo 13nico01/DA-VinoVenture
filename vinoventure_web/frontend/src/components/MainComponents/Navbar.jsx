@@ -32,12 +32,14 @@ const Navbar = () => {
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username") || "";
+    const storedUserID = localStorage.getItem("userID") || "";
 
     setUsername(storedUsername || "");
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("username");
+    localStorage.removeItem("userID");
     setUsername("");
     navigate("/");
   };
