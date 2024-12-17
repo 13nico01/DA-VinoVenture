@@ -3,6 +3,7 @@ import { Menu, X, User } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import CartSidebar from "../ShopComponents/CartSideBar";
+import ProfileButton from "./ProfileButton";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -65,10 +66,11 @@ const Navbar = () => {
             <Link to="/About">About</Link>
           </ul>
           <div className="hidden lg:flex justify-center space-x-4 items-center text-md">
-            <CartSidebar />
             {username ? (
               <>
-                <User className="" />
+                <CartSidebar />
+
+                <ProfileButton />
                 <span className="text-white border-2 border-black rounded-lg p-1 bg-gradient-to-r from-green-600 to-green-950">
                   {username}
                 </span>
@@ -138,12 +140,12 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <a
-                    href="#"
+                  <Link
+                    to="/login"
                     className="py-2 px-3 border rounded-lg border-black bg-gray-400 text-black font-extrabold"
                   >
                     Login
-                  </a>
+                  </Link>
                   <a
                     href="#"
                     className="py-2 px-3 rounded-md bg-gradient-to-r from-green-600 to-green-950 text-white"
