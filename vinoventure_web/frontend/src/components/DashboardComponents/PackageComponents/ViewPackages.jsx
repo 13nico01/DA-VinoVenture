@@ -57,14 +57,14 @@ const ViewPackages = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://51.20.68.176:300/api/wine-packages/delete-package/${pkgId}`,
+          `http://13.60.107.62:3000/api/wine-packages/delete-package/${pkgId}`,
           {
             method: "DELETE",
           }
         );
         if (response.ok) {
           const updatedPackages = packages.filter(
-            (pkg) => pkg.package_id !== pkgId
+            (pkg) => pkg.wine_package_id !== pkgId
           );
           setPackages(updatedPackages);
           setSelectedPackage(null);
@@ -81,10 +81,10 @@ const ViewPackages = () => {
 
   const handleRowClick = (pkg) => {
     if (isDeleteMode) {
-      handleDeleteClick(pkg.package_id);
+      handleDeleteClick(pkg.wine_package_id);
     } else {
       const newSelectedPackage =
-        selectedPackage === pkg.package_id ? null : pkg.package_id;
+        selectedPackage === pkg.wine_package_id ? null : pkg.wine_package_id;
       setSelectedPackage(newSelectedPackage);
       console.log(`Selected Package ID: ${newSelectedPackage}`);
     }

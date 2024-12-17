@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS wine_package_wine
 CREATE TABLE IF NOT EXISTS shipping_cart (
     shipping_cart_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id          INT,
-    quantity         INT ,
+    quantity         INT,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
