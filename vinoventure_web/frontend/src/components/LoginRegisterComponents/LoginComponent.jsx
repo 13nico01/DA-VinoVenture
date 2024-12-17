@@ -32,12 +32,12 @@ function LoginComponent() {
         localStorage.setItem("username", username);
 
         if (data.user_id) {
-          localStorage.setItem("userID", data.user_id); // user_id aus dem `data`-Objekt
+          localStorage.setItem("userID", data.user_id); 
         } else {
           console.error("user_id fehlt in der Antwort");
         }
-
-        navigate("/home");
+        window.location.reload();
+        navigate("/");
       } else {
         setError(data.message || "Invalid username or password");
       }

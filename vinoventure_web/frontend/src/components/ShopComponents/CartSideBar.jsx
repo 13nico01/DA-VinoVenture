@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ShoppingBasket, X } from "lucide-react";
 import { useCart } from "./CartContext";
 import { Link } from "react-router-dom";
+import { Plus, Minus } from "lucide-react";
 
 const CartSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,13 +12,12 @@ const CartSidebar = () => {
 
   return (
     <div className="relative">
-      {/* Sidebar */}
       <div
         className={`fixed top-16 right-0 h-full w-80 bg-gray-100 shadow-lg transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="p-4 bg-gray-800">
+        <div className="p-4 bg-gray-800 overflow-scroll">
           <h2 className="text-2xl font-semibold mb-4 text-white">Warenkorb</h2>
           {cart.length === 0 ? (
             <p className="text-red-500">Dein Warenkorb ist leer.</p>
@@ -32,9 +32,20 @@ const CartSidebar = () => {
                   <p className="text-sm text-gray-600">
                     Preis: {item.price} EUR
                   </p>
-                  <p className="text-sm text-gray-600">
-                    Anzahl: {item.quantity}
-                  </p>
+                  <div className="flex flex-row">
+                    <p className="text-sm text-gray-600 flex-row flex">
+                      Anzahl: {item.quantity}
+                    </p>
+                    <div className="px-2 pt-0.5 space-x-1">
+                      <button className="border-2 border-neutral-500">
+                        <Plus size={14} />
+                      </button>
+                      <button className="border-2 border-neutral-500">
+                        <Minus size={14} />
+                      </button>
+                    </div>
+                  </div>
+
                   <button
                     onClick={() => removeFromCart(item.wine_package_id)}
                     className="text-red-500 hover:text-red-700 text-sm mt-2"
