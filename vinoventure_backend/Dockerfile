@@ -6,8 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . ./vinoventure_backend
-COPY . ./vinoventure_database
+COPY . .
 
 # Füge das wait-for-it-Skript hinzu
 COPY wait-for-it.sh /wait-for-it.sh
