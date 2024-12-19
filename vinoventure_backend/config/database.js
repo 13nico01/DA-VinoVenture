@@ -2,14 +2,13 @@ const mysql = require("mysql2/promise");
 const fs = require("fs").promises;
 
 const db = mysql.createPool({
-  host: "db",
-  user: "root",
-  password: "yourpassword",
-  database: "vinoventure",
+  host: process.env.DB_HOST || "db",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "yourpassword",
+  database: process.env.DB_DATABASE || "vinoventure",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  //charset: "utf8mb4" // Hier das Charset explizit setzen
 });
 
 async function testConnection() {

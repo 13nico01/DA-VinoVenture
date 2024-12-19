@@ -1,18 +1,16 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --only=production
 
 COPY . .
 
-# Füge das wait-for-it-Skript hinzu
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
 EXPOSE 3000
 
-# Verwende wait-for-it, um sicherzustellen, dass MySQL bereit ist, bevor der Backend-Service startet
 CMD ["npm", "start"]

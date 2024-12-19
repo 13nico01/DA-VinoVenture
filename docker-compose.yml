@@ -1,34 +1,56 @@
-version: '3'
+version: '3.8'
+
 services:
   backend:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
     build:
-      context: ./vinoventure_backend # Pfad zum Backend
-      dockerfile: Dockerfile # Dockerfile für das Backend
+      context: ./vinoventure_backend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000" # Portweiterleitung
+      - "3000:3000"
     volumes:
-      - ./vinoventure_backend:/app # Code im Container verfügbar machen
+      - ./vinoventure_backend:/app
+      - /app/node_modules
     depends_on:
-      - db # Warten auf die DB, bevor Backend gestartet wird
+      - db
     environment:
+      NODE_ENV: production
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: yourpassword
       DB_DATABASE: vinoventure
-    # Starte das wait-for-it Skript, um auf die DB zu warten, bevor npm start ausgeführt wird
-    command: [ "sh", "-c", "./wait-for-it.sh db:3306 -- npm start" ]
 
   db:
-    image: mysql:8
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+    image: mysql:8.0.33-oracle
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: yourpassword
       MYSQL_DATABASE: vinoventure
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./vinoventure_database/script.sql:/docker-entrypoint-initdb.d/script.sql
       - ./vinoventure_database/testData.sql:/docker-entrypoint-initdb.d/testData.sql
+
+  frontend:
+    build:  
+      context: ./vinoventure_web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" 
+    depends_on:
+      - backend
 
 volumes:
   db_data:

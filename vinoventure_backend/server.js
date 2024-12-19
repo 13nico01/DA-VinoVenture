@@ -1,39 +1,41 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const session = require('express-session');
-const { swaggerUi, swaggerSpec } = require('./config/swagger');
-const adminAuthController = require('./controllers/adminAuthController'); // Admin-Controller importieren
-const routes = require('./routes'); // Routen importieren
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const session = require("express-session");
+const { swaggerUi, swaggerSpec } = require("./config/swagger");
+const routes = require("./routes");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 // Middleware
 app.use(bodyParser.json());
-app.use(cors({
-    origin: '*',  
-    credentials: true
-}));
-
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
 // Session-Management
-app.use(session({
-    secret: 'geheim', // Dies sollte ein sicherer, zufälliger String sein
+app.use(
+  session({
+    secret: "geheim", // Sicherer Schlüssel für Produktion verwenden
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Sollte in Produktion auf 'true' gesetzt werden, wenn HTTPS verwendet wird
-}));
+    cookie: { secure: false }, // In Produktion auf 'true' setzen, wenn HTTPS verwendet wird
+  })
+);
 
 // Swagger-Dokumentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routen verwenden
-app.use('/api', routes);  // Nutze die in ./routes definierten API-Routen
+app.use("/api", routes);
 
 // Server starten
-app.listen(port, () => {
-    console.log(`Server läuft auf Port ${port}`);
+const server = app.listen(port, () => {
+  const address = server.address();
+  const host = address.address === "::" ? "localhost" : address.address; // IPv6-Fallback
+  console.log(`Server läuft auf http://${host}:${address.port}`);
 });
