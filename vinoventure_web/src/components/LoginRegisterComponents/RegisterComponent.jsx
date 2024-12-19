@@ -1,7 +1,7 @@
 
 const RegisterComponent = () => {
   return (
-    <div className="flex bg-white">
+    <div className="flex bg-white justify-center">
       
     </div>
   )
