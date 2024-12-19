@@ -1,4 +1,3 @@
-ALTER DATABASE vinoventure CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE TABLE IF NOT EXISTS users
 (
     user_id     INT AUTO_INCREMENT PRIMARY KEY,
