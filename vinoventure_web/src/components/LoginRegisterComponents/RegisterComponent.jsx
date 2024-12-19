@@ -1,7 +1,7 @@
 
 const RegisterComponent = () => {
   return (
-    <div>
+    <div className="flex">
       
     </div>
   )
