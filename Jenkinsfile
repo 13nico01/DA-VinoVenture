@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1319437909094568007/LNOTEhzDIKAl868WpnkexihA-I1_NOZSFH4AWeIzk6diEeb-hfH6JKnI0WoZvd5tPwz9'
+        DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/<your-webhook-id>'
         ROLLBACK_BACKEND_IMAGE = 'da-vinoventure_backend:rollback'
         ROLLBACK_DATABASE_IMAGE = 'da-vinoventure_database:rollback'
         ROLLBACK_FRONTEND_IMAGE = 'da-vinoventure_frontend:rollback'
@@ -12,8 +12,11 @@ pipeline {
         stage('Pull Changes') {
             steps {
                 script {
-                    // Git-Repository klonen oder aktualisieren
-                    git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
+                    // Git-Repository aktualisieren
+                    dir('/var/lib/jenkins/workspace/DA-VinoVenture') {
+                        echo 'Git-Repository wird aktualisiert...'
+                        sh 'git pull'
+                    }
                 }
             }
         }
@@ -22,10 +25,12 @@ pipeline {
             steps {
                 script {
                     // Prüfen, welche Ordner geändert wurden
-                    def changes = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
-                    env.BACKEND_CHANGED = changes.any { it.startsWith('vinoventure_backend/') }.toString()
-                    env.DATABASE_CHANGED = changes.any { it.startsWith('vinoventure_database/') }.toString()
-                    env.FRONTEND_CHANGED = changes.any { it.startsWith('vinoventure_web/') }.toString()
+                    dir('/var/lib/jenkins/workspace/DA-VinoVenture') {
+                        def changes = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
+                        env.BACKEND_CHANGED = changes.any { it.startsWith('vinoventure_backend/') }.toString()
+                        env.DATABASE_CHANGED = changes.any { it.startsWith('vinoventure_database/') }.toString()
+                        env.FRONTEND_CHANGED = changes.any { it.startsWith('vinoventure_web/') }.toString()
+                    }
                 }
             }
         }
@@ -104,7 +109,7 @@ def sendDiscordNotification(String message) {
             "content": "${message}"
         }' ${DISCORD_WEBHOOK_URL}
     """
-        }
+}
 
 def performRollback() {
     echo 'Rollback wird ausgeführt...'
