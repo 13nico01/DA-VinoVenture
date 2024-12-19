@@ -44,11 +44,11 @@ services:
       - ./vinoventure_database/testData.sql:/docker-entrypoint-initdb.d/testData.sql
 
   frontend:
-    build:  
+    build:
       context: ./vinoventure_web
       dockerfile: Dockerfile
     ports:
-      - "80:80" 
+      - "8080:80"
     depends_on:
       - backend
 
