@@ -9,14 +9,13 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  charset: "utf8mb4" // Hier das Charset explizit setzen
+  //charset: "utf8mb4" // Hier das Charset explizit setzen
 });
 
-// Test database connection
 async function testConnection() {
   try {
       const connection = await db.getConnection();
-      if (connection) {  // Ensure connection is valid
+      if (connection) { 
         console.log("Datenbankverbindung erfolgreich!");
         connection.release();
       } else {

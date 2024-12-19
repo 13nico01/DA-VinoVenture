@@ -29,6 +29,7 @@ services:
       - db_data:/var/lib/mysql
       - ./vinoventure_database/script.sql:/docker-entrypoint-initdb.d/script.sql
       - ./vinoventure_database/testData.sql:/docker-entrypoint-initdb.d/testData.sql
+      - ./sql.cnf:/etc/mysql/conf.d/sql.cnf # Bindet die Konfigurationsdatei ein
 
 volumes:
   db_data:
