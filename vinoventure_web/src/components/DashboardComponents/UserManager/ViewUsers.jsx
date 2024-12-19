@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API_BASE_URL from "../../../constants/constants";
 
 const ViewUsers = () => {
   const [users, setUsers] = useState([]); // Initialisiere `users` als leeres Array
@@ -7,7 +8,7 @@ const ViewUsers = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "http://13.60.107.62:3000/api/user-manager/get-users"
+          `${API_BASE_URL}/api/user-manager/get-users`
         );
         if (!response.ok) {
           throw new Error("Fehler beim Abrufen der User!");

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
+import API_BASE_URL from "../../../constants/constants";
 
 const ViewPackages = () => {
   const [packages, setPackages] = useState([]);
@@ -14,7 +15,7 @@ const ViewPackages = () => {
     const fetchPackages = async () => {
       try {
         const response = await fetch(
-          "http://13.60.107.62:3000/api/wine-packages/get-packages"
+          `${API_BASE_URL}/api/wine-packages/get-packages`
         );
         const data = await response.json();
         if (response.ok) {

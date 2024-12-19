@@ -1,1 +1,3 @@
-export const BACKEND_IP = "http://13.60.107.62:3000";
+const API_BASE_URL = "https://vino-venture.com/3000";
+
+export default API_BASE_URL;

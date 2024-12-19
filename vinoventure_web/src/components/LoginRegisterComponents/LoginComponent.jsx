@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye } from "lucide-react";
+import API_BASE_URL from "../../constants/constants";
 
 function LoginComponent() {
   const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ function LoginComponent() {
 
     try {
       const response = await fetch(
-        "http://13.60.107.62:3000/api/user-login/login",
+        `${API_BASE_URL}/api/user-login/login`,
         {
           method: "POST",
           headers: {

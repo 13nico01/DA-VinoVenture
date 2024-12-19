@@ -2,6 +2,7 @@ import Navbar from "../components/MainComponents/Navbar";
 import { useState } from "react";
 import AdminLoginHero from "../components/HomeComponents/AdminLoginHero";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../constants/constants";
 
 function AdminLogin({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -13,7 +14,7 @@ function AdminLogin({ onLogin }) {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://13.60.107.62:3000/api/admin/login", {
+      const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

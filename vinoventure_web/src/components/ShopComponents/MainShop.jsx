@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
-import { BACKEND_IP } from "../../constants/constants";
+import API_BASE_URL from "../../constants/constants"
 
 const MainShop = () => {
   const [products, setProducts] = useState([]);
@@ -10,7 +10,7 @@ const MainShop = () => {
 
   useEffect(() => {
     axios
-      .get({BACKEND_IP},"/api/shop/products")
+      .get(`${API_BASE_URL}/api/shop/products`)
       .then((response) => {
         console.log("API-Antwort:", response.data);
         if (Array.isArray(response.data.products)) {

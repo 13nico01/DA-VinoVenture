@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE_URL from "../../constants/constants";
 
 const CartContext = createContext();
 
@@ -23,7 +24,7 @@ export const CartProvider = ({ children }) => {
     if (userId) {
       try {
         const response = await axios.get(
-          `http://13.60.107.62:3000/api/cart/get-cart/${userId}`
+          `${API_BASE_URL}/api/cart/get-cart/${userId}`
         );
         setCart(response.data.cart);
       } catch (error) {

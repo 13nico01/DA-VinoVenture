@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API_BASE_URL from "../../../constants/constants";
 
 const AddPackage = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const AddPackage = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://13.60.107.62:3000/api/wine-packages/add-package",
+        `${API_BASE_URL}/api/wine-packages/add-package`,
         {
           method: "POST",
           headers: {

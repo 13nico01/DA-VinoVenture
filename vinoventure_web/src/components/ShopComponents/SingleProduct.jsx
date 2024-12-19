@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "./CartContext";
+import API_BASE_URL from "../../constants/constants";
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -10,7 +11,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://13.60.107.62:3000/api/shop/products/${id}`)
+      .get(`${API_BASE_URL}/api/shop/products/${id}`)
       .then((response) => {
         console.log("Produktdetails:", response.data);
         setProduct(response.data.product);
