@@ -13,10 +13,8 @@ pipeline {
             steps {
                 script {
                     // Git-Repository aktualisieren
-                    dir('/var/lib/jenkins/workspace/DA-VinoVenture') {
-                        echo 'Git-Repository wird aktualisiert...'
-                        sh 'git pull'
-                    }
+                    git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
+
                 }
             }
         }
