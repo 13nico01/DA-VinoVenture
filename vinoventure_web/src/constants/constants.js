@@ -1,0 +1,1 @@
+export const BACKEND_IP = "http://13.60.107.62:3000";
