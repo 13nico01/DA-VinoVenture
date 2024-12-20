@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../components/MainComponents/Navbar";
 import HomeHero from "../components/HomeComponents/HomeHero";
 import HomeAdmin from "../components/HomeComponents/HomeAdmin";
+import Footer from "../components/MainComponents/Footer"
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,6 +16,7 @@ function Home() {
     <>
       <NavBar />
       {isLoggedIn ? <HomeAdmin /> : <HomeHero />}
+      <Footer/>
     </>
   );
 }

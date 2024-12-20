@@ -15,13 +15,13 @@ const Hero = () => {
   return (
     <div className="relative">
       <div
-        className="bg-cover bg-center w-full h-dvh fixed top-0 left-0 brightness-50"
+        className="bg-cover bg-center w-full h-dvh fixed top-0 left-0 brightness-50 -z-10"
         style={{
           backgroundImage: `url(${backgroundHero})`,
         }}
       ></div>
 
-      <div className="relative px-2 z-10 mx-auto max-w-6xl py-40 sm:py-40 md:py-50 lg:py-50">
+      <div className="relative px-2 z-10 mx-auto max-w-6xl py-40 sm:py-40 md:py-50 lg:py-50 h-screen">
         <div className="text-center">
           <h1 className="text-white font-bold tracking-tight text-5xl md:text-7xl lg:text-8xl">
             <span className="bg-gradient-to-r from-green-600 to-green-800 text-transparent bg-clip-text">

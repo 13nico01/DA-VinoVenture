@@ -1,5 +1,5 @@
 
-import FooterMain from "../FooterComponents/FooterMain"
+import FooterMain from "../MainComponents/Footer"
 
 function AboutMain() {
     return (

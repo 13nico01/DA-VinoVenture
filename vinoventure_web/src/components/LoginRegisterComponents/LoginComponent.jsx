@@ -38,7 +38,6 @@ function LoginComponent() {
         } else {
           console.error("user_id fehlt in der Antwort");
         }
-        window.location.reload();
         navigate("/");
       } else {
         setError(data.message || "Invalid username or password");
