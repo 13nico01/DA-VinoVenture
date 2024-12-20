@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     // Prüfen, welche Ordner geändert wurden
-                    dir('/var/lib/jenkins/workspace/DA-VinoVenture') {
+                    dir('/root/.jenkins/workspace/VinoVenture-Pipeline') {
                         def changes = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
                         env.BACKEND_CHANGED = changes.any { it.startsWith('vinoventure_backend/') }.toString()
                         env.DATABASE_CHANGED = changes.any { it.startsWith('vinoventure_database/') }.toString()
