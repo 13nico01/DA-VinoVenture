@@ -1,0 +1,27 @@
+{
+  "wineName": "Sauvignon Blanc | Scharl Vulkanland 2022",
+  "wineId": 3,
+  "authNumber": 1111,
+  "quiz": {
+    "smell": {
+      "MARACUJA": true,
+      "TOMATENRISPEN (STIELE)": false,
+      "PAPRIKA": false,
+      "JOHANNISBEERE": true
+    },
+    "taste": {
+      "MARZIPAN": true,
+      "RAUCHIG": false,
+      "HASELNUSS": true,
+      "ROTE RÜBEN (ERDIG)": false
+    },
+    "acidity": {
+      "WENIG": false,
+      "HOCH": true
+    },
+    "finish": {
+      "VOLLMUNDIG - CREMIG": false,
+      "MINERALISCH - FRISCH": true
+    }
+  }
+}

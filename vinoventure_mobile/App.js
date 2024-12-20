@@ -8,6 +8,7 @@ import QrCodeScreen from "./Frontend/MainComponents/QrCodeScreen";
 import StartScreen from "./Frontend/MainComponents/StartScreen";
 import QuizTestScreen from "./Frontend/MainComponents/QuizTestScreen";
 import JoinQuizScreen from "./Frontend/MainComponents/JoinQuizScreen";
+import QuizJsonTestScreen from "./Frontend/MainComponents/QuizJsonTestScreen";
 
 
 const Stack = createStackNavigator();
@@ -22,12 +23,12 @@ const App = () => {
                 headerTitleStyle: { fontWeight: 'bold' }, // Textstil
             }}
         >
-            <Stack.Screen name="Startscreen" component={StartScreen}/>
+            {/*<Stack.Screen name="Startscreen" component={StartScreen}/>
             <Stack.Screen name="JoinQuiz" component={JoinQuizScreen}/>
-            <Stack.Screen name="Login" component={Login}/>
-            <Stack.Screen name="Registry" component={Registry}/>
-          {/*<Stack.Screen name="QrCodeScreen" component={QrCodeScreen}/>*/}
+            <Stack.Screen name="Test" component={QuizJsonTestScreen}/>*/}
             <Stack.Screen name= "Quiz" component={QuizTestScreen}/>
+            {/*<Stack.Screen name="Login" component={Login}/>*/}
+            {/*<Stack.Screen name="Registry" component={Registry}/>*/}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import axios from "axios";
 
 const JoinQuiz = ({ navigation }) => {
     const [inputValue, setInputValue] = useState('');
 
     const handleJoinQuiz = async () => {
+        //navigation.navigate('Test');
+    //}
+
         try {
-            const response = await fetch(`http://vinoventure-frontend.s3-website.eu-north-1.amazonaws.com/checkAuthNumber`, {
-                method: 'POST',
+            const response = await axios.get(`https://vino-venture.com/3000/api/quiz/get-answers/3`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ authNumber: parseInt(inputValue, 10) }),
             });
 
-            const data = await response.json();
-            if (response.ok) {
-                // Navigiere zum QuizTestScreen und übergib wineId
-                navigation.navigate('QuizTestScreen', { wineId: data.wineId });
+            if (response.status === 200) {
+                // Navigiere zum QuizTestScreen und übergib die Daten
+                navigation.navigate('QuizTestScreen', { quizData: response.data });
             } else {
-                Alert.alert('Fehler', data.message || 'Ungültige Authentifizierungsnummer');
+                Alert.alert('Fehler', response.data.message || 'Ungültige Authentifizierungsnummer');
             }
         } catch (error) {
-            Alert.alert('Fehler', 'Es gab ein Problem beim Verbinden mit dem Server.');
+            // Fehlerbehandlung: Serverantwort oder Verbindungsproblem
+            const errorMessage = error.response?.data?.message || 'Es gab ein Problem beim Verbinden mit dem Server.';
+            Alert.alert('Fehler', errorMessage);
         }
-    };
+       };
+
 
     return (
         <View style={styles.container}>
