@@ -79,7 +79,7 @@ pipeline {
                             sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
 
                             // Alle Container stoppen
-                            sh 'docker-compose down -v'
+                            sh 'docker-compose down'
 
                             // Alle Container neu bauen und starten
                             sh 'docker-compose up --build -d'
