@@ -12,7 +12,7 @@ pipeline {
         stage('Pull Changes') {
             steps {
                 script {
-                    sendDiscordNotification('🚀 Deployment gestartet!\ngit pull nicht vergessen!')
+                    sendDiscordNotification('🚀 Deployment gestartet! (git pull nicht vergessen!)')
                     git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
                 }
             }
