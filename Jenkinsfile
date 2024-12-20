@@ -35,28 +35,57 @@ pipeline {
         stage('Restart Containers') {
             steps {
                 script {
-                    def restartAll = false
+                    def containerMissing = false
 
-                    // Prüfen, ob Änderungen vorliegen
-                    if (env.BACKEND_CHANGED == 'true' || env.DATABASE_CHANGED == 'true' || env.FRONTEND_CHANGED == 'true') {
-                        restartAll = true
+                    echo 'Prüfe, ob alle benötigten Container existieren...'
+
+                    // Prüfen, ob der Backend-Container läuft
+                    if (!sh(script: 'docker ps -q --filter "name=backend"', returnStdout: true).trim()) {
+                        echo 'Backend-Container existiert nicht.'
+                        containerMissing = true
                     }
 
-                    if (restartAll) {
-                        echo 'Änderungen erkannt. Starte alle Container neu...'
+                    // Prüfen, ob der Datenbank-Container läuft
+                    if (!sh(script: 'docker ps -q --filter "name=db"', returnStdout: true).trim()) {
+                        echo 'Datenbank-Container existiert nicht.'
+                        containerMissing = true
+                    }
 
-                        // Rollback-Tags setzen
-                        sh 'docker tag da-vinoventure_backend:latest $ROLLBACK_BACKEND_IMAGE'
-                        sh 'docker tag mysql:8.0.33-oracle $ROLLBACK_DATABASE_IMAGE'
-                        sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
+                    // Prüfen, ob der Frontend-Container läuft
+                    if (!sh(script: 'docker ps -q --filter "name=frontend"', returnStdout: true).trim()) {
+                        echo 'Frontend-Container existiert nicht.'
+                        containerMissing = true
+                    }
 
-                        // Alle Container stoppen
-                        sh 'docker-compose down -v'
+                    if (containerMissing) {
+                        echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose up --build...'
+                        sh 'docker-compose up --build -d'
+            } else {
+                        echo 'Alle Container existieren. Prüfe auf Änderungen...'
 
-                        // Alle Container neu bauen und starten
-                        sh 'docker-compose up --build'
-                    } else {
-                        echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
+                        def restartAll = false
+
+                        // Prüfen, ob Änderungen vorliegen
+                        if (env.BACKEND_CHANGED == 'true' || env.DATABASE_CHANGED == 'true' || env.FRONTEND_CHANGED == 'true') {
+                            restartAll = true
+                        }
+
+                        if (restartAll) {
+                            echo 'Änderungen erkannt. Starte alle Container neu...'
+
+                            // Rollback-Tags setzen
+                            sh 'docker tag da-vinoventure_backend:latest $ROLLBACK_BACKEND_IMAGE'
+                            sh 'docker tag mysql:8.0.33-oracle $ROLLBACK_DATABASE_IMAGE'
+                            sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
+
+                            // Alle Container stoppen
+                            sh 'docker-compose down -v'
+
+                            // Alle Container neu bauen und starten
+                            sh 'docker-compose up --build'
+                } else {
+                            echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
+                        }
                     }
                 }
             }
