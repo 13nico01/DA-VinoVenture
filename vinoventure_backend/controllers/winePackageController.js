@@ -239,8 +239,9 @@ exports.getWinePackages = async (req, res) => {
 
 
 exports.getWinePackageById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const [rows] = await db.query(`SELECT * FROM wine_packages WHERE wine_package_id = ?`);
+    const [rows] = await db.query(`SELECT * FROM wine_packages WHERE wine_package_id = ?`, [id]);
     res.json({ packages: rows });
   } catch (err) {
     console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler
