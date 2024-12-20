@@ -51,11 +51,10 @@ pipeline {
                         sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
 
                         // Alle Container stoppen
-                        sh 'docker-compose down'
+                        sh 'docker-compose down -v'
 
                         // Alle Container neu bauen und starten
-                        sh 'docker-compose build'
-                        sh 'docker-compose up -d'
+                        sh 'docker-compose up --build'
                     } else {
                         echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                     }
