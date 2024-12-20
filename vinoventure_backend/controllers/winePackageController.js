@@ -24,24 +24,52 @@ require("mysql2/promise");
  *               - package_name
  *               - description
  *               - wine_count
- *               - vinter
+ *               - vintner
  *               - price
  *               - suitable_for_persons
- *               - image
  *             properties:
  *               package_name:
  *                 type: string
- *                 description: Name des Weinpackets
+ *                 description: Name des Weinpakets
  *               description:
  *                 type: string
- *                 description: Beschreibung des Weinpaketes
+ *                 description: Beschreibung des Weinpakets
+ *               wine_count:
+ *                 type: integer
+ *                 description: Anzahl der Weine im Paket
+ *               vintner:
+ *                 type: string
+ *                 description: Name des Winzers
+ *               price:
+ *                 type: number
+ *                 format: float
+ *                 description: Preis des Pakets
+ *               suitable_for_persons:
+ *                 type: integer
+ *                 description: Anzahl der Personen, für die das Paket geeignet ist
  *     responses:
  *       201:
  *         description: Wine-Package created successfully
- *       400:
- *         description: WinePackage already Exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Weinpaket hinzugefügt!
+ *                 id:
+ *                   type: integer
+ *                   description: ID des hinzugefügten Pakets
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 
 /**
@@ -56,13 +84,38 @@ require("mysql2/promise");
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/WinePackage'
- *       404:
- *         description: No WinePackages found
+ *               type: object
+ *               properties:
+ *                 packages:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       wine_package_id:
+ *                         type: integer
+ *                         description: ID des Weinpakets
+ *                       package_name:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       wine_count:
+ *                         type: integer
+ *                       vintner:
+ *                         type: string
+ *                       price:
+ *                         type: number
+ *                         format: float
+ *                       suitable_for_persons:
+ *                         type: integer
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
  
  /**
@@ -88,7 +141,7 @@ require("mysql2/promise");
  *               properties:
  *                 message:
  *                   type: string
- *                   
+ *                   example: Weinpaket gelöscht!
  *       404:
  *         description: WinePackage not found
  *         content:
@@ -98,7 +151,7 @@ require("mysql2/promise");
  *               properties:
  *                 error:
  *                   type: string
- *                   
+ *                   example: Weinpaket nicht gefunden!
  *       500:
  *         description: Internal server error
  *         content:
@@ -108,7 +161,6 @@ require("mysql2/promise");
  *               properties:
  *                 error:
  *                   type: string
- *                  
  */
 
 /**
@@ -127,7 +179,7 @@ require("mysql2/promise");
  *               properties:
  *                 count:
  *                   type: integer
- *                   
+ *                   description: Anzahl der Weinpakete
  *       500:
  *         description: Internal server error
  *         content:
@@ -139,6 +191,7 @@ require("mysql2/promise");
  *                   type: string
  *                   example: Internal server error
  */
+
 
 
 
@@ -177,6 +230,17 @@ exports.addWinePackage = async (req, res) => {
 exports.getWinePackages = async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM wine_packages`);
+    res.json({ packages: rows });
+  } catch (err) {
+    console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.getWinePackageById = async (req, res) => {
+  try {
+    const [rows] = await db.query(`SELECT * FROM wine_packages WHERE wine_package_id = ?`);
     res.json({ packages: rows });
   } catch (err) {
     console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler

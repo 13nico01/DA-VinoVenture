@@ -5,11 +5,7 @@ const transporter = require('../config/nodemailerConfig');
 
 let orders = [];
 
-// Function to generate a unique link for the quiz
-const generateUniqueLink = () => {
-    const uniqueID = uuidv4();
-    return `https://example.com/quiz/${uniqueID}`;
-};
+
 
 // Bestellbestätigungs E-Mail
 const sendOrderConfirmationEmail = (order) => {
@@ -34,7 +30,6 @@ exports.createOrder = async (req, res) => {
     const { customerEmail } = req.body;
 
     const newOrder = {
-        id: uuidv4(),
         customerEmail,
         status: 'pending',
     };
@@ -54,8 +49,7 @@ exports.shipOrder = async (req, res) => {
     }
 
     const uniqueLink = generateUniqueLink();
-    const qrPath = path.join(__dirname, '../public/qrcode.png');
-
+    
     try {
         await generateQRCode(uniqueLink, qrPath);
 
@@ -63,20 +57,12 @@ exports.shipOrder = async (req, res) => {
             from: 'julianholzer12@gmail.com',
             to: order.customerEmail,
             subject: 'Dein einmaliges Quiz',
-            text: 'Hier ist der QR-Code zu deinem einmaligen Quiz.',
             html: `
                 <p>Hier ist der QR-Code zu deinem einmaligen Quiz:</p>
                 <p><a href="${uniqueLink}">Klicke hier, um das Quiz zu besuchen.</a></p>
                 <p>Oder scanne den QR-Code:</p>
                 <img src="cid:qrcode" alt="QR Code" />
-            `,
-            attachments: [
-                {
-                    filename: 'qrcode.png',
-                    path: qrPath,
-                    cid: 'qrcode',
-                },
-            ],
+            `
         };
 
         await transporter.sendMail(emailOptions);

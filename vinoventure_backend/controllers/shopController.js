@@ -3,7 +3,7 @@ require("mysql2/promise");
 
 /**
  * @swagger
- * /products:
+ /products:
  *   get:
  *     summary: Retrieve all products
  *     tags: [Products]
@@ -52,10 +52,7 @@ require("mysql2/promise");
  *                 error:
  *                   type: string
  *                   example: Internal server error
- */
-
-/**
- * @swagger
+ *
  * /products/{id}:
  *   get:
  *     summary: Retrieve a product by ID
@@ -93,7 +90,6 @@ require("mysql2/promise");
  *                       format: float                   
  *                     suitable_for_persons:
  *                       type: integer
- *                       
  *       404:
  *         description: Product not found
  *         content:
@@ -115,6 +111,7 @@ require("mysql2/promise");
  *                   type: string
  *                   example: Internal server error
  */
+
 
 
 

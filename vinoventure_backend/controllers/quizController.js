@@ -1,13 +1,56 @@
 const { db } = require("../config/database");
 require("mysql2/promise");
 
-
-
-// Wine Quiz_id und Answers aus Wine_Packages rausziehen
+ 
+      // Wine Quiz_id und Answers aus Wine_Packages rausziehen
 exports.createQuiz = async (req, res) => {
-    try {
-      const [rows] = await db.query(`SELECT * FROM orders`); // Verwende db.query() anstelle von db.all()
-      res.json({ users: rows });
+  try {
+    const [rows] = await db.query(`SELECT w.wine_id,
+     w.wine_name,
+     wp.wine_package_id,
+     wp.package_name,
+     a.answer1,
+     a.answer2,
+     a.answer3,
+     a.answer4,
+     CASE
+         WHEN pa.clicked = 1 THEN a.answer1
+         WHEN pa.clicked = 2 THEN a.answer2
+         WHEN pa.clicked = 3 THEN a.answer3
+         WHEN pa.clicked = 4 THEN a.answer4
+         END     AS selected_answer,
+     a.is_correct,
+     CASE
+         WHEN a.is_correct = 1 AND pa.clicked = 1 THEN a.answer1
+         WHEN a.is_correct = 1 AND pa.clicked = 2 THEN a.answer2
+         WHEN a.is_correct = 1 AND pa.clicked = 3 THEN a.answer3
+         WHEN a.is_correct = 1 AND pa.clicked = 4 THEN a.answer4
+         END     AS correct_answer,
+     q.host_id,
+     u.firstname AS host_firstname,
+     u.lastname  AS host_lastname,
+     s.score,
+     p.participant_id,
+     p.participant_name
+FROM participant p
+       JOIN
+   participant_answer pa ON p.participant_id = pa.participant_id
+       JOIN
+   answer a ON pa.answer_id = a.answer_id
+       JOIN
+   quiz q ON a.quiz_id = q.quiz_id
+       JOIN
+   wine_packages wp ON q.wine_package_id = wp.wine_package_id
+       JOIN
+   wine w ON a.wine_id = w.wine_id
+       JOIN
+   users u ON q.host_id = u.user_id
+       JOIN
+   score s ON p.participant_id = s.participant_id; `); 
+   res.json({ 
+    success: true,
+    data: rows 
+  });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }

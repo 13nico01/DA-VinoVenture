@@ -4,7 +4,7 @@ const { db } = require("../config/database");
  * @swagger
  * /cart/{user_id}:
  *   get:
- *     summary: Get the shopping cart for a user
+ *     summary: Abrufen des Warenkorbs eines Benutzers
  *     tags: [Shopping Cart]
  *     parameters:
  *       - in: path
@@ -12,10 +12,10 @@ const { db } = require("../config/database");
  *         required: true
  *         schema:
  *           type: integer
- *         description: The ID of the user
+ *         description: Die ID des Benutzers
  *     responses:
  *       200:
- *         description: Shopping cart retrieved successfully
+ *         description: Warenkorb erfolgreich abgerufen
  *         content:
  *           application/json:
  *             schema:
@@ -37,7 +37,7 @@ const { db } = require("../config/database");
  *                         type: number
  *                         format: float
  *       404:
- *         description: Shopping cart not found
+ *         description: Warenkorb nicht gefunden
  *         content:
  *           application/json:
  *             schema:
@@ -46,7 +46,7 @@ const { db } = require("../config/database");
  *                 message:
  *                   type: string
  *       500:
- *         description: Internal server error
+ *         description: Interner Serverfehler
  *         content:
  *           application/json:
  *             schema:
@@ -54,13 +54,9 @@ const { db } = require("../config/database");
  *               properties:
  *                 error:
  *                   type: string
- */
-
-/**
- * @swagger
- * /cart/{user_id}:
+ *
  *   post:
- *     summary: Add an item to the shopping cart
+ *     summary: Hinzufügen eines Artikels zum Warenkorb
  *     tags: [Shopping Cart]
  *     parameters:
  *       - in: path
@@ -68,7 +64,7 @@ const { db } = require("../config/database");
  *         required: true
  *         schema:
  *           type: integer
- *         description: The ID of the user
+ *         description: Die ID des Benutzers
  *     requestBody:
  *       required: true
  *       content:
@@ -76,16 +72,16 @@ const { db } = require("../config/database");
  *           schema:
  *             type: object
  *             required:
- *               - package_id
+ *               - wine_package_id
  *               - quantity
  *             properties:
- *               package_id:
+ *               wine_package_id:
  *                 type: integer
  *               quantity:
  *                 type: integer
  *     responses:
  *       201:
- *         description: Item added to the cart
+ *         description: Artikel erfolgreich hinzugefügt
  *         content:
  *           application/json:
  *             schema:
@@ -93,14 +89,14 @@ const { db } = require("../config/database");
  *               properties:
  *                 message:
  *                   type: string
- *                 cart_id:
+ *                 shipping_cart_id:
  *                   type: integer
- *                 package_id:
+ *                 wine_package_id:
  *                   type: integer
  *                 quantity:
  *                   type: integer
  *       400:
- *         description: Bad request (missing package_id or quantity)
+ *         description: Ungültige Anfrage (fehlende package_id oder Menge)
  *         content:
  *           application/json:
  *             schema:
@@ -109,7 +105,7 @@ const { db } = require("../config/database");
  *                 message:
  *                   type: string
  *       500:
- *         description: Internal server error
+ *         description: Interner Serverfehler
  *         content:
  *           application/json:
  *             schema:
@@ -117,13 +113,9 @@ const { db } = require("../config/database");
  *               properties:
  *                 error:
  *                   type: string
- */
-
-/**
- * @swagger
- * /cart/{user_id}:
+ *
  *   patch:
- *     summary: Update the quantity of an item in the shopping cart
+ *     summary: Aktualisieren der Menge eines Artikels im Warenkorb
  *     tags: [Shopping Cart]
  *     parameters:
  *       - in: path
@@ -131,7 +123,7 @@ const { db } = require("../config/database");
  *         required: true
  *         schema:
  *           type: integer
- *         description: The ID of the user
+ *         description: Die ID des Benutzers
  *     requestBody:
  *       required: true
  *       content:
@@ -139,16 +131,16 @@ const { db } = require("../config/database");
  *           schema:
  *             type: object
  *             required:
- *               - package_id
+ *               - wine_package_id
  *               - quantity
  *             properties:
- *               package_id:
+ *               wine_package_id:
  *                 type: integer
  *               quantity:
  *                 type: integer
  *     responses:
  *       200:
- *         description: Quantity updated successfully
+ *         description: Menge erfolgreich aktualisiert
  *         content:
  *           application/json:
  *             schema:
@@ -157,7 +149,7 @@ const { db } = require("../config/database");
  *                 message:
  *                   type: string
  *       404:
- *         description: Item or cart not found
+ *         description: Artikel oder Warenkorb nicht gefunden
  *         content:
  *           application/json:
  *             schema:
@@ -166,7 +158,7 @@ const { db } = require("../config/database");
  *                 message:
  *                   type: string
  *       400:
- *         description: Bad request (missing package_id or quantity)
+ *         description: Ungültige Anfrage (fehlende package_id oder Menge)
  *         content:
  *           application/json:
  *             schema:
@@ -175,7 +167,62 @@ const { db } = require("../config/database");
  *                 message:
  *                   type: string
  *       500:
- *         description: Internal server error
+ *         description: Interner Serverfehler
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *
+ * /cart/{user_id}/{wine_package_id}:
+ *   delete:
+ *     summary: Entfernen eines Artikels aus dem Warenkorb
+ *     tags: [Shopping Cart]
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Die ID des Benutzers
+ *       - in: path
+ *         name: wine_package_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Die ID des zu entfernenden Pakets
+ *     responses:
+ *       200:
+ *         description: Artikel erfolgreich entfernt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Warenkorb oder Artikel nicht gefunden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Ungültige Anfrage (fehlende package_id)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Interner Serverfehler
  *         content:
  *           application/json:
  *             schema:
@@ -185,63 +232,6 @@ const { db } = require("../config/database");
  *                   type: string
  */
 
-/**
- * @swagger
- * /cart/{user_id}/{package_id}:
- *   delete:
- *     summary: Remove an item from the shopping cart
- *     tags: [Shopping Cart]
- *     parameters:
- *       - in: path
- *         name: user_id
- *         required: true
- *         schema:
- *           type: integer
- *         description: The ID of the user
- *       - in: path
- *         name: package_id
- *         required: true
- *         schema:
- *           type: integer
- *         description: The ID of the package to remove
- *     responses:
- *       200:
- *         description: Item removed successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       404:
- *         description: Cart or item not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       400:
- *         description: Bad request (missing package_id)
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- */
 
 exports.getCart = async (req, res) => {
   const userId = req.params.user_id;
