@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.get('/get-Answers', quizController.getAnswers);
 
+router.get('/createQuiz', quizController.createQuiz);
+
 module.exports = router;
