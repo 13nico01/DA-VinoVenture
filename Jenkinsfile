@@ -12,7 +12,9 @@ pipeline {
         stage('Pull Changes') {
             steps {
                 script {
-                    // Git-Repository aktualisieren
+                    sendDiscordNotification('🚀 Deployment gestartet!
+
+git pull nicht vergessen!')
                     git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
                 }
             }
@@ -21,7 +23,6 @@ pipeline {
         stage('Detect Changes') {
             steps {
                 script {
-                    // Prüfen, welche Ordner geändert wurden
                     dir('/root/.jenkins/workspace/VinoVenture-Pipeline') {
                         def changes = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
                         env.BACKEND_CHANGED = changes.any { it.startsWith('vinoventure_backend/') }.toString()
@@ -39,19 +40,16 @@ pipeline {
 
                     echo 'Prüfe, ob alle benötigten Container existieren...'
 
-                    // Prüfen, ob der Backend-Container läuft
                     if (!sh(script: 'docker ps -q --filter "name=backend"', returnStdout: true).trim()) {
                         echo 'Backend-Container existiert nicht.'
                         containerMissing = true
                     }
 
-                    // Prüfen, ob der Datenbank-Container läuft
                     if (!sh(script: 'docker ps -q --filter "name=db"', returnStdout: true).trim()) {
                         echo 'Datenbank-Container existiert nicht.'
                         containerMissing = true
                     }
 
-                    // Prüfen, ob der Frontend-Container läuft
                     if (!sh(script: 'docker ps -q --filter "name=frontend"', returnStdout: true).trim()) {
                         echo 'Frontend-Container existiert nicht.'
                         containerMissing = true
@@ -60,12 +58,11 @@ pipeline {
                     if (containerMissing) {
                         echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose up --build...'
                         sh 'docker-compose up --build -d'
-            } else {
+                    } else {
                         echo 'Alle Container existieren. Prüfe auf Änderungen...'
 
                         def restartAll = false
 
-                        // Prüfen, ob Änderungen vorliegen
                         if (env.BACKEND_CHANGED == 'true' || env.DATABASE_CHANGED == 'true' || env.FRONTEND_CHANGED == 'true') {
                             restartAll = true
                         }
@@ -73,17 +70,14 @@ pipeline {
                         if (restartAll) {
                             echo 'Änderungen erkannt. Starte alle Container neu...'
 
-                            // Rollback-Tags setzen
                             sh 'docker tag da-vinoventure_backend:latest $ROLLBACK_BACKEND_IMAGE'
                             sh 'docker tag mysql:8.0.33-oracle $ROLLBACK_DATABASE_IMAGE'
                             sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
 
-                            // Alle Container stoppen
                             sh 'docker-compose down'
 
-                            // Alle Container neu bauen und starten
                             sh 'docker-compose up --build -d'
-                } else {
+                        } else {
                             echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                         }
                     }
@@ -96,7 +90,6 @@ pipeline {
                 script {
                     echo 'Führe Health-Checks für alle Container aus...'
 
-                    // Health-Check für die Datenbank
                     sh '''
                 for i in {1..30}; do
                     if docker exec $(docker ps -q --filter "name=db") mysqladmin ping -h 127.0.0.1 -u root -p${DB_PASSWORD}; then
@@ -108,7 +101,6 @@ pipeline {
                 done || exit 1
             '''
 
-                    // Health-Check für das Backend
                     sh '''
                 for i in {1..30}; do
                     if nc -z localhost 3000; then
@@ -120,7 +112,6 @@ pipeline {
                 done || exit 1
             '''
 
-                    // Health-Check für das Frontend
                     sh '''
                 for i in {1..30}; do
                     if nc -z localhost 80; then
@@ -162,12 +153,13 @@ pipeline {
 }
 
 def sendDiscordNotification(String message) {
+    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone('UTC'))
     sh """
         curl -X POST -H "Content-Type: application/json" -d '{
-            "content": "${message}"
+            "content": "${message}\n\n(Zeit: ${timestamp})"
         }' ${DISCORD_WEBHOOK_URL}
     """
-        }
+}
 
 def performRollback() {
     echo 'Rollback wird ausgeführt...'
