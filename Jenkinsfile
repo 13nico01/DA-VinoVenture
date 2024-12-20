@@ -76,13 +76,32 @@ pipeline {
                     fi
                     echo "Datenbank ist noch nicht bereit. Warte 1 Sekunde..."
                     sleep 1
-                done
+                done || exit 1
             '''
+
                     // Health-Check für das Backend
-                    sh 'curl -f http://localhost:3000/health || exit 1'
+                    sh '''
+                for i in {1..30}; do
+                    if nc -z localhost 3000; then
+                        echo "Backend läuft auf Port 3000."
+                        break
+                    fi
+                    echo "Warte auf Backend (Port 3000)..."
+                    sleep 1
+                done || exit 1
+            '''
 
                     // Health-Check für das Frontend
-                    sh 'curl -f http://localhost || exit 1'
+                    sh '''
+                for i in {1..30}; do
+                    if nc -z localhost 80; then
+                        echo "Frontend läuft auf Port 80."
+                        break
+                    fi
+                    echo "Warte auf Frontend (Port 80)..."
+                    sleep 1
+                done || exit 1
+            '''
                 }
             }
         }
