@@ -47,7 +47,7 @@ pipeline {
 
                         // Rollback-Tags setzen
                         sh 'docker tag da-vinoventure_backend:latest $ROLLBACK_BACKEND_IMAGE'
-                        sh 'docker tag da-vinoventure_database:latest $ROLLBACK_DATABASE_IMAGE'
+                        sh 'docker tag mysql:8.0.33-oracle:latest $ROLLBACK_DATABASE_IMAGE'
                         sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
 
                         // Alle Container stoppen
