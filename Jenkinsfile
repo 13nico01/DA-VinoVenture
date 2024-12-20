@@ -82,7 +82,7 @@ pipeline {
                             sh 'docker-compose down -v'
 
                             // Alle Container neu bauen und starten
-                            sh 'docker-compose up --build'
+                            sh 'docker-compose up --build -d'
                 } else {
                             echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                         }
