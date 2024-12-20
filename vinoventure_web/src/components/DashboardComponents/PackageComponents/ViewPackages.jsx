@@ -58,7 +58,7 @@ const ViewPackages = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://13.60.107.62:3000/api/wine-packages/delete-package/${pkgId}`,
+          `${API_BASE_URL}/api/wine-packages/delete-package/${pkgId}`,
           {
             method: "DELETE",
           }

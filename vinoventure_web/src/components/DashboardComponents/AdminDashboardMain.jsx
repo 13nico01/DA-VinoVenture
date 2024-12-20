@@ -60,7 +60,7 @@ function AdminDashboardSidebar() {
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                 />
-                <span className="ms-3">Paket-Manager</span>
+                <span className="ms-3">Weinpakete</span>
               </a>
             </li>
             <li>
@@ -86,7 +86,7 @@ function AdminDashboardSidebar() {
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                 />
-                <span className="flex-1 ms-3 whitespace-nowrap">User-Manager</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Benutzer</span>
               </a>
             </li>
             <li>
