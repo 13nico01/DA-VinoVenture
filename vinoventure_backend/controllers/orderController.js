@@ -1,6 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
-const generateQRCode = require('../config/qrCodeConfig');
 const transporter = require('../config/nodemailerConfig');
 
 let orders = [];
@@ -10,7 +9,7 @@ let orders = [];
 // Bestellbestätigungs E-Mail
 const sendOrderConfirmationEmail = (order) => {
     const emailOptions = {
-        from: 'julianholzer12@gmail.com',
+        from: '"Vino Venture" <no-reply@vino-venture.com>',
         to: order.customerEmail,
         subject: 'Deine Bestellung wurde erfolgreich aufgegeben!',
         text: `Deine Bestellung mit der ID ${order.id} wurde erfolgreich aufgegeben. Du erhältst eine weitere E-Mail, sobald dein Paket versandt wird.`,
@@ -27,10 +26,10 @@ const sendOrderConfirmationEmail = (order) => {
 
 // Create a new order
 exports.createOrder = async (req, res) => {
-    const { customerEmail } = req.body;
+    const { email } = req.body;
 
     const newOrder = {
-        customerEmail,
+        email,
         status: 'pending',
     };
 
@@ -48,20 +47,15 @@ exports.shipOrder = async (req, res) => {
         return res.status(404).json({ message: 'Order not found' });
     }
 
-    const uniqueLink = generateUniqueLink();
     
     try {
-        await generateQRCode(uniqueLink, qrPath);
-
+    
         const emailOptions = {
-            from: 'julianholzer12@gmail.com',
+            from: '"Vino Venture" <no-reply@vino-venture.com>',
             to: order.customerEmail,
             subject: 'Dein einmaliges Quiz',
             html: `
-                <p>Hier ist der QR-Code zu deinem einmaligen Quiz:</p>
-                <p><a href="${uniqueLink}">Klicke hier, um das Quiz zu besuchen.</a></p>
-                <p>Oder scanne den QR-Code:</p>
-                <img src="cid:qrcode" alt="QR Code" />
+                Test
             `
         };
 
