@@ -56,13 +56,10 @@ export const CartProvider = ({ children }) => {
     if (existingProduct) {
       // Wenn das Produkt schon im Warenkorb ist, die Menge erhöhen
       try {
-        await axios.put(
-          `http://13.60.107.62:3000/api/cart/update-cart/${userId}`,
-          {
-            wine_package_id: product.wine_package_id,
-            quantity: existingProduct.quantity + 1,
-          }
-        );
+        await axios.put(`${API_BASE_URL}/api/cart/update-cart/${userId}`, {
+          wine_package_id: product.wine_package_id,
+          quantity: existingProduct.quantity + 1,
+        });
         setCart((prevCart) =>
           prevCart.map((item) =>
             item.wine_package_id === product.wine_package_id
@@ -76,13 +73,10 @@ export const CartProvider = ({ children }) => {
     } else {
       // Andernfalls das Produkt zum Warenkorb hinzufügen
       try {
-        await axios.post(
-          `http://13.60.107.62:3000/api/cart/add-cart/${userId}`,
-          {
-            wine_package_id: product.wine_package_id,
-            quantity: 1,
-          }
-        );
+        await axios.post(`${API_BASE_URL}/api/cart/add-cart/${userId}`, {
+          wine_package_id: product.wine_package_id,
+          quantity: 1,
+        });
         setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
       } catch (error) {
         console.error(
@@ -104,9 +98,11 @@ export const CartProvider = ({ children }) => {
 
       // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
       await axios.delete(
-        `http://13.60.107.62:3000/api/cart/delete-cart/${userId}/${wine_package_id}`
+        `${API_BASE_URL}/api/cart/delete-cart/${userId}/${wine_package_id}`
       );
-      setCart((prevCart) => prevCart.filter((item) => item.wine_package_id !== wine_package_id));
+      setCart((prevCart) =>
+        prevCart.filter((item) => item.wine_package_id !== wine_package_id)
+      );
     } catch (error) {
       console.error(
         "Fehler beim Entfernen des Produkts aus dem Warenkorb:",
@@ -114,8 +110,6 @@ export const CartProvider = ({ children }) => {
       );
     }
   };
-
-  
 
   // Berechnung des Gesamtbetrags des Warenkorbs
   const calculateTotal = () =>
