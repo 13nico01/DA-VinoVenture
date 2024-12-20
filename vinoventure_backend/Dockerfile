@@ -9,8 +9,9 @@ RUN npm ci --only=production
 COPY . .
 
 COPY wait-for-it.sh /wait-for-it.sh
+
 RUN chmod +x /wait-for-it.sh
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["/wait-for-it.sh", "db:3306", "--", "npm", "start"]

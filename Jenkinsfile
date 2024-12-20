@@ -14,7 +14,6 @@ pipeline {
                 script {
                     // Git-Repository aktualisieren
                     git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
-
                 }
             }
         }
@@ -36,22 +35,29 @@ pipeline {
         stage('Restart Containers') {
             steps {
                 script {
-                    if (env.BACKEND_CHANGED == 'true') {
-                        echo 'Backend wurde geändert, Container wird neu gestartet.'
+                    def restartAll = false
+
+                    // Prüfen, ob Änderungen vorliegen
+                    if (env.BACKEND_CHANGED == 'true' || env.DATABASE_CHANGED == 'true' || env.FRONTEND_CHANGED == 'true') {
+                        restartAll = true
+                    }
+
+                    if (restartAll) {
+                        echo 'Änderungen erkannt. Starte alle Container neu...'
+
+                        // Rollback-Tags setzen
                         sh 'docker tag da-vinoventure_backend:latest $ROLLBACK_BACKEND_IMAGE'
-                        sh 'docker-compose stop backend && docker-compose build backend && docker-compose up -d backend'
-                    }
-
-                    if (env.DATABASE_CHANGED == 'true') {
-                        echo 'Datenbank wurde geändert, Container wird neu gestartet.'
                         sh 'docker tag da-vinoventure_database:latest $ROLLBACK_DATABASE_IMAGE'
-                        sh 'docker-compose stop db && docker-compose build db && docker-compose up -d db'
-                    }
-
-                    if (env.FRONTEND_CHANGED == 'true') {
-                        echo 'Frontend wurde geändert, Container wird neu gestartet.'
                         sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
-                        sh 'docker-compose stop frontend && docker-compose build frontend && docker-compose up -d frontend'
+
+                        // Alle Container stoppen
+                        sh 'docker-compose down'
+
+                        // Alle Container neu bauen und starten
+                        sh 'docker-compose build'
+                        sh 'docker-compose up -d'
+                    } else {
+                        echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                     }
                 }
             }
@@ -60,17 +66,24 @@ pipeline {
         stage('Health Check') {
             steps {
                 script {
-                    echo 'Führe Health-Checks aus...'
+                    echo 'Führe Health-Checks für alle Container aus...'
 
-                    if (env.BACKEND_CHANGED == 'true') {
-                        sh 'curl -f http://localhost:3000/health || exit 1'
-                    }
-                    if (env.FRONTEND_CHANGED == 'true') {
-                        sh 'curl -f http://localhost || exit 1'
-                    }
-                    if (env.DATABASE_CHANGED == 'true') {
-                        sh 'docker exec $(docker ps -q --filter "name=db") mysqladmin ping -h 127.0.0.1 -u root -p${DB_PASSWORD} || exit 1'
-                    }
+                    // Health-Check für die Datenbank
+                    sh '''
+                for i in {1..30}; do
+                    if docker exec $(docker ps -q --filter "name=db") mysqladmin ping -h 127.0.0.1 -u root -p${DB_PASSWORD}; then
+                        echo "Datenbank ist bereit."
+                        break
+                    fi
+                    echo "Datenbank ist noch nicht bereit. Warte 1 Sekunde..."
+                    sleep 1
+                done
+            '''
+                    // Health-Check für das Backend
+                    sh 'curl -f http://localhost:3000/health || exit 1'
+
+                    // Health-Check für das Frontend
+                    sh 'curl -f http://localhost || exit 1'
                 }
             }
         }
@@ -107,7 +120,7 @@ def sendDiscordNotification(String message) {
             "content": "${message}"
         }' ${DISCORD_WEBHOOK_URL}
     """
-}
+        }
 
 def performRollback() {
     echo 'Rollback wird ausgeführt...'
@@ -129,4 +142,3 @@ def performRollback() {
         fi
     '''
 }
-
