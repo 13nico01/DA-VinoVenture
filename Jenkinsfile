@@ -13,7 +13,6 @@ pipeline {
             steps {
                 script {
                     sendDiscordNotification('🚀 Deployment gestartet!
-
 git pull nicht vergessen!')
                     git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
                 }
