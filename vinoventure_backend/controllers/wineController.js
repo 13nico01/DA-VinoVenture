@@ -119,4 +119,19 @@ exports.getWine = async (req, res) => {
       return res.status(500).json({ error: err.message });
     }
   };
+  exports.deleteWine = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const [result] = await db.query(
+        `DELETE FROM wine WHERE wine_id = ?`,
+        [id]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Wein nicht gefunden!" });
+      }
+      res.json({ message: "Wein gelöscht!" });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  };
   
