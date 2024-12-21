@@ -13,7 +13,7 @@ const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
 const wineRoutes = require("./wineRoutes");
 
-router.use("/", orderRoutes);
+router.use("/order", orderRoutes)
 router.use("/users", authRoutes);
 router.use("/admin", adminAuthRoutes);
 router.use("/wine-packages", winePackageRoutes);

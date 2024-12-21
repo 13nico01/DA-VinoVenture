@@ -7,4 +7,4 @@ router.get('/get-Wine', wineController.getWine);
 
 router.get ('/get-WineById', wineController.getWineById);
 
-modules.export = router;
+module.exports = router;
