@@ -6,3 +6,5 @@ const router = express.Router();
 router.get('/get-Wine', wineController.getWine);
 
 router.get ('/get-WineById', wineController.getWineById);
+
+modules.export = router;
