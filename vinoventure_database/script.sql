@@ -135,49 +135,55 @@ CREATE TABLE
 SET
     utf8mb4 COLLATE utf8mb4_general_ci;
 
-CREATE TABLE
-    IF NOT EXISTS answers (
-        answer_id INT AUTO_INCREMENT PRIMARY KEY,
-        wine_id INT NOT NULL,
-        answer1 VARCHAR(255) NOT NULL,
-        answer2 VARCHAR(255) NOT NULL,
-        answer3 VARCHAR(255) NOT NULL,
-        answer4 VARCHAR(255) NOT NULL,
-        is_correct1 INT NOT NULL,
-        is_correct2 INT NOT NULL,
-        is_correct3 INT NOT NULL,
-        is_correct4 INT NOT NULL,
-        FOREIGN KEY (wine_id) REFERENCES wine (wine_id) ON DELETE CASCADE
-    ) CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS quiz
+(
+    quiz_id         INT AUTO_INCREMENT PRIMARY KEY,
+    host_id         INT     NOT NULL,
+    status          BOOLEAN NOT NULL,
+    quiz_key        INT,
+    wine_package_id INT,
+    FOREIGN KEY (host_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE SET NULL
+);
 
-CREATE TABLE
-    IF NOT EXISTS quizzes (
-        quizzes_id INT AUTO_INCREMENT PRIMARY KEY,
-        host VARCHAR(255) NOT NULL,
-        status BOOLEAN NOT NULL,
-        quiz_key INT,
-        answer_id INT,
-        wine_package_id INT,
-        FOREIGN KEY (answer_id) REFERENCES answers (answer_id) ON DELETE CASCADE,
-        FOREIGN KEY (wine_package_id) REFERENCES wine_packages (wine_package_id) ON DELETE SET NULL
-    ) CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS answer
+(
+    answer_id  INT AUTO_INCREMENT PRIMARY KEY,
+    wine_id    INT NOT NULL,
+    answer1    VARCHAR(255),
+    answer2    VARCHAR(255),
+    answer3    VARCHAR(255),
+    answer4    VARCHAR(255),
+    is_correct INT NOT NULL,
+    quiz_id    INT,
+    FOREIGN KEY (quiz_id) REFERENCES quiz (quiz_id) ON DELETE CASCADE,
+    FOREIGN KEY (wine_id) REFERENCES wine (wine_id) ON DELETE CASCADE
+);
 
-CREATE TABLE
-    IF NOT EXISTS score (
-        score_id INT AUTO_INCREMENT PRIMARY KEY,
-        score INT NOT NULL
-    ) CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE TABLE participant
+(
+    participant_id   INT AUTO_INCREMENT PRIMARY KEY,
+    participant_name VARCHAR(255),
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
 
-CREATE TABLE
-    participants (
-        participants_id INT AUTO_INCREMENT PRIMARY KEY,
-        participant_name VARCHAR(255)
-    ) CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS score
+(
+    score_id       INT AUTO_INCREMENT PRIMARY KEY,
+    user_id        INT,
+    participant_id INT,
+    score          INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (participant_id) REFERENCES participant (participant_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE participant_answer
+(
+    participant_id INT,
+    answer_id      INT NOT NULL,
+    clicked        INT,
+    FOREIGN KEY (participant_id) REFERENCES participant (participant_id) ON DELETE CASCADE,
+    FOREIGN KEY (answer_id) REFERENCES answer (answer_id) ON DELETE CASCADE
+);
