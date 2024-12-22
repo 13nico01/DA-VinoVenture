@@ -63,7 +63,9 @@ SET
 CREATE TABLE
     IF NOT EXISTS wine (
         wine_id INT AUTO_INCREMENT PRIMARY KEY,
-        wine_name VARCHAR(100) NOT NULL
+        wine_name VARCHAR(100) NOT NULL,
+        image_name VARCHAR(255),
+        image_path VARCHAR(255)
     ) CHARACTER
 SET
     utf8mb4 COLLATE utf8mb4_general_ci;
