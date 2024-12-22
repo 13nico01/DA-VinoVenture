@@ -59,11 +59,27 @@ VALUES
 (25, 'Steindlgasse', '15', 8010, 'Graz');
 
 INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons)
-VALUES
-('Weinviertel', 'Das größte heimische Weinbaugebiet trumpft mit einer Fülle an Bodentypen und Kleinklimata auf – und daher mit einer großen Weinvielfalt.', 8, '', 66.53, 2),
-('Wagram', 'Der Wagram ist flächen- wie auch mengenmäßig eine durchaus bedeutende Weinregion mit einem ganz eigenen Charakter und einer ganz besonderen Sortenspezialität.', 6, '', 156.55, 2),
-('Burgenland', 'Mehr als 2.000 Sonnenstunden und das vom Neusiedler See geprägte Mikroklima machen das Burgenland zum Weinland par excellence.', 15, '', 310.365, 3),
-('Toskana', 'So vielfältig die Reize der Toskana auch sind, untrennbar verbunden ist sie stets mit dem Wein – und der zeigt sich im eleganten Chianti Classico genauso wie bei den Weinen von Montepulciano, Montalcino oder der toskanischen Küste.', 12, '', 121, 2);
+VALUES ('Weinviertel',
+        'Das größte heimische Weinbaugebiet trumpft mit einer Fülle an Bodentypen und Kleinklimata auf – und daher mit einer großen Weinvielfalt.',
+        4, '', 33.25, 4),
+       ('Wagram',
+        'Der Wagram ist flächen- wie auch mengenmäßig eine durchaus bedeutende Weinregion mit einem ganz eigenen Charakter und einer ganz besonderen Sortenspezialität.',
+        3, '', 75.55, 3),
+       ('Burgenland',
+        'Mehr als 2.000 Sonnenstunden und das vom Neusiedler See geprägte Mikroklima machen das Burgenland zum Weinland par excellence.',
+        5, '', 105, 3),
+       ('Toskana',
+        'So vielfältig die Reize der Toskana auch sind, untrennbar verbunden ist sie stets mit dem Wein – und der zeigt sich im eleganten Chianti Classico genauso wie bei den Weinen von Montepulciano, Montalcino oder der toskanischen Küste.',
+        6, '', 61, 5),
+       ('Wien',
+        'Welche andere Hauptstadt der Welt verfügt über eine Weinbautradition mit solchem Stellenwert wie Wien?', 3,
+        'Mayer am Pfarrplatz', 31.50, 3),
+       ('Kremstal',
+        'Das Kremstal liegt ca. eine Autostunde westlich von Wien am Tor zur Wachau. Als DAC-Appellation definieren es, so wie auch das Kamptal und das Traisental, die Sorten Grüner Veltliner und Riesling.',
+        4, 'Mantlerhof', 102, 4),
+       ('Steiermark',
+        'Die Rebfläche der Steiermark umfasst nur knapp über 5000 Hektar und dennoch sind hier über 2000 Betriebe angesiedelt.',
+        2, 'Erwin Sabathi', 30.6, 2);
 
 INSERT INTO wine (wine_name)
 VALUES
