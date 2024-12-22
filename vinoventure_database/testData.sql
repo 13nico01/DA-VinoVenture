@@ -81,36 +81,148 @@ VALUES ('Weinviertel',
         'Die Rebfläche der Steiermark umfasst nur knapp über 5000 Hektar und dennoch sind hier über 2000 Betriebe angesiedelt.',
         2, 'Erwin Sabathi', 30.6, 2);
 
-INSERT INTO wine (wine_name)
-VALUES
-('Grüner Veltliner Ried Längen 2023'),
-('Grüner Veltliner Ried Antlasbergen 2023'),
-('Roter Veltliner Da Capo 2023/knackig-frisch'),
-('Grüner Veltliner Ried Diermannsee Alte Rebe 2023'),
+INSERT INTO wine (wine_name, image_name)
+VALUES ('Grüner Veltliner Ried Längen 2023', 'Prechtl_GV_Ried_Laengen_2023.webp'),
+       ('Grüner Veltliner Ried Antlasbergen 2023', 'Hagn_GV_RiedAntlasbergen_2023.webp'),
+       ('Roter Veltliner Da Capo 2023/knackig-frisch', 'Setzer_RV_DaCapo_2023.webp'),
+       ('Grüner Veltliner Ried Diermannsee Alte Rebe 2023', 'Bauer_GV_RiedDiermannsee_2023.webp'),
 
-('Roter Veltliner Ried Steinberg 1ÖTW Erste Lage 2022'),
-('Grüner Veltliner Ried Himmelreich 2023'),
-('Grüner Veltliner Ried Spiegel 1ÖTW Erste Lage 2022'),
+       ('Roter Veltliner Ried Steinberg 1ÖTW Erste Lage 2022', 'Fritsch_RV_RiedSteinberg_2022.webp'),
+       ('Grüner Veltliner Ried Himmelreich 2023', 'FritzJ_GV_RiedHimmelreich_2023.webp'),
+       ('Grüner Veltliner Ried Spiegel 1ÖTW Erste Lage 2022', 'Ott_GV_RiedSpiegel_2022.webp'),
 
-('Tiefschwarz 2020'),
-('The Legends 2022'),
-('Nordrand 2018'),
-('Haideboden 2021'),
-('Bela Rex 2020'),
+       ('Tiefschwarz 2020', 'Schwarz_Tiefschwarz_2020.webp'),
+       ('The Legends 2022', 'Scheiblhofer_TheLegends_2022.webp'),
+       ('Nordrand 2018', 'Nittnaus_Nordrand_2018.webp'),
+       ('Haideboden 2021', 'Umathum_Haideboden_2021.webp'),
+       ('Bela Rex 2020', 'Gesellmann_BelaRex_2020.webp'),
 
-('Chianti Riserva 2021'),
-('Le Volte dell’ Ornellaia 2022'),
-('Chianti Classico Discorsi 2020'),
-('Brunello di Montalcino CastelGiocondo 2019'),
-('Rosso di Montalcino 2021'),
-('Vino Nobile di Montepulciano 2021');
+       ('Chianti Riserva 2021', 'Tosca_ChiantiRiserva_2021.webp'),
+       ('Le Volte dell’ Ornellaia 2022', 'Ornellaia_LeVolte_2022.webp'),
+       ('Chianti Classico Discorsi 2020', 'Settecieli_ChiantiClassicoDiscorsi_2020.webp'),
+       ('Brunello di Montalcino CastelGiocondo 2019', 'Frescobaldi_BrunelloDiMontalcino_2019.webp'),
+       ('Rosso di Montalcino 2021', 'Fanti_RossoDiMontalcino_2021.webp'),
+       ('Vino Nobile di Montepulciano 2021', 'Fanti_RossoDiMontalcino_2021.webp'),
 
+       ('Asia Cuvée 2023', 'Asia_Cuvée_2023.webp'),
+       ('Sekt Brut', 'Sekt_Brut.webp'),
+       ('Das Fräulein Rosé 2023', 'Das_Fräulein_Rosé_2023.webp'),
+
+       ('Grüner & Roter Veltliner Alte Reben 2023', 'Grüner_&_Roter_Veltliner_Alte_Reben_2023.webp'),
+       ('Riesling Reserve V Ried Steingraben 1ÖTW Erste Lage 2018',
+        'Riesling_Reserve_V_Ried_Steingraben_1ÖTW_Erste_Lage_2018.webp'),
+       ('Roter Veltliner Ried Reisenthal 2023', 'Roter_Veltliner_Ried_Reisenthal_2023.webp'),
+       ('Veltlinerin Ried Moosburgerin 1ÖTW Erste Lage 2022',
+        'Veltlinerin_Ried_Moosburgerin_1ÖTW_Erste_Lage_2022.webp');
 
 
 
 INSERT INTO wine_package_wine (wine_package_id, wine_id, quantity)
-VALUES
-(1, 1, 2), (1, 2, 2), (1, 3, 2), (1, 4, 2),
-(2, 5, 2), (2, 6, 2), (2, 7, 2),
-(3, 8, 3), (3, 9, 3), (3, 10, 3), (3, 11, 3), (3, 12, 3),
-(4, 13, 2), (4, 14, 2), (4, 15, 2), (4, 16, 2), (4, 17, 2), (4, 18, 2);
+VALUES (1, 1, 2),
+       (1, 2, 2),
+       (1, 3, 2),
+       (1, 4, 2),
+       (2, 5, 2),
+       (2, 6, 2),
+       (2, 7, 2),
+       (3, 8, 3),
+       (3, 9, 3),
+       (3, 10, 3),
+       (3, 11, 3),
+       (3, 12, 3),
+       (4, 13, 2),
+       (4, 14, 2),
+       (4, 15, 2),
+       (4, 16, 2),
+       (4, 17, 2),
+       (4, 18, 2),
+       (5, 19, 1),
+       (5, 20, 1),
+       (5, 21, 1),
+       (6, 22, 1),
+       (6, 23, 1),
+       (6, 24, 1),
+       (6, 25, 1);
+
+INSERT INTO quiz (host_id, status, quiz_key, wine_package_id)
+VALUES (5, TRUE, 123456, 1);
+
+
+INSERT INTO answer (wine_id, answer1, answer2, answer3, answer4, is_correct, quiz_id)
+VALUES (1, 'Zitrus', 'Steinobst', 'Erbeere', 'Vanille', 1, 1),
+       (1, 'Zimt', 'Spargel', 'Grüner Apfel', 'Orange', 3, 1),
+       (1, 'Süß', 'Sauer', NULL, NULL, 2, 1),
+       (1, 'Kremig', 'Frisch', NULL, NULL, 1, 1),
+       (2, 'Zitrus', 'Kirsche', 'Pflaume', 'Apfel', 4, 1),
+       (2, 'Spargel', 'Birne', 'Pflaume', 'Orange', 3, 1),
+       (2, 'Fruchtig', 'Bitter', NULL, NULL, 2, 1),
+       (2, 'Süß', 'Herb', NULL, NULL, 1, 1),
+       (3, 'Litchi', 'Mango', 'Passionsfrucht', 'Zitrone', 3, 1),
+       (3, 'Grüner Apfel', 'Kiwifrucht', 'Ananas', 'Banane', 4, 1),
+       (3, 'Süß', 'Trocken', NULL, NULL, 1, 1),
+       (3, 'Mild', 'Scharf', 'Scharf-süß', 'Frisch', 4, 1),
+       (4, 'Erdbeere', 'Kirsche', 'Heidelbeere', 'Pflaume', 1, 1),
+       (4, 'Vanille', 'Zimt', 'Ingwer', 'Orange', 3, 1),
+       (4, 'Süß', 'Trockene', 'Blumig', 'Fruchtig', 4, 1),
+       (4, 'Kühl', 'Warm', 'Luftig', 'Frisch', 2, 1);
+
+INSERT INTO participant (participant_name, user_id)
+VALUES ('Alice', NULL),
+       ('Bob', Null),
+       (NULL, 5);
+
+INSERT INTO score (user_id, participant_id, score)
+VALUES (NULL, 1, 20), -- Benutzer 2 hat 20 Punkte für Teilnehmer Bob
+       (NULL, 2, 10),
+       (5, NULL, 10);
+
+
+INSERT INTO participant_answer (participant_id, answer_id, clicked)
+VALUES (1, 1, 2),
+       (2, 1, 3),
+       (3, 1, 4),
+       (1, 2, 1),
+       (2, 2, 2),
+       (3, 2, 3),
+       (1, 3, 1),
+       (2, 3, 2),
+       (3, 3, 2),
+       (1, 4, 1),
+       (2, 4, 2),
+       (3, 4, 1),
+       (1, 5, 3),
+       (2, 5, 2),
+       (3, 5, 4),
+       (1, 6, 4),
+       (2, 6, 1),
+       (3, 6, 2),
+       (1, 7, 2),
+       (2, 7, 1),
+       (3, 7, 1),
+       (1, 8, 2),
+       (2, 8, 2),
+       (3, 8, 1),
+       (1, 9, 4),
+       (2, 9, 2),
+       (3, 9, 1),
+       (1, 10, 4),
+       (2, 10, 2),
+       (3, 10, 1),
+       (1, 11, 1),
+       (2, 11, 1),
+       (3, 11, 2),
+       (1, 12, 4),
+       (2, 12, 3),
+       (3, 12, 3),
+       (1, 13, 3),
+       (2, 13, 2),
+       (3, 13, 1),
+       (1, 14, 2),
+       (2, 14, 1),
+       (3, 14, 4),
+       (1, 15, 2),
+       (2, 15, 1),
+       (3, 15, 4),
+       (1, 16, 2),
+       (2, 16, 3),
+       (3, 16, 4);
