@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS score
 );
 
 
+
 CREATE TABLE participant_answer
 (
     participant_id INT,
