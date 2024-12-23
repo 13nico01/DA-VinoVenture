@@ -55,7 +55,8 @@ pipeline {
 
                     if (containerMissing) {
                         echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose up --build...'
-                        sh 'docker-compose up --build -d'
+                        sh 'docker-compose up --build -v -d'
+                        sh 'docker stop vinoventure-pipeline_db_1'
                     } else {
                         echo 'Alle Container existieren. Prüfe auf Änderungen...'
 
