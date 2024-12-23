@@ -1,9 +1,7 @@
-const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const transporter = require('../config/nodemailerConfig');
 
 let orders = [];
-
 
 
 // Bestellbestätigungs E-Mail
@@ -24,47 +22,59 @@ const sendOrderConfirmationEmail = (order) => {
         });
 };
 
-// Create a new order
-exports.createOrder = async (req, res) => {
-    const { email } = req.body;
 
-    const newOrder = {
-        email,
-        status: 'pending',
-    };
-
-    orders.push(newOrder);
-    sendOrderConfirmationEmail(newOrder);
-    res.status(201).json({ message: 'Order placed successfully!', orderId: newOrder.id });
-};
-
-// Function to ship an order and send QR code with shipping confirmation
-exports.shipOrder = async (req, res) => {
-    const { orderId } = req.params;
-
-    const order = orders.find(o => o.id === orderId);
-    if (!order) {
-        return res.status(404).json({ message: 'Order not found' });
-    }
-
-    
+exports.addOrder = async (req, res) => {
     try {
-    
-        const emailOptions = {
-            from: '"Vino Venture" <no-reply@vino-venture.com>',
-            to: order.customerEmail,
-            subject: 'Dein einmaliges Quiz',
-            html: `
-                Test
-            `
-        };
-
-        await transporter.sendMail(emailOptions);
-        order.status = 'shipped';
-
-        res.status(200).json({ message: 'Quiz shipped successfully!' });
-    } catch (error) {
-        console.error('Error processing order:', error);
-        res.status(500).json({ message: 'Error processing the order' });
+        const { user_id, total_amount, status, shipping_cart_id } = req.body;
+        
+        if (!user_id || !total_amount || !status || !shipping_cart_id) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+        const query = `
+            INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
+            VALUES (?, ?, ?, ?)
+        `;
+        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id]);
+        
+        res.status(201).json({
+            message: 'Order created successfully',
+            order_id: result.insertId,
+        });
+    } catch (err) {
+        console.error(err);
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ error: 'Shipping cart ID must be unique' });
+        }
+        return res.status(500).json({ error: err.message });
     }
 };
+
+
+exports.getAllOrders = async (req, res) => {
+    try {
+      const [rows] = await db.query(`SELECT * FROM orders`); 
+      res.json({ users: rows });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  };
+
+exports.getUserOrders = async (req, res) => {
+    const userId = req.params.user_id;
+
+    try {
+        const [rows] = await db.query(
+            `SELECT * FROM orders WHERE user_id = ?`,
+            [userId]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'No orders found for this user' });
+        }
+
+        res.json({ orders: rows });
+    } catch (err) {
+        console.error("Error fetching user orders:", err);
+        return res.status(500).json({ error: err.message });
+    }
+}
