@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
 
-// Neue Bestellung erstellen
-router.post('/createOrder', orderController.createOrder);
 
-// Bestellung verschicken
-router.post('/ship-order/:orderId', orderController.shipOrder);
+router.post('/addOrder', orderController.addOrder);
+
+router.get('/getAllOrders', orderController.getAllOrders);
+
+router.get('/getUsersOrders/:user_id', orderController.getUserOrders);
 
 module.exports = router;
