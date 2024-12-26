@@ -20,7 +20,16 @@ pipeline {
 
                     // Alle bestehenden Container stoppen und löschen
                     sh 'docker-compose down -v --remove-orphans'
-                    sh 'docker rm -f $(docker ps -a -q)'
+
+                    // Lösche alle existierenden Container, aber nur wenn Container vorhanden sind
+                    sh '''
+                    containers=$(docker ps -a -q)
+                    if [ -n "$containers" ]; then
+                        docker rm -f $containers
+                    else
+                        echo "Keine Container zum Entfernen."
+                    fi
+                    '''
 
                     // Baue die Container neu und starte sie
                     sh 'docker-compose up --build -d'
