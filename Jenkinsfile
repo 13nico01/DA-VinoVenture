@@ -33,28 +33,32 @@ pipeline {
             }
         }
 
-        stage('Restart Containers') {
+       stage('Restart Containers') {
             steps {
                 script {
                     def containerMissing = false
 
                     echo 'Prüfe, ob alle benötigten Container existieren...'
 
+                    // Überprüfe, ob der Datenbank-Container existiert
                     if (!sh(script: 'docker ps -q --filter "name=db"', returnStdout: true).trim()) {
                         echo 'Datenbank-Container existiert nicht.'
                         containerMissing = true
                     }
 
+                    // Überprüfe, ob der Backend-Container existiert
                     if (!sh(script: 'docker ps -q --filter "name=backend"', returnStdout: true).trim()) {
                         echo 'Backend-Container existiert nicht.'
                         containerMissing = true
                     }
 
+                    // Überprüfe, ob der Frontend-Container existiert
                     if (!sh(script: 'docker ps -q --filter "name=frontend"', returnStdout: true).trim()) {
                         echo 'Frontend-Container existiert nicht.'
                         containerMissing = true
                     }
 
+                    // Wenn mindestens ein Container fehlt, dann starte alle neu
                     if (containerMissing) {
                         echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose up --build...'
                         sh 'docker-compose down --remove-orphans'
@@ -70,6 +74,7 @@ pipeline {
                         def databaseChanged = env.DATABASE_CHANGED == 'true'
                         def frontendChanged = env.FRONTEND_CHANGED == 'true'
 
+                        // Überprüfe, ob Änderungen an Backend, Database oder Frontend vorgenommen wurden
                         if (backendChanged || databaseChanged || frontendChanged) {
                             if (databaseChanged) {
                                 echo 'Änderungen an der Datenbank erkannt. Starte den Datenbank-Container neu...'
@@ -83,22 +88,26 @@ pipeline {
 
                             if (backendChanged) {
                                 echo 'Änderungen am Backend erkannt. Aktualisiere Backend ohne Neustart...'
-                                sh 'docker-compose exec -T backend npm install'
+                                sh 'docker-compose exec -T backend npm install --legacy-peer-deps'
                                 sh 'docker-compose exec backend npx nodemon server.js'
                             }
 
                             if (frontendChanged) {
                                 echo 'Änderungen am Frontend erkannt. Aktualisiere Frontend ohne Neustart...'
-                                sh 'docker-compose exec -T frontend npm install'
-                                sh 'docker-compose exec -T frontend npm run dev'
-}
+                                sh '''
+                                    docker-compose exec -T frontend rm -rf node_modules
+                                    docker-compose exec -T frontend npm install --legacy-peer-deps
+                                    docker-compose exec -T frontend npm run dev
+                                '''
+                            }
                         } else {
                             echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                         }
                     }
                 }
             }
-        }
+}
+
 
         stage('Health Check') {
             steps {
