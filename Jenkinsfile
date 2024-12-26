@@ -28,8 +28,11 @@ pipeline {
             steps {
                 script {
                     echo 'Starte alle Container neu mit docker-compose down -v und up --build...'
+                    sleep(5)
                     sh 'docker-compose down -v --remove-orphans' // Entfernt alle Container, Volumes und Netzwerke
+                    sleep(5)
                     sh 'docker container prune -f'
+                    sleep(5)
                     sh 'docker-compose up --build -d' // Baue und starte die Container neu
                 }
             }
