@@ -24,15 +24,27 @@ pipeline {
             }
         }
 
+        stage('Stop and Remove Old Containers') {
+            steps {
+                script {
+                    echo 'Stoppe und entferne alle alten Container, Volumes und Netzwerke...'
+                    sh 'docker ps -aq --filter "name=vinoventure-pipeline" | xargs -I {} docker stop {}'
+                    sh 'docker ps -aq --filter "name=vinoventure-pipeline" | xargs -I {} docker rm -f {}'
+                    sh 'docker network prune -f' // Entfernt alle ungenutzten Netzwerke
+                    sh 'docker volume prune -f' // Entfernt alle ungenutzten Volumes
+                }
+            }
+        }
+
         stage('Restart Containers') {
             steps {
                 script {
-                    'docker-compose down -v'
-                    'docker ps -a'
+                    echo 'Starte alle Container neu mit docker-compose down -v und up --build...'
+                    sh 'docker-compose down -v --remove-orphans' // Entfernt alle Container, Volumes und nicht verwendete Netzwerke
+                    sh 'docker-compose up --build -d' // Baue und starte die Container neu
+                }
+            }
         }
-    }
-}
-
 
         stage('Notify Success') {
             steps {
