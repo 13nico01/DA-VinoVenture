@@ -11,7 +11,6 @@ const shopRoutes = require("./shopRoutes");
 const orderManagerRoutes = require("./orderManagerRoutes");
 const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
-const wineRoutes = require("./wineRoutes");
 
 router.use("/order", orderRoutes)
 router.use("/users", authRoutes);
