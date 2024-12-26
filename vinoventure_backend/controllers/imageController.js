@@ -32,6 +32,7 @@ const { db } = require('../config/database');
  *                   example: "Fehler beim Aktualisieren der Bildpfade."
  */
 
+
 exports.updateImagePaths = async (req, res) => {
     const imagesFolder = path.join(__dirname, '../vinoventure_backend/images');
 
@@ -59,3 +60,4 @@ exports.updateImagePaths = async (req, res) => {
         res.status(500).json({ error: 'Fehler beim Aktualisieren der Bildpfade.' });
     }
 };
+
