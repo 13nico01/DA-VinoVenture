@@ -13,6 +13,9 @@ RUN npm run build
 # Production-Phase
 FROM nginx:alpine
 
+# Installiere Node.js und npm (notwendig für npm-Befehle)
+RUN apk add --no-cache nodejs npm
+
 # Entferne alte HTML-Dateien aus Nginx
 RUN rm -rf /usr/share/nginx/html/*
 
