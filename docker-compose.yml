@@ -1,7 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
+    container_name: backend # Fester Name für den Backend-Container
     deploy:
       resources:
         limits:
@@ -13,10 +14,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./vinoventure_backend:/app   # Mount für Hot-Reload
-      - /app/node_modules            # Bind-Mount, um Konflikte mit node_modules zu vermeiden
+      - ./vinoventure_backend:/app # Mount für Hot-Reload
+      - /app/node_modules # Bind-Mount, um Konflikte mit node_modules zu vermeiden
     depends_on:
-      - db                           # Abhängigkeit zur Datenbank
+      - db # Abhängigkeit zur Datenbank
     environment:
       NODE_ENV: production
       DB_HOST: db
@@ -25,6 +26,7 @@ services:
       DB_DATABASE: vinoventure
 
   db:
+    container_name: db # Fester Name für den DB-Container
     deploy:
       resources:
         limits:
@@ -44,13 +46,14 @@ services:
       - ./vinoventure_database/testData.sql:/docker-entrypoint-initdb.d/testData.sql
 
   frontend:
+    container_name: frontend # Fester Name für den Frontend-Container
     build:
       context: ./vinoventure_web
       dockerfile: Dockerfile
     ports:
       - "8080:80"
     volumes:
-      - ./vinoventure_web:/app      # Hot-Reload für das Frontend
+      - ./vinoventure_web:/app # Hot-Reload für das Frontend
       - /app/node_modules
     depends_on:
       - backend
