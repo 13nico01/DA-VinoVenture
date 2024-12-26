@@ -24,6 +24,5 @@ router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/wine", wineRoutes);
-router.use('/images', express.static(path.join(__dirname, '../images')));
 
 module.exports = router;
