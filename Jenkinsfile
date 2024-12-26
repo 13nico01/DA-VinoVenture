@@ -81,7 +81,7 @@ pipeline {
 
                             if (backendChanged) {
                                 echo 'Änderungen am Backend erkannt. Aktualisiere Backend ohne Neustart...'
-                                sh 'docker-compose exec backend npm install'
+                                sh 'docker-compose exec -T backend npm install'
                                 sh 'docker-compose exec backend npx nodemon server.js'
                             }
 
