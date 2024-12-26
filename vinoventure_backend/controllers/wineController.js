@@ -119,6 +119,7 @@ exports.getWine = async (req, res) => {
       return res.status(500).json({ error: err.message });
     }
   };
+  
   exports.deleteWine = async (req, res) => {
     const { id } = req.params;
     try {

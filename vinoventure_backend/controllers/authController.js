@@ -53,7 +53,7 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  *                 type: string
  *                 description: User's password
  *               street:
- * #               type: string
+ *                 type: string
  *                 description: User's street
  *               house number:
  *                 type: int

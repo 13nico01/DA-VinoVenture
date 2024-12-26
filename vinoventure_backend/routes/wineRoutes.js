@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const wineController = require('../controllers/imageController');
+const imageController = require('../controllers/imageController');
+const wineController = require('../controllers/wineController');
 
 
-router.post('/update-image-paths', wineController.updateImagePaths);
-router.get('/getWinesByPackageId/:packageId', wineController.getWinesByPackageId);
+router.post('/update-image-paths', imageController.updateImagePaths);
+router.get('/getWinesByPackageId/:packageId', imageController.getWinesByPackageId);
+router.get('/getWine', wineController.getWine)
+router.get('/getWineById/:id', wineController.getWineById);
+router.delete('/deleteWine/:id', wineController.deleteWine);
+
 
 module.exports = router;
