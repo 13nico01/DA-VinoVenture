@@ -27,36 +27,6 @@ VALUES
 ('admin4', 'Claudia', 'Holzer', 'adminpass4', 'claudia.holzer@gmail.com', '1983-01-25', 'active', 'admin'),
 ('admin5', 'Thomas', 'Rauch', 'adminpass5', 'thomas.rauch@gmail.com', '1978-10-12', 'active', 'admin');
 
-INSERT INTO shipping_address (user_id, street, house_number, postal_code, city)
-VALUES
--- Regular users
-(1, 'Hauptstraße', '12A', 1010, 'Wien'),
-(2, 'Kirchgasse', '7', 5020, 'Salzburg'),
-(3, 'Linzergasse', '34', 4020, 'Linz'),
-(4, 'Münchner Straße', '21', 6020, 'Innsbruck'),
-(5, 'Berggasse', '9', 8010, 'Graz'),
-(6, 'Bahnhofstraße', '5', 3100, 'St. Pölten'),
-(7, 'Schulstraße', '17', 3500, 'Krems an der Donau'),
-(8, 'Parkstraße', '14B', 6900, 'Bregenz'),
-(9, 'Seestraße', '3', 7000, 'Eisenstadt'),
-(10, 'Altstadtgasse', '18', 5020, 'Salzburg'),
-(11, 'Neubaugasse', '12', 7400, 'Oberwart'),
-(12, 'Graben', '8', 1010, 'Wien'),
-(13, 'Landstraße', '4', 4020, 'Linz'),
-(14, 'Marktplatz', '20', 4050, 'Traun'),
-(15, 'Zehnergasse', '13', 2700, 'Wiener Neustadt'),
-(16, 'Rathausplatz', '11', 4400, 'Steyr'),
-(17, 'Hofgasse', '22A', 9500, 'Villach'),
-(18, 'Ringstraße', '9', 6800, 'Feldkirch'),
-(19, 'Rosengasse', '19', 6850, 'Dornbirn'),
-(20, 'Schlossallee', '5', 2340, 'Mödling'),
-
--- Admins
-(21, 'Kaiserstraße', '1', 6020, 'Innsbruck'),
-(22, 'Mariahilfer Straße', '101', 1070, 'Wien'),
-(23, 'Spittelbergplatz', '8', 1080, 'Wien'),
-(24, 'Feldgasse', '4B', 7201, 'Neudörfl'),
-(25, 'Steindlgasse', '15', 8010, 'Graz');
 
 INSERT INTO wine_packages (package_name, description, wine_count, vintner, price, suitable_for_persons)
 VALUES ('Weinviertel',
