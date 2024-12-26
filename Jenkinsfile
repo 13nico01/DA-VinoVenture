@@ -87,9 +87,9 @@ pipeline {
 
                             if (frontendChanged) {
                                 echo 'Änderungen am Frontend erkannt. Aktualisiere Frontend ohne Neustart...'
-                                sh 'docker-compose exec frontend npm install'
-                                sh 'docker-compose exec frontend npm run dev'
-                            }
+                                sh 'docker-compose exec -T frontend npm install'
+                                sh 'docker-compose exec -T frontend npm run dev'
+}
                         } else {
                             echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                         }
