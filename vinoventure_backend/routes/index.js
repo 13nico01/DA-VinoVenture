@@ -23,6 +23,5 @@ router.use("/shop", shopRoutes);
 router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);
 router.use("/quiz", quizRoutes);
-router.use("/wine", wineRoutes);
 
 module.exports = router;
