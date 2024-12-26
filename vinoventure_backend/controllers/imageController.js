@@ -100,3 +100,44 @@ exports.getWinesByPackageId = async (req, res) => {
     }
 };
 
+exports.getImagesByPackageId = async (req, res) => {
+    const packageId = req.params.packageId;
+
+    try {
+        // SQL-Abfrage ausführen
+        const [rows] = await db.query(`
+            SELECT
+                w.image_name,
+                w.image_path
+            FROM
+                wine_packages wp
+            JOIN
+                wine_package_wine wpw ON wpw.wine_package_id = wp.wine_package_id
+            JOIN
+                wine w ON w.wine_id = wpw.wine_id
+            WHERE
+                wp.wine_package_id = ?
+        `, [packageId]);
+
+        if (rows.length === 0) {
+            return res.status(404).send('<p>Keine Bilder für dieses Weinpaket gefunden.</p>');
+        }
+
+        // HTML-Antwort mit den Bildern erstellen
+        let htmlResponse = '<div style="display: flex; flex-wrap: wrap; gap: 16px;">';
+        rows.forEach(row => {
+            const imageUrl = `/images/${row.image_name}`;
+            htmlResponse += `
+                <div style="text-align: center;">
+                    <img src="${imageUrl}" alt="Weinbild" style="width: 200px; height: auto;">
+                </div>
+            `;
+        });
+        htmlResponse += '</div>';
+
+        res.send(htmlResponse);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('<p>Fehler beim Abrufen der Bilder für das Weinpaket</p>');
+    }
+};
