@@ -33,7 +33,7 @@ pipeline {
             }
         }
 
-       stage('Restart Containers') {
+        stage('Restart Containers') {
             steps {
                 script {
                     def containerMissing = false
@@ -60,8 +60,8 @@ pipeline {
 
                     // Wenn mindestens ein Container fehlt, dann starte alle neu
                     if (containerMissing) {
-                        echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose up --build...'
-                        sh 'docker-compose down --remove-orphans'
+                        echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose down -v und up --build...'
+                        sh 'docker-compose down -v --remove-orphans'
                         sh 'docker-compose up --build -d'
 
                         // Warte, bis die Datenbank bereit ist
@@ -106,8 +106,7 @@ pipeline {
                     }
                 }
             }
-}
-
+        }
 
         stage('Health Check') {
             steps {
@@ -174,7 +173,6 @@ pipeline {
             echo 'Pipeline ist fehlgeschlagen.'
             script {
                 sendDiscordNotification('❌ Deployment fehlgeschlagen! Rollback wird durchgeführt.')
-                performRollback()
             }
         }
     }
@@ -187,27 +185,6 @@ def sendDiscordNotification(String message) {
             \\"content\\": \\"${message}\\n\\n(Zeit: ${timestamp})\\"
         }" ${DISCORD_WEBHOOK_URL}
     """
-}
-
-def performRollback() {
-    echo 'Rollback wird ausgeführt...'
-    sh '''
-        if [ "${BACKEND_CHANGED}" = "true" ]; then
-            docker-compose stop backend
-            docker tag $ROLLBACK_BACKEND_IMAGE da-vinoventure_backend:latest
-            docker-compose up -d backend
-        fi
-        if [ "${DATABASE_CHANGED}" = "true" ]; then
-            docker-compose stop db
-            docker tag $ROLLBACK_DATABASE_IMAGE da-vinoventure_database:latest
-            docker-compose up -d db
-        fi
-        if [ "${FRONTEND_CHANGED}" = "true" ]; then
-            docker-compose stop frontend
-            docker tag $ROLLBACK_FRONTEND_IMAGE da-vinoventure_frontend:latest
-            docker-compose up -d frontend
-        fi
-    '''
 }
 
 // Funktion: Warten auf die Verfügbarkeit der Datenbank
