@@ -25,12 +25,16 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  *           schema:
  *             type: object
  *             required:
+ *               - username
  *               - firstname
  *               - lastname
- *               - username
  *               - password
  *               - email
  *               - birthdate
+ *               - street 
+ *               - house_number 
+ *               - postal_code 
+ *               - city 
  *             properties:
  *               firstname:
  *                 type: string
@@ -48,6 +52,18 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  *               password:
  *                 type: string
  *                 description: User's password
+ *               street:
+ * #               type: string
+ *                 description: User's street
+ *               house number:
+ *                 type: int
+ *                 description: User's house number
+ *               postal_code: 
+ *                 type: int
+ *                 description: User's postal code
+ *               city: 
+ *                 type: string
+ *                 desscription: User's city
  *     responses:
  *       201:
  *         description: User successfully created
@@ -58,7 +74,7 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  */
 
 exports.signup = async (req, res) => {
-  const { firstname, lastname, username, email, birthdate, password } =
+  const { username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city } =
     req.body;
 
   try {
@@ -74,13 +90,12 @@ exports.signup = async (req, res) => {
       });
     }
 
-    // Passwort hashen
-    const hashedPassword = await bcrypt.hash(password, 10);
+
 
     // Benutzer in die Datenbank einfügen
     const [result] = await db.query(
-      "INSERT INTO users (firstname, lastname, username, email, birthdate, password) VALUES (?, ?, ?, ?, ?, ?)",
-      [firstname, lastname, username, email, birthdate, hashedPassword]
+      "INSERT INTO users (username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city]
     );
 
     // JWT Token erstellen

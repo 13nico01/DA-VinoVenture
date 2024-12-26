@@ -6,10 +6,14 @@ CREATE TABLE
         lastname varchar(250) NOT NULL,
         password varchar(250) NOT NULL,
         email varchar(250) NOT NULL UNIQUE,
-        birthdate DATE NOT NULL,
         status VARCHAR(255) NOT NULL,
         reset_token VARCHAR(255),
         role ENUM ('user', 'vintner', 'admin') NOT NULL,
+        birthdate DATE NOT NULL,
+        street TEXT NOT NULL,
+        house_number TEXT NOT NULL,
+        postal_code INT NOT NULL,
+        city TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         last_login TIMESTAMP default CURRENT_TIMESTAMP
     ) CHARACTER
@@ -26,21 +30,6 @@ CREATE TABLE
         awards varchar(250),
         history varchar(250),
         image BLOB,
-        FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
-    ) CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
-
--- Tabelle für Lieferadressen
-CREATE TABLE
-    IF NOT EXISTS shipping_address (
-        address_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        street TEXT NOT NULL,
-        house_number TEXT NOT NULL,
-        postal_code INT NOT NULL,
-        city TEXT NOT NULL,
-        vintner_vintner_id INT,
         FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
     ) CHARACTER
 SET
