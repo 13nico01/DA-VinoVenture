@@ -8,7 +8,7 @@ router.get('/get-Wine', wineController.getWine);
 
 router.get ('/get-WineById/:id', wineController.getWineById);
 
-router.delete ('delete-Wine/:id', wineController.deleteWine());
+// router.delete ('delete-Wine/:id', wineController.deleteWine());
 
 router.post('/update-image-paths', updateImagePaths);
 
