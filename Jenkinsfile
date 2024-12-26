@@ -29,6 +29,10 @@ pipeline {
                 script {
                     echo 'Überprüfe und entferne den alten Container explizit...'
                     
+                    
+                    
+                    echo 'Starte alle Container neu mit docker-compose down -v und up --build...'
+                    sh 'docker-compose down -v --remove-orphans' // Entfernt alle Container, Volumes und auch verwaiste Container
                     // Stoppt und entfernt den alten Container, falls er noch läuft
                     sh '''
                     CONTAINER_ID=$(docker ps -aq --filter "name=vinoventure-pipeline_db")
@@ -40,9 +44,6 @@ pipeline {
                         echo "Kein Container mit diesem Namen gefunden."
                     fi
                     '''
-                    
-                    echo 'Starte alle Container neu mit docker-compose down -v und up --build...'
-                    sh 'docker-compose down -v --remove-orphans' // Entfernt alle Container, Volumes und auch verwaiste Container
                     sh 'docker-compose up --build -d' // Baue und starte die Container neu
         }
     }
