@@ -5,6 +5,8 @@ const RegisterComponent = () => {
     username: "",
     email: "",
     password: "",
+    address: "",
+    birthDate: "",
   });
 
   const handleChange = (e) => {
@@ -67,6 +69,37 @@ const RegisterComponent = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               placeholder="Passwort"
+              required
+            />
+          </div>
+          {/* Adresse Feld */}
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+              Adresse
+            </label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+              placeholder="Adresse"
+              required
+            />
+          </div>
+          {/* Geburtsdatum Feld */}
+          <div>
+            <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700">
+              Geburtsdatum
+            </label>
+            <input
+              type="date"
+              id="birthDate"
+              name="birthDate"
+              value={formData.birthDate}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
           </div>
