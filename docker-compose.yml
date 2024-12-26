@@ -13,10 +13,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./vinoventure_backend:/app
-      - /app/node_modules
+      - ./vinoventure_backend:/app   # Mount für Hot-Reload
+      - /app/node_modules            # Bind-Mount, um Konflikte mit node_modules zu vermeiden
     depends_on:
-      - db
+      - db                           # Abhängigkeit zur Datenbank
     environment:
       NODE_ENV: production
       DB_HOST: db
@@ -49,6 +49,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:80"
+    volumes:
+      - ./vinoventure_web:/app      # Hot-Reload für das Frontend
+      - /app/node_modules
     depends_on:
       - backend
 

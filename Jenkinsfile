@@ -38,13 +38,13 @@ pipeline {
 
                     echo 'Prüfe, ob alle benötigten Container existieren...'
 
-                    if (!sh(script: 'docker ps -q --filter "name=backend"', returnStdout: true).trim()) {
-                        echo 'Backend-Container existiert nicht.'
+                    if (!sh(script: 'docker ps -q --filter "name=db"', returnStdout: true).trim()) {
+                        echo 'Datenbank-Container existiert nicht.'
                         containerMissing = true
                     }
 
-                    if (!sh(script: 'docker ps -q --filter "name=db"', returnStdout: true).trim()) {
-                        echo 'Datenbank-Container existiert nicht.'
+                    if (!sh(script: 'docker ps -q --filter "name=backend"', returnStdout: true).trim()) {
+                        echo 'Backend-Container existiert nicht.'
                         containerMissing = true
                     }
 
@@ -55,27 +55,41 @@ pipeline {
 
                     if (containerMissing) {
                         echo 'Mindestens ein Container fehlt. Starte alle Container neu mit docker-compose up --build...'
-                        sh 'docker-compose up --build -v -d'
-                        sh 'docker stop vinoventure-pipeline_db_1'
+                        sh 'docker-compose down --remove-orphans'
+                        sh 'docker-compose up --build -d'
+
+                        // Warte, bis die Datenbank bereit ist
+                        echo 'Warte, bis der Datenbank-Container bereit ist...'
+                        waitForDatabase()
                     } else {
                         echo 'Alle Container existieren. Prüfe auf Änderungen...'
 
-                        def restartAll = false
+                        def backendChanged = env.BACKEND_CHANGED == 'true'
+                        def databaseChanged = env.DATABASE_CHANGED == 'true'
+                        def frontendChanged = env.FRONTEND_CHANGED == 'true'
 
-                        if (env.BACKEND_CHANGED == 'true' || env.DATABASE_CHANGED == 'true' || env.FRONTEND_CHANGED == 'true') {
-                            restartAll = true
-                        }
+                        if (backendChanged || databaseChanged || frontendChanged) {
+                            if (databaseChanged) {
+                                echo 'Änderungen an der Datenbank erkannt. Starte den Datenbank-Container neu...'
+                                sh 'docker-compose stop db'
+                                sh 'docker-compose up -d db'
 
-                        if (restartAll) {
-                            echo 'Änderungen erkannt. Starte alle Container neu...'
+                                // Warte, bis die Datenbank bereit ist
+                                echo 'Warte, bis der Datenbank-Container bereit ist...'
+                                waitForDatabase()
+                            }
 
-                            sh 'docker tag da-vinoventure_backend:latest $ROLLBACK_BACKEND_IMAGE'
-                            sh 'docker tag mysql:8.0.33-oracle $ROLLBACK_DATABASE_IMAGE'
-                            sh 'docker tag da-vinoventure_frontend:latest $ROLLBACK_FRONTEND_IMAGE'
+                            if (backendChanged) {
+                                echo 'Änderungen am Backend erkannt. Aktualisiere Backend ohne Neustart...'
+                                sh 'docker-compose exec backend npm install'
+                                sh 'docker-compose exec backend npx nodemon server.js'
+                            }
 
-                            sh 'docker-compose down'
-
-                            sh 'docker-compose up --build -d'
+                            if (frontendChanged) {
+                                echo 'Änderungen am Frontend erkannt. Aktualisiere Frontend ohne Neustart...'
+                                sh 'docker-compose exec frontend npm install'
+                                sh 'docker-compose exec frontend npm run dev'
+                            }
                         } else {
                             echo 'Keine Änderungen erkannt. Kein Neustart erforderlich.'
                         }
@@ -90,37 +104,37 @@ pipeline {
                     echo 'Führe Health-Checks für alle Container aus...'
 
                     sh '''
-                for i in {1..30}; do
-                    if docker exec $(docker ps -q --filter "name=db") mysqladmin ping -h 127.0.0.1 -u root -p${DB_PASSWORD}; then
-                        echo "Datenbank ist bereit."
-                        break
-                    fi
-                    echo "Datenbank ist noch nicht bereit. Warte 1 Sekunde..."
-                    sleep 1
-                done || exit 1
-            '''
+                    for i in {1..30}; do
+                        if docker exec $(docker ps -q --filter "name=db") mysqladmin ping -h 127.0.0.1 -u root -p${DB_PASSWORD}; then
+                            echo "Datenbank ist bereit."
+                            break
+                        fi
+                        echo "Datenbank ist noch nicht bereit. Warte 1 Sekunde..."
+                        sleep 1
+                    done || exit 1
+                    '''
 
                     sh '''
-                for i in {1..30}; do
-                    if nc -z localhost 3000; then
-                        echo "Backend läuft auf Port 3000."
-                        break
-                    fi
-                    echo "Warte auf Backend (Port 3000)..."
-                    sleep 1
-                done || exit 1
-            '''
+                    for i in {1..30}; do
+                        if nc -z localhost 3000; then
+                            echo "Backend läuft auf Port 3000."
+                            break
+                        fi
+                        echo "Warte auf Backend (Port 3000)..."
+                        sleep 1
+                    done || exit 1
+                    '''
 
                     sh '''
-                for i in {1..30}; do
-                    if nc -z localhost 80; then
-                        echo "Frontend läuft auf Port 80."
-                        break
-                    fi
-                    echo "Warte auf Frontend (Port 80)..."
-                    sleep 1
-                done || exit 1
-            '''
+                    for i in {1..30}; do
+                        if nc -z localhost 80; then
+                            echo "Frontend läuft auf Port 80."
+                            break
+                        fi
+                        echo "Warte auf Frontend (Port 80)..."
+                        sleep 1
+                    done || exit 1
+                    '''
                 }
             }
         }
@@ -128,7 +142,11 @@ pipeline {
         stage('Cleanup') {
             steps {
                 echo 'Bereinige alte Docker-Ressourcen...'
-                sh 'docker system prune -f'
+                sh '''
+                docker system prune -f --volumes
+                docker image prune -f
+                docker container prune -f
+                '''
             }
         }
     }
@@ -158,7 +176,7 @@ def sendDiscordNotification(String message) {
             \\"content\\": \\"${message}\\n\\n(Zeit: ${timestamp})\\"
         }" ${DISCORD_WEBHOOK_URL}
     """
-        }
+}
 
 def performRollback() {
     echo 'Rollback wird ausgeführt...'
@@ -178,5 +196,19 @@ def performRollback() {
             docker tag $ROLLBACK_FRONTEND_IMAGE da-vinoventure_frontend:latest
             docker-compose up -d frontend
         fi
+    '''
+}
+
+// Funktion: Warten auf die Verfügbarkeit der Datenbank
+def waitForDatabase() {
+    sh '''
+    for i in {1..30}; do
+        if docker exec $(docker ps -q --filter "name=db") mysqladmin ping -h 127.0.0.1 -u root -p${DB_PASSWORD} --silent; then
+            echo "Datenbank ist bereit."
+            break
+        fi
+        echo "Datenbank ist noch nicht bereit. Warte 1 Sekunde..."
+        sleep 1
+    done || exit 1
     '''
 }
