@@ -51,7 +51,7 @@ const RegisterComponent = () => {
               value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="Enter your email"
+              placeholder="Email Adresse"
               required
             />
           </div>
