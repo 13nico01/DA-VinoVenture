@@ -22,7 +22,7 @@ const RegisterComponent = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-sm p-8 space-y-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-sm p-8 space-y-6 bg-neutral-300 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-800">Registrierung</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
