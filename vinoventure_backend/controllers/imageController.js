@@ -61,3 +61,42 @@ exports.updateImagePaths = async (req, res) => {
     }
 };
 
+exports.getWinesByPackageId = async (req, res) => {
+    const packageId = req.params.packageId;
+
+    try {
+        // SQL-Abfrage ausführen
+        const [rows] = await db.query(`
+            SELECT
+                w.wine_name,
+                w.image_name,
+                w.image_path,
+                wpw.quantity
+            FROM
+                wine_packages wp
+            JOIN
+                wine_package_wine wpw ON wpw.wine_package_id = wp.wine_package_id
+            JOIN
+                wine w ON w.wine_id = wpw.wine_id
+            WHERE
+                wp.wine_package_id = ?
+        `, [packageId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Keine Weine für dieses Weinpaket gefunden.' });
+        }
+
+        const wines = rows.map(row => ({
+            wine_name: row.wine_name,
+            image_name: row.image_name,
+            image_path: row.image_path,
+            quantity: row.quantity
+        }));
+
+        res.json(wines);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Fehler beim Abrufen der Weine für das Weinpaket' });
+    }
+};
+
