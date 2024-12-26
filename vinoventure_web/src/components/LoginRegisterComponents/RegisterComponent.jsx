@@ -36,7 +36,7 @@ const RegisterComponent = () => {
               value={formData.username}
               onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="Enter your username"
+              placeholder="Username"
               required
             />
           </div>
@@ -66,7 +66,7 @@ const RegisterComponent = () => {
               value={formData.password}
               onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="Enter your password"
+              placeholder="Passwort"
               required
             />
           </div>
