@@ -10,10 +10,10 @@ CREATE TABLE
         reset_token VARCHAR(255),
         role ENUM ('user', 'vintner', 'admin') NOT NULL,
         birthdate DATE NOT NULL,
-        street TEXT NOT NULL,
-        house_number TEXT NOT NULL,
-        postal_code INT NOT NULL,
-        city TEXT NOT NULL,
+        street TEXT ,
+        house_number TEXT ,
+        postal_code INT ,
+        city TEXT ,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         last_login TIMESTAMP default CURRENT_TIMESTAMP
     ) CHARACTER
