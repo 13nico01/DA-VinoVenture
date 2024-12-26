@@ -13,7 +13,9 @@ pipeline {
             steps {
                 script {
                     sendDiscordNotification('🚀 Deployment gestartet! (git pull nicht vergessen!)')
-                    git branch: 'main', url: 'https://github.com/13nico01/DA-VinoVenture.git'
+                    sh 'git fetch origin' // Holt die neuesten Änderungen vom Remote
+                    sh 'git reset --hard origin/main' // Setzt den Arbeitsbereich auf den Zustand des Remote-Branches
+                    sh 'git pull origin main'
                 }
             }
         }
