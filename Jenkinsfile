@@ -6,6 +6,7 @@ pipeline {
                 script {
                     echo 'Starte alle Container neu mit docker-compose down -v und up --build...'
                     sh 'docker-compose down -v --remove-orphans'
+                    sh 'docker rm -f $(docker ps -a -q)'
                     sh 'docker-compose up --build -d' 
                 }
             }
