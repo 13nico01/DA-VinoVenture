@@ -102,10 +102,12 @@ exports.getWinesByPackageId = async (req, res) => {
             return res.status(404).json({ message: 'Keine Weine für dieses Weinpaket gefunden.' });
         }
 
+        // Generiere die vollständige Bild-URL
+        const serverUrl = `${req.protocol}://${req.get('host')}`; // Ermittelt die Basis-URL (z. B. https://vino-venture.com)
+
         const wines = rows.map(row => ({
             wine_name: row.wine_name,
-            image_name: row.image_name,
-            image_path: row.image_path,
+            image_url: `${serverUrl}${row.image_path}`, // Vollständige URL zum Bild
             quantity: row.quantity
         }));
 
