@@ -5,9 +5,11 @@ const session = require("express-session");
 const { swaggerUi, swaggerSpec } = require("./config/swagger");
 const routes = require("./routes");
 const controller = require("./controllers/imageController");
+const path = require('path')
 
 const app = express();
 const port = process.env.PORT || 3000;
+
 
 // Middleware
 app.use(bodyParser.json());
@@ -30,6 +32,8 @@ app.use(
 
 // Swagger-Dokumentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use("/images", express.static(path.join(__dirname, "../images")));
 
 // Routen verwenden
 app.use("/api", routes);
