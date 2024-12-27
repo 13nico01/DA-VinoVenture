@@ -1,6 +1,20 @@
 pipeline {
     agent any
+
+    environment{
+        DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1319437909094568007/LNOTEhzDIKAl868WpnkexihA-I1_NOZSFH4AWeIzk6diEeb-hfH6JKnI0WoZvd5tPwz9'
+    }
+
     stages {
+
+        stage('Notify Start'){
+            steps{
+                script{
+                    sendDiscordNotification('🚀 Deployment gestartet! (git pull nicht vergessen!)')
+                }
+            }
+        }
+
         stage('Git Pull') {
             steps {
                 script {
@@ -36,5 +50,42 @@ pipeline {
                 }
             }
         }
+
+        stage('Notify success'){
+            steps{
+                script{
+                    sendDiscordNotification('✅ Deployment erfolgreich abgeschlossen!')
+                }
+            }
+        }
+
+        stage('Cleanup'){
+            steps{
+                echo 'Cleanup'
+                sh '''
+                docker system prune -f
+                docker container prune -f
+                docker image prune -f
+                docker volume prune -f
+                '''
+            }
+        }
+
+        post{
+            failure{
+                echo 'Pipeline error!'
+                script{
+                    sendDiscordNotification('❌ Deployment fehlgeschlagen!')
+                }
+            }
+        }
     }
+    def sendDiscordNotification(String message) {
+    def timestamp = new Date().format('yyyy-MM-dd HH:mm:ss', TimeZone.getTimeZone('UTC'))
+    sh """
+        curl -X POST -H "Content-Type: application/json" -d "{
+            \\"content\\": \\"${message}\\n\\n(Zeit: ${timestamp})\\"
+        }" ${DISCORD_WEBHOOK_URL}
+    """
+}
 }
