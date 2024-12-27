@@ -50,8 +50,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 exports.updateImagePaths = async (req, res) => {
-    const imagesFolder = path.join(__dirname, '../images');
-    console.log('Image folder path:', imagesFolder);
 
 
     try {
