@@ -47,6 +47,7 @@ services:
     volumes:
       - ./vinoventure_web:/app # Hot-Reload für das Frontend
       - /app/node_modules
+      - ./vinoventure_web/dist:/usr/share/nginx/html
     depends_on:
       - backend
 

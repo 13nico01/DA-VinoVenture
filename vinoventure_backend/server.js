@@ -9,7 +9,6 @@ const controller = require("./controllers/imageController");
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 // Middleware
 app.use(bodyParser.json());
 app.use(
@@ -31,8 +30,6 @@ app.use(
 
 // Swagger-Dokumentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-app.use("/images", express.static())
 
 // Routen verwenden
 app.use("/api", routes);
