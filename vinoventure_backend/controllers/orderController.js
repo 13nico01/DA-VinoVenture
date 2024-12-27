@@ -25,17 +25,29 @@ const sendOrderConfirmationEmail = (order) => {
 
 exports.addOrder = async (req, res) => {
     try {
-        const { user_id, total_amount, status, shipping_cart_id } = req.body;
-        
-        if (!user_id || !total_amount || !status || !shipping_cart_id) {
+        const { user_id, total_amount, status, shipping_cart_id, customerEmail } = req.body;
+
+        // Überprüfen, ob alle erforderlichen Felder vorhanden sind
+        if (!user_id || !total_amount || !status || !shipping_cart_id || !customerEmail) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
+
+        // SQL-Query zum Hinzufügen einer Bestellung
         const query = `
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
             VALUES (?, ?, ?, ?)
         `;
         const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id]);
-        
+
+        // E-Mail senden
+        const order = {
+            id: result.insertId,
+            customerEmail,
+        };
+
+        sendOrderConfirmationEmail(order);
+
+        // Erfolgsantwort senden
         res.status(201).json({
             message: 'Order created successfully',
             order_id: result.insertId,
@@ -48,6 +60,7 @@ exports.addOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 exports.getAllOrders = async (req, res) => {
