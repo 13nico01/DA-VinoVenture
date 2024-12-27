@@ -208,7 +208,7 @@ exports.getTestImageRoute = async (req, res) => {
         }
 
         // Alle Bildpfade zurückgeben
-        const imagePaths = imageFiles.map(file => `/images/${file}`);
+        const imagePaths = imageFiles.map(file => `../images/${file}`);
 
         // Erfolgreiche Antwort mit den Bildpfaden
         res.json({ images: imagePaths });
