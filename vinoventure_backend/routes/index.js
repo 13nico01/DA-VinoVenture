@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
+router.use('/images', express.static(path.resolve(__dirname, '../images')));
 const orderRoutes = require("./orderRoutes");
 const authRoutes = require("./authRoutes");
 const adminAuthRoutes = require("./adminAuthRoutes");
@@ -25,6 +26,5 @@ router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/wine", wineRoutes);
-router.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = router;
