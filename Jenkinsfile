@@ -1,12 +1,3 @@
-def sendDiscordNotification(String message) {
-    def timestamp = new Date().format('yyyy-MM-dd HH:mm:ss', TimeZone.getTimeZone('UTC'))
-    sh """
-        curl -X POST -H "Content-Type: application/json" -d "{
-            \\"content\\": \\"${message}\\n\\n(Zeit: ${timestamp})\\"
-        }" ${DISCORD_WEBHOOK_URL}
-    """
-}
-
 pipeline {
     agent any
 
@@ -35,23 +26,24 @@ pipeline {
             }
         }
 
-        stage('Restart Containers') {
+        stage('Check for changes') {
             steps {
                 script {
-                    echo 'Starte alle Container neu mit docker-compose down -v und up --build...'
+                    echo 'Prüfe, ob es Änderungen gibt, die einen Containerneustart erfordern...'
 
-                    sh 'docker-compose down -v --remove-orphans'
+                    // Prüfe, ob es Änderungen im vinoventure_backend-Verzeichnis gibt
+                    def codeChanged = sh(script: "git diff --name-only HEAD HEAD~1", returnStdout: true).trim()
 
-                    sh '''
-                    containers=$(docker ps -a -q)
-                    if [ -n "$containers" ]; then
-                        docker rm -f $containers
-                    else
-                        echo "Keine Container zum Entfernen."
-                    fi
-                    '''
+                    // Wenn sich etwas im vinoventure_backend-Ordner geändert hat, führe keinen Neustart der Container durch
+                    if (codeChanged.contains("vinoventure_backend")) {
+                        echo 'Änderungen im Ordner vinoventure_backend erkannt, Container werden NICHT neu gestartet.'
+                    } else {
+                        echo 'Änderungen außerhalb von vinoventure_backend erkannt, Container werden neu gestartet.'
 
-                    sh 'docker-compose up --build -d'
+                        // Container neu starten
+                        sh 'docker-compose down -v --remove-orphans'
+                        sh 'docker-compose up --build -d'
+                    }
                 }
             }
         }
