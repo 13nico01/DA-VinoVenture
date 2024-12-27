@@ -80,12 +80,12 @@ pipeline {
             }
         }
     }
-    def sendDiscordNotification(String message) {
+}
+  def sendDiscordNotification(String message) {
     def timestamp = new Date().format('yyyy-MM-dd HH:mm:ss', TimeZone.getTimeZone('UTC'))
     sh """
         curl -X POST -H "Content-Type: application/json" -d "{
             \\"content\\": \\"${message}\\n\\n(Zeit: ${timestamp})\\"
         }" ${DISCORD_WEBHOOK_URL}
     """
-}
 }
