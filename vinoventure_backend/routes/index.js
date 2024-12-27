@@ -15,7 +15,7 @@ const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
 const wineRoutes = require("./wineRoutes");
 
-router.use('/images', express.static(path.join(__dirname, 'app/images')));
+router.use('/images', express.static(path.join(__dirname, 'images')));
 router.use("/order", orderRoutes)
 router.use("/users", authRoutes);
 router.use("/admin", adminAuthRoutes);
