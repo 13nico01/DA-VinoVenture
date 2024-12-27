@@ -41,6 +41,7 @@ const server = app.listen(port, async () => {
   console.log(`Server läuft auf http://${host}:${address.port}`);
 
   try {
+    const req = {};
     const res = { 
       json: console.log, 
       status: (code) => ({ json: console.error })
