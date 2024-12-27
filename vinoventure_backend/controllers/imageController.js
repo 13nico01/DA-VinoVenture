@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs/promises');
 const { db } = require('../config/database');
+const multer = require('multer');
 
 /**
  * @swagger
@@ -32,6 +33,21 @@ const { db } = require('../config/database');
  *                   example: "Fehler beim Aktualisieren der Bildpfade."
  */
 
+
+// Speicherort und Dateinamen für hochgeladene Bilder konfigurieren
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const imagesFolder = path.join(__dirname, '../images');
+        cb(null, imagesFolder); // Speicherort für Bilder
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = `${Date.now()}-${file.originalname}`;
+        cb(null, uniqueName); // Eindeutiger Dateiname
+    },
+});
+
+// Multer-Middleware für das Hochladen von Bildern
+const upload = multer({ storage });
 
 exports.updateImagePaths = async (req, res) => {
     const imagesFolder = path.join(__dirname, '../images');
@@ -139,5 +155,41 @@ exports.getImagesByPackageId = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('<p>Fehler beim Abrufen der Bilder für das Weinpaket</p>');
+    }
+};
+
+// Endpunkt zum Hochladen eines neuen Bildes
+exports.uploadImage = async (req, res) => {
+    try {
+        // Multer verarbeitet die Datei
+        upload.single('image')(req, res, async (err) => {
+            if (err) {
+                console.error('Fehler beim Hochladen des Bildes:', err);
+                return res.status(500).json({ error: 'Fehler beim Hochladen des Bildes.' });
+            }
+
+            // Datei erfolgreich hochgeladen
+            const { wine_id } = req.body; // Erwartet die Wein-ID im Body
+            const imageName = req.file.filename; // Der Dateiname des hochgeladenen Bildes
+            const imagePath = path.join(__dirname, '../images', imageName);
+
+            try {
+                // Aktualisiere den Bildpfad in der Datenbank
+                const updateQuery = 'UPDATE wine SET image_name = ?, image_path = ? WHERE wine_id = ?';
+                await db.query(updateQuery, [imageName, imagePath, wine_id]);
+                console.log(`Bildpfad für Wein ID ${wine_id} wurde aktualisiert`);
+
+                // Rufe updateImagePaths auf, um sicherzustellen, dass alle Pfade aktuell sind
+                await controller.updateImagePaths();
+
+                res.json({ message: 'Bild wurde erfolgreich hochgeladen und Pfade aktualisiert.' });
+            } catch (dbErr) {
+                console.error('Fehler beim Aktualisieren des Bildpfades:', dbErr);
+                res.status(500).json({ error: 'Fehler beim Aktualisieren des Bildpfades.' });
+            }
+        });
+    } catch (err) {
+        console.error('Unerwarteter Fehler:', err);
+        res.status(500).json({ error: 'Ein unerwarteter Fehler ist aufgetreten.' });
     }
 };

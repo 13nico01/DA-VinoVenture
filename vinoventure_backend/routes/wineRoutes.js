@@ -7,6 +7,7 @@ const wineController = require('../controllers/wineController');
 router.post('/update-image-paths', imageController.updateImagePaths);
 router.get('/getWinesByPackageId/:packageId', imageController.getWinesByPackageId);
 router.get('/getImagesByPackageId/:packageId', imageController.getImagesByPackageId);
+router.post('/upload-image', imageController.uploadImage);
 router.get('/getWine', wineController.getWine)
 router.get('/getWineById/:id', wineController.getWineById);
 router.delete('/deleteWine/:id', wineController.deleteWine);

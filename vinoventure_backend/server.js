@@ -4,6 +4,7 @@ const cors = require("cors");
 const session = require("express-session");
 const { swaggerUi, swaggerSpec } = require("./config/swagger");
 const routes = require("./routes");
+const controller = require("./controllers/imageController");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,8 +35,20 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api", routes);
 
 // Server starten
-const server = app.listen(port, () => {
+const server = app.listen(port, async () => {
   const address = server.address();
   const host = address.address === "::" ? "localhost" : address.address; // IPv6-Fallback
   console.log(`Server läuft auf http://${host}:${address.port}`);
+
+  try {
+    const res = { 
+      json: console.log, 
+      status: (code) => ({ json: console.error })
+    };
+    await controller.updateImagePaths(req, res);
+    console.log("Bildpfade wurden beim Serverstart aktualisiert.");
+  } catch (err) {
+    console.error("Fehler beim Aktualisieren der Bildpfade:", err);
+  }
+
 });

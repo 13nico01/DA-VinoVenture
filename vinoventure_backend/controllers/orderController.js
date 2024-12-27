@@ -1,7 +1,6 @@
 const path = require('path');
 const transporter = require('../config/nodemailerConfig');
 
-let orders = [];
 
 
 // Bestellbestätigungs E-Mail
