@@ -51,7 +51,7 @@ const upload = multer({ storage });
 
 exports.updateImagePaths = async (req, res) => {
 
-    const imagesFolder = path.join(__dirname, "/images");
+    const imagesFolder = path.join(__dirname, "images");
     try {
         const [results] = await db.query('SELECT wine_id, image_name FROM wine');
 
@@ -194,7 +194,7 @@ exports.uploadImage = async (req, res) => {
     }
 };
 
-const imagesFolder = path.join(__dirname, "/images");
+const imagesFolder = path.join(__dirname, "images");
 exports.getTestImageRoute = async (req, res) => {
     try {
         // Alle Dateien im images-Verzeichnis lesen
