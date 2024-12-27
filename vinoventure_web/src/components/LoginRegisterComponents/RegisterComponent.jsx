@@ -72,7 +72,6 @@ const RegisterComponent = () => {
               required
             />
           </div>
-          {/* Adresse Feld */}
           <div>
             <label htmlFor="address" className="block text-sm font-medium text-gray-700">
               Adresse
@@ -88,7 +87,6 @@ const RegisterComponent = () => {
               required
             />
           </div>
-          {/* Geburtsdatum Feld */}
           <div>
             <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700">
               Geburtsdatum
