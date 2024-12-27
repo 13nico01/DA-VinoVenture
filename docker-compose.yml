@@ -11,7 +11,6 @@ services:
     volumes:
       - ./vinoventure_backend:/app # Mount für Hot-Reload
       - /app/node_modules # Verhindert Konflikte mit node_modules
-      - ./vinoventure_backend/images:/app/images
     depends_on:
       - db # Abhängigkeit zur Datenbank
     environment:
@@ -47,7 +46,6 @@ services:
     volumes:
       - ./vinoventure_web:/app # Hot-Reload für das Frontend
       - /app/node_modules
-      - ./vinoventure_web/dist:/usr/share/nginx/html
     depends_on:
       - backend
 
