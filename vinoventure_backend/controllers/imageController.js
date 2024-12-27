@@ -193,3 +193,21 @@ exports.uploadImage = async (req, res) => {
         res.status(500).json({ error: 'Ein unerwarteter Fehler ist aufgetreten.' });
     }
 };
+
+const imagesFolder = path.join(__dirname, "images");
+exports.getTestImageRoute = (req, res) => {
+    const testImagePath = path.join(imagesFolder, "Fritsch_RV_RiedSteinberg_2022.webp");
+    console.log("Test image path:", testImagePath); // Debugging-Log
+
+    // Überprüfen, ob die Datei existiert
+    fs.access(testImagePath)
+        .then(() => {
+            // Wenn die Datei existiert, sende eine Erfolgsmeldung
+            res.json({ message: "Bild gefunden.", imagePath: testImagePath });
+        })
+        .catch((err) => {
+            // Wenn die Datei nicht gefunden wird, sende einen Fehler
+            console.error("Bild nicht gefunden:", err.message);
+            res.status(404).json({ error: "Bild nicht gefunden." });
+        });
+};
