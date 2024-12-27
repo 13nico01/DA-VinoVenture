@@ -194,7 +194,7 @@ exports.uploadImage = async (req, res) => {
     }
 };
 
-const imagesFolder = path.join(__dirname, "images");
+const imagesFolder = path.join(__dirname, "app/images");
 exports.getTestImageRoute = (req, res) => {
     const testImagePath = path.join(imagesFolder, "Fritsch_RV_RiedSteinberg_2022.webp");
     console.log("Test image path:", testImagePath); // Debugging-Log
