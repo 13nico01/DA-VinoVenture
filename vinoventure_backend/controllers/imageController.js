@@ -195,19 +195,25 @@ exports.uploadImage = async (req, res) => {
 };
 
 const imagesFolder = path.join(__dirname, "../images");
-exports.getTestImageRoute = (req, res) => {
-    const testImagePath = path.join(imagesFolder, "Fritsch_RV_RiedSteinberg_2022.webp");
-    console.log("Test image path:", testImagePath); // Debugging-Log
+exports.getTestImageRoute = async (req, res) => {
+    try {
+        // Alle Dateien im images-Verzeichnis lesen
+        const files = await fs.readdir(imagesFolder);
 
-    // Überprüfen, ob die Datei existiert
-    fs.access(testImagePath)
-        .then(() => {
-            // Wenn die Datei existiert, sende eine Erfolgsmeldung
-            res.json({ message: "Bild gefunden.", imagePath: testImagePath });
-        })
-        .catch((err) => {
-            // Wenn die Datei nicht gefunden wird, sende einen Fehler
-            console.error("Bild nicht gefunden:", err.message);
-            res.status(404).json({ error: "Bild nicht gefunden." });
-        });
+        // Nur .webp-Bilder filtern
+        const imageFiles = files.filter(file => file.endsWith('.webp'));
+
+        if (imageFiles.length === 0) {
+            return res.status(404).json({ error: "Keine .webp Bilder gefunden." });
+        }
+
+        // Alle Bildpfade zurückgeben
+        const imagePaths = imageFiles.map(file => `/images/${file}`);
+
+        // Erfolgreiche Antwort mit den Bildpfaden
+        res.json({ images: imagePaths });
+    } catch (err) {
+        console.error("Fehler beim Lesen des Verzeichnisses:", err.message);
+        res.status(500).json({ error: "Fehler beim Abrufen der Bilder." });
+    }
 };
