@@ -11,6 +11,6 @@ router.post('/upload-image', imageController.uploadImage);
 router.get('/get-wine', wineController.getWine)
 router.get('/get-wine-by-id/:id', wineController.getWineById);
 router.delete('/delete-wine/:id', wineController.deleteWine);
-router.get('test-image', imageController.getTestImageRoute)
+router.get('/test-image', imageController.getTestImageRoute)
 
 module.exports = router;
