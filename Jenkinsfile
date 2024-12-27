@@ -51,6 +51,14 @@ pipeline {
 
                         // Container neu starten
                         sh 'docker-compose down -v --remove-orphans'
+                        sh '''
+                            containers=$(docker ps -a -q)
+                            if [ -n "$containers" ]; then
+                                docker rm -f $containers
+                            else
+                                echo "Keine Container zum Entfernen."
+                            fi
+                        '''
                         sh 'docker-compose up --build -d'
                     }
                 }
