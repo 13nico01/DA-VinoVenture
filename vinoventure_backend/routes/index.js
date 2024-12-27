@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
-router.use('/images', express.static(path.resolve(__dirname, '../images')));
+
 const orderRoutes = require("./orderRoutes");
 const authRoutes = require("./authRoutes");
 const adminAuthRoutes = require("./adminAuthRoutes");
@@ -15,6 +15,7 @@ const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
 const wineRoutes = require("./wineRoutes");
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 router.use("/order", orderRoutes)
 router.use("/users", authRoutes);
 router.use("/admin", adminAuthRoutes);
