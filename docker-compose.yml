@@ -3,11 +3,6 @@ version: "3.8"
 services:
   backend:
     container_name: backend # Fester Name für den Backend-Container
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
     build:
       context: ./vinoventure_backend
       dockerfile: Dockerfile
@@ -15,23 +10,19 @@ services:
       - "3000:3000"
     volumes:
       - ./vinoventure_backend:/app # Mount für Hot-Reload
-      - /app/node_modules # Bind-Mount, um Konflikte mit node_modules zu vermeiden
+      - /app/node_modules # Verhindert Konflikte mit node_modules
     depends_on:
       - db # Abhängigkeit zur Datenbank
     environment:
-      NODE_ENV: production
+      NODE_ENV: development  # Setzt den Modus auf Entwicklung
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: yourpassword
       DB_DATABASE: vinoventure
+      CHOKIDAR_USEPOLLING: "true"  # Erzwingt Polling für Dateiüberwachung
 
   db:
     container_name: db # Fester Name für den DB-Container
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: "512M"
     image: mysql:8.0.33-oracle
     restart: always
     environment:
