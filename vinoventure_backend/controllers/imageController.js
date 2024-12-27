@@ -142,7 +142,7 @@ exports.getImagesByPackageId = async (req, res) => {
         // HTML-Antwort mit den Bildern erstellen
         let htmlResponse = '<div style="display: flex; flex-wrap: wrap; gap: 16px;">';
         rows.forEach(row => {
-            const imageUrl = `../images/${row.image_name}`;
+            const imageUrl = `/images/${row.image_name}`;
             htmlResponse += `
                 <div style="text-align: center;">
                     <img src="${imageUrl}" alt="Weinbild" style="width: 200px; height: auto;">
@@ -208,7 +208,7 @@ exports.getTestImageRoute = async (req, res) => {
         }
 
         // Alle Bildpfade zurückgeben
-        const imagePaths = imageFiles.map(file => `../images/${file}`);
+        const imagePaths = imageFiles.map(file => `/images/${file}`);
 
         // Erfolgreiche Antwort mit den Bildpfaden
         res.json({ images: imagePaths });
