@@ -13,7 +13,6 @@ const orderManagerRoutes = require("./orderManagerRoutes");
 const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
 const wineRoutes = require("./wineRoutes");
-const imagesFolder = path.join(__dirname, "/images");
 
 router.use("/order", orderRoutes)
 router.use("/users", authRoutes);
@@ -26,6 +25,6 @@ router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/wine", wineRoutes);
-router.use('/images', express.static(imagesFolder));
+router.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = router;
