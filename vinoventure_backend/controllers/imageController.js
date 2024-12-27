@@ -194,7 +194,7 @@ exports.uploadImage = async (req, res) => {
     }
 };
 
-const imagesFolder = path.join(__dirname, "../images");
+const imagesFolder = path.join(__dirname, "/images");
 exports.getTestImageRoute = async (req, res) => {
     try {
         // Alle Dateien im images-Verzeichnis lesen

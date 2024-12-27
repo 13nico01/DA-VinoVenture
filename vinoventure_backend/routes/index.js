@@ -13,7 +13,7 @@ const orderManagerRoutes = require("./orderManagerRoutes");
 const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
 const wineRoutes = require("./wineRoutes");
-const imagesFolder = path.join(__dirname, "../images");
+const imagesFolder = path.join(__dirname, "/images");
 
 router.use("/order", orderRoutes)
 router.use("/users", authRoutes);
