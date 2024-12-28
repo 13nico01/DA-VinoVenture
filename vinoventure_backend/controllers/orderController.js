@@ -1,7 +1,7 @@
 const path = require('path');
 const transporter = require('../config/nodemailerConfig');
 const db = require('../config/database');
-
+const { db } = require('../config/database');
 
 // Bestellbestätigungs E-Mail
 const sendOrderConfirmationEmail = (order) => {
