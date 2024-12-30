@@ -31,10 +31,10 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  *               - password
  *               - email
  *               - birthdate
- *               - street 
- *               - house_number 
- *               - postal_code 
- *               - city 
+ *               - street
+ *               - house_number
+ *               - postal_code
+ *               - city
  *             properties:
  *               firstname:
  *                 type: string
@@ -58,10 +58,10 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  *               house number:
  *                 type: int
  *                 description: User's house number
- *               postal_code: 
+ *               postal_code:
  *                 type: int
  *                 description: User's postal code
- *               city: 
+ *               city:
  *                 type: string
  *                 desscription: User's city
  *     responses:
@@ -74,8 +74,18 @@ const secretKey = process.env.SECRET_KEY || "geheimes-schluessel"; // Schlüssel
  */
 
 exports.signup = async (req, res) => {
-  const { username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city } =
-    req.body;
+  const {
+    username,
+    firstname,
+    lastname,
+    password,
+    email,
+    birthdate,
+    street,
+    house_number,
+    postal_code,
+    city,
+  } = req.body;
 
   try {
     // Überprüfen, ob der Benutzer bereits existiert
@@ -90,12 +100,25 @@ exports.signup = async (req, res) => {
       });
     }
 
+    const status = "active";
+    const role = "user";
 
-
-    // Benutzer in die Datenbank einfügen
     const [result] = await db.query(
-      "INSERT INTO users (username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city]
+      "INSERT INTO users (username, firstname, lastname, password, email, birthdate, street, house_number, postal_code, city, status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        username,
+        firstname,
+        lastname,
+        password,
+        email,
+        birthdate,
+        street,
+        house_number,
+        postal_code,
+        city,
+        status,
+        role,
+      ]
     );
 
     // JWT Token erstellen
@@ -148,4 +171,3 @@ exports.login = async (req, res) => {
     return res.status(500).json({ error: "Datenbankfehler" });
   }
 };
-    

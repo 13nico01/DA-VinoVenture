@@ -41,8 +41,28 @@ const RegisterComponent = () => {
   };
 
   // Funktion zur Überprüfung der Formulardaten, bevor es abgeschickt wird
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+
+    try{
+      const response = await fetch("https://vino-venture.com/3000/api/users/signup", {
+        method: "POST",
+        headers:{
+          "Content-Type" : "application/json",
+        },
+        body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+
+        if (response.status === 201){
+          alert("Benutzer erstellt")
+        }else{
+          alert(data.error|| "Es ist ein Fehler aufgetreten")
+        }
+    }catch(error){
+      console.error("Fehler beim absenden der Daten", error);
+      alert("Server nicht erreichbar")
+    }
 
     // Altersprüfung
     if (!isOldEnough(formData.birthDate)) {
@@ -55,11 +75,6 @@ const RegisterComponent = () => {
       alert("Das Passwort muss mindestens 8 Zeichen lang sein.");
       return;
     }
-
-    console.log("Form Submitted", formData);
-    // Simuliere eine Serveranfrage (ersetze dies mit deiner tatsächlichen Datenbankabfrage)
-    // const [result] = await db.query("INSERT INTO users ...");
-    // Nach erfolgreichem Absenden, kannst du die Nutzer weiterleiten
   };
 
   const handleNextStep = () => {

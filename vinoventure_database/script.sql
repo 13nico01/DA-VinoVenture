@@ -11,7 +11,7 @@ CREATE TABLE
         role ENUM ('user', 'vintner', 'admin') NOT NULL,
         birthdate DATE NOT NULL,
         street TEXT ,
-        house_number TEXT ,
+        house_number INT ,
         postal_code INT ,
         city TEXT ,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
