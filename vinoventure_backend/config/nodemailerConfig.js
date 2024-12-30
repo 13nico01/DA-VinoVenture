@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config({ path: './mail.env' });
+require('dotenv').config();
 
 // Erstelle einen Transporter mit den SMTP-Daten von Hostinger
 const transporter = nodemailer.createTransport({
@@ -11,20 +11,5 @@ const transporter = nodemailer.createTransport({
     pass: process.env.PASSWORD,  
   }
 });
-
-transporter.sendMail({
-  from: '"Test" <' + process.env.EMAIL + '>',
-  to: 'recipient@example.com',
-  subject: 'Testnachricht',
-  text: 'Dies ist eine Testnachricht.',
-})
-  .then(() => {
-    console.log('Test-E-Mail erfolgreich gesendet.');
-  })
-  .catch(error => {
-    console.error('Fehler beim Senden der Test-E-Mail:', error);
-  });
-
-
 
 module.exports = transporter;
