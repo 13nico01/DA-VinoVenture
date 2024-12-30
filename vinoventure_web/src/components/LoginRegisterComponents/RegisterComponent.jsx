@@ -238,7 +238,123 @@ const RegisterComponent = () => {
             )}
             {step === 2 && (
               <>
-                {/* Step 2 */}
+                <div className="gap-4">
+                  <div>
+                    <label
+                      htmlFor="firstname"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Vorname
+                    </label>
+                    <input
+                      type="text"
+                      id="firstname"
+                      name="firstname"
+                      value={formData.firstname}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Vorname"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="lastname"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Nachname
+                    </label>
+                    <input
+                      type="text"
+                      id="lastname"
+                      name="lastname"
+                      value={formData.lastname}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Nachname"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="street"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Straße
+                    </label>
+                    <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Straße"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="house_number"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Hausnummer
+                    </label>
+                    <input
+                      type="text"
+                      id="house_number"
+                      name="house_number"
+                      value={formData.house_number}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Hausnummer"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="postal_code"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      PLZ
+                    </label>
+                    <input
+                      type="text"
+                      id="postal_code"
+                      name="postal_code"
+                      value={formData.postal_code}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="PLZ"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Stadt
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Stadt"
+                      required
+                    />
+                  </div>
+                </div>
+
                 <button
                   type="button"
                   onClick={handlePreviousStep}
