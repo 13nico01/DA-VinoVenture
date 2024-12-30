@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+require('dotenv').config({ path: './mail.env' });
 
 // Erstelle einen Transporter mit den SMTP-Daten von Hostinger
 const transporter = nodemailer.createTransport({
