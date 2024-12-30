@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterComponent = () => {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    birthdate: "", // Angepasst: birthDate → birthdate
+    birthdate: "",
     firstname: "",
     lastname: "",
     street: "",
-    house_number: "", // Angepasst: houseNumber → house_number
-    postal_code: "", // Angepasst: postalCode → postal_code
+    house_number: "",
+    postal_code: "",
     city: "",
-    status: "active", // Standardwert
-    role: "user", // Standardwert
+    status: "active",
+    role: "user",
   });
 
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,6 +29,23 @@ const RegisterComponent = () => {
       ...prevData,
       [name]: value,
     }));
+
+    if (name === "password") {
+      setPasswordStrength(calculatePasswordStrength(value));
+    }
+  };
+
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+    if (strength === 0) return "";
+    if (strength <= 1) return "Schwach";
+    if (strength === 2 || strength === 3) return "Mittel";
+    if (strength === 4) return "Stark";
   };
 
   const isOldEnough = (birthdate) => {
@@ -37,10 +56,6 @@ const RegisterComponent = () => {
     return age > 16 || (age === 16 && month >= 0);
   };
 
-  const isPasswordValid = (password) => {
-    return password.length >= 8;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,8 +64,10 @@ const RegisterComponent = () => {
       return;
     }
 
-    if (!isPasswordValid(formData.password)) {
-      alert("Das Passwort muss mindestens 8 Zeichen lang sein.");
+    if (passwordStrength === "Schwach") {
+      alert(
+        "Das Passwort ist zu schwach. Bitte ein stärkeres Passwort eingeben."
+      );
       return;
     }
 
@@ -69,6 +86,21 @@ const RegisterComponent = () => {
 
       if (response.status === 201) {
         alert("Benutzer erstellt");
+        setFormData({
+          username: "",
+          email: "",
+          password: "",
+          birthdate: "",
+          firstname: "",
+          lastname: "",
+          street: "",
+          house_number: "",
+          postal_code: "",
+          city: "",
+          status: "active",
+          role: "user",
+        });
+        navigate("/");
       } else {
         alert(data.error || "Es ist ein Fehler aufgetreten");
       }
@@ -164,6 +196,19 @@ const RegisterComponent = () => {
                       )}
                     </button>
                   </div>
+                  {passwordStrength && (
+                    <div
+                      className={`mt-2 text-sm font-semibold ${
+                        passwordStrength === "Schwach"
+                          ? "text-red-500"
+                          : passwordStrength === "Mittel"
+                          ? "text-yellow-500"
+                          : "text-green-500"
+                      }`}
+                    >
+                      Passwortstärke: {passwordStrength}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label
@@ -175,7 +220,7 @@ const RegisterComponent = () => {
                   <input
                     type="date"
                     id="birthdate"
-                    name="birthdate" // Angepasst: birthDate → birthdate
+                    name="birthdate"
                     value={formData.birthdate}
                     onChange={handleChange}
                     className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -193,133 +238,17 @@ const RegisterComponent = () => {
             )}
             {step === 2 && (
               <>
-                <div className="gap-4">
-                  <div>
-                    <label
-                      htmlFor="firstname"
-                      className="block text-sm font-medium text-gray-300"
-                    >
-                      Vorname
-                    </label>
-                    <input
-                      type="text"
-                      id="firstname"
-                      name="firstname"
-                      value={formData.firstname}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="Vorname"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="lastname"
-                      className="block text-sm font-medium text-gray-300"
-                    >
-                      Nachname
-                    </label>
-                    <input
-                      type="text"
-                      id="lastname"
-                      name="lastname"
-                      value={formData.lastname}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="Nachname"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="street"
-                      className="block text-sm font-medium text-gray-300"
-                    >
-                      Straße
-                    </label>
-                    <input
-                      type="text"
-                      id="street"
-                      name="street"
-                      value={formData.street}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="Straße"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="house_number"
-                      className="block text-sm font-medium text-gray-300"
-                    >
-                      Hausnummer
-                    </label>
-                    <input
-                      type="text"
-                      id="house_number"
-                      name="house_number" // Angepasst: houseNumber → house_number
-                      value={formData.house_number}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="Hausnummer"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="postal_code"
-                      className="block text-sm font-medium text-gray-300"
-                    >
-                      PLZ
-                    </label>
-                    <input
-                      type="text"
-                      id="postal_code"
-                      name="postal_code" // Angepasst: postalCode → postal_code
-                      value={formData.postal_code}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="PLZ"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="city"
-                      className="block text-sm font-medium text-gray-300"
-                    >
-                      Stadt
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      placeholder="Stadt"
-                      required
-                    />
-                  </div>
-                </div>
-
+                {/* Step 2 */}
                 <button
                   type="button"
                   onClick={handlePreviousStep}
-                  className="w-full py-3 bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className="w-full py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 >
                   Zurück
                 </button>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full py-3 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   Registrieren
                 </button>
@@ -328,12 +257,12 @@ const RegisterComponent = () => {
           </form>
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
-              Schon registriert?{" "}
+              Bereits registriert?{" "}
               <Link
                 to="/login"
                 className="text-green-500 hover:text-green-400 font-medium"
               >
-                Einloggen
+                Login
               </Link>
             </p>
           </div>
