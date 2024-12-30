@@ -8,14 +8,17 @@ const RegisterComponent = () => {
     username: "",
     email: "",
     password: "",
-    birthDate: "",
+    birthdate: "", // Angepasst: birthDate → birthdate
     firstname: "",
     lastname: "",
     street: "",
-    houseNumber: "",
-    postalCode: "",
+    house_number: "", // Angepasst: houseNumber → house_number
+    postal_code: "", // Angepasst: postalCode → postal_code
     city: "",
+    status: "active", // Standardwert
+    role: "user", // Standardwert
   });
+
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleChange = (e) => {
@@ -26,9 +29,9 @@ const RegisterComponent = () => {
     }));
   };
 
-  const isOldEnough = (birthDate) => {
+  const isOldEnough = (birthdate) => {
     const today = new Date();
-    const birth = new Date(birthDate);
+    const birth = new Date(birthdate);
     const age = today.getFullYear() - birth.getFullYear();
     const month = today.getMonth() - birth.getMonth();
     return age > 16 || (age === 16 && month >= 0);
@@ -41,7 +44,7 @@ const RegisterComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isOldEnough(formData.birthDate)) {
+    if (!isOldEnough(formData.birthdate)) {
       alert("Du musst mindestens 16 Jahre alt sein.");
       return;
     }
@@ -164,16 +167,16 @@ const RegisterComponent = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="birthDate"
+                    htmlFor="birthdate"
                     className="block text-sm font-medium text-gray-300"
                   >
                     Geburtsdatum
                   </label>
                   <input
                     type="date"
-                    id="birthDate"
-                    name="birthDate"
-                    value={formData.birthDate}
+                    id="birthdate"
+                    name="birthdate" // Angepasst: birthDate → birthdate
+                    value={formData.birthdate}
                     onChange={handleChange}
                     className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                     required
@@ -250,16 +253,16 @@ const RegisterComponent = () => {
                   </div>
                   <div>
                     <label
-                      htmlFor="houseNumber"
+                      htmlFor="house_number"
                       className="block text-sm font-medium text-gray-300"
                     >
                       Hausnummer
                     </label>
                     <input
                       type="text"
-                      id="houseNumber"
-                      name="houseNumber"
-                      value={formData.houseNumber}
+                      id="house_number"
+                      name="house_number" // Angepasst: houseNumber → house_number
+                      value={formData.house_number}
                       onChange={handleChange}
                       className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                       placeholder="Hausnummer"
@@ -271,16 +274,16 @@ const RegisterComponent = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label
-                      htmlFor="postalCode"
+                      htmlFor="postal_code"
                       className="block text-sm font-medium text-gray-300"
                     >
                       PLZ
                     </label>
                     <input
                       type="text"
-                      id="postalCode"
-                      name="postalCode"
-                      value={formData.postalCode}
+                      id="postal_code"
+                      name="postal_code" // Angepasst: postalCode → postal_code
+                      value={formData.postal_code}
                       onChange={handleChange}
                       className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                       placeholder="PLZ"
