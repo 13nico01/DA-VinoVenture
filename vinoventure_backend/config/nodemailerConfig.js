@@ -12,4 +12,19 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+transporter.sendMail({
+  from: '"Test" <' + process.env.EMAIL + '>',
+  to: 'recipient@example.com',
+  subject: 'Testnachricht',
+  text: 'Dies ist eine Testnachricht.',
+})
+  .then(() => {
+    console.log('Test-E-Mail erfolgreich gesendet.');
+  })
+  .catch(error => {
+    console.error('Fehler beim Senden der Test-E-Mail:', error);
+  });
+
+
+
 module.exports = transporter;
