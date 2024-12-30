@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react"; // Importiere Eye-Icons aus lucide-react
+import { Eye, EyeOff } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const RegisterComponent = () => {
-  const [step, setStep] = useState(1); // Aktuellen Schritt verfolgen
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -15,9 +16,8 @@ const RegisterComponent = () => {
     postalCode: "",
     city: "",
   });
-  const [passwordVisible, setPasswordVisible] = useState(false); // Zustand für die Sichtbarkeit des Passworts
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  // Funktion für das Handling von Änderungen in den Inputfeldern
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -26,7 +26,6 @@ const RegisterComponent = () => {
     }));
   };
 
-  // Funktion zum Validieren des Alters (mindestens 16 Jahre alt)
   const isOldEnough = (birthDate) => {
     const today = new Date();
     const birth = new Date(birthDate);
@@ -35,45 +34,44 @@ const RegisterComponent = () => {
     return age > 16 || (age === 16 && month >= 0);
   };
 
-  // Funktion zum Validieren des Passworts (mindestens 8 Zeichen)
   const isPasswordValid = (password) => {
     return password.length >= 8;
   };
 
-  // Funktion zur Überprüfung der Formulardaten, bevor es abgeschickt wird
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try{
-      const response = await fetch("https://vino-venture.com/3000/api/users/signup", {
-        method: "POST",
-        headers:{
-          "Content-Type" : "application/json",
-        },
-        body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-
-        if (response.status === 201){
-          alert("Benutzer erstellt")
-        }else{
-          alert(data.error|| "Es ist ein Fehler aufgetreten")
-        }
-    }catch(error){
-      console.error("Fehler beim absenden der Daten", error);
-      alert("Server nicht erreichbar")
-    }
-
-    // Altersprüfung
     if (!isOldEnough(formData.birthDate)) {
       alert("Du musst mindestens 16 Jahre alt sein.");
       return;
     }
 
-    // Passwortlängenprüfung
     if (!isPasswordValid(formData.password)) {
       alert("Das Passwort muss mindestens 8 Zeichen lang sein.");
       return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://vino-venture.com/3000/api/users/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await response.json();
+
+      if (response.status === 201) {
+        alert("Benutzer erstellt");
+      } else {
+        alert(data.error || "Es ist ein Fehler aufgetreten");
+      }
+    } catch (error) {
+      console.error("Fehler beim Absenden der Daten", error);
+      alert("Server nicht erreichbar");
     }
   };
 
@@ -86,201 +84,257 @@ const RegisterComponent = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-sm p-8 space-y-6 bg-neutral-300 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Registrierung</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Step 1 - Basic Information */}
-          {step === 1 && (
-            <>
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Username"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Email Adresse"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <div className="relative">
+    <div className="relative">
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
+
+      <div className="flex justify-center items-center min-h-screen text-white px-4">
+        <div className="w-full max-w-md p-10 space-y-6 bg-gray-800 rounded-lg shadow-lg">
+          <h2 className="text-3xl font-bold text-center text-green-600">
+            Registrierung
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {step === 1 && (
+              <>
+                <div>
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium text-gray-300"
+                  >
+                    Benutzername
+                  </label>
                   <input
-                    type={passwordVisible ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    value={formData.password}
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                    placeholder="Passwort"
+                    className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Benutzername"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                    className="absolute inset-y-0 right-2 flex items-center"
-                  >
-                    {passwordVisible ? <EyeOff /> : <Eye />}
-                  </button>
                 </div>
-              </div>
-              <div>
-                <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700">
-                  Geburtsdatum
-                </label>
-                <input
-                  type="date"
-                  id="birthDate"
-                  name="birthDate"
-                  value={formData.birthDate}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  required
-                />
-              </div>
-              <button
-                type="button"
-                onClick={handleNextStep}
-                className="w-full px-4 py-2 font-semibold text-white bg-green-700 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-              >
-                Next
-              </button>
-            </>
-          )}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-300"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Email Adresse"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-300"
+                  >
+                    Passwort
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={passwordVisible ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Passwort"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-300 hover:text-green-500"
+                    >
+                      {passwordVisible ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="birthDate"
+                    className="block text-sm font-medium text-gray-300"
+                  >
+                    Geburtsdatum
+                  </label>
+                  <input
+                    type="date"
+                    id="birthDate"
+                    name="birthDate"
+                    value={formData.birthDate}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="w-full py-3 bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  Nächster Schritt
+                </button>
+              </>
+            )}
+            {step === 2 && (
+              <>
+                <div className="gap-4">
+                  <div>
+                    <label
+                      htmlFor="firstname"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Vorname
+                    </label>
+                    <input
+                      type="text"
+                      id="firstname"
+                      name="firstname"
+                      value={formData.firstname}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Vorname"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="lastname"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Nachname
+                    </label>
+                    <input
+                      type="text"
+                      id="lastname"
+                      name="lastname"
+                      value={formData.lastname}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Nachname"
+                      required
+                    />
+                  </div>
+                </div>
 
-          {/* Step 2 - Address and Name */}
-          {step === 2 && (
-            <>
-              <div>
-                <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
-                  Vorname
-                </label>
-                <input
-                  type="text"
-                  id="firstname"
-                  name="firstname"
-                  value={formData.firstname}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Vorname"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
-                  Nachname
-                </label>
-                <input
-                  type="text"
-                  id="lastname"
-                  name="lastname"
-                  value={formData.lastname}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Nachname"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="street" className="block text-sm font-medium text-gray-700">
-                  Straße
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  name="street"
-                  value={formData.street}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Straße"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="houseNumber" className="block text-sm font-medium text-gray-700">
-                  Hausnummer
-                </label>
-                <input
-                  type="text"
-                  id="houseNumber"
-                  name="houseNumber"
-                  value={formData.houseNumber}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Hausnummer"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
-                  PLZ
-                </label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  name="postalCode"
-                  value={formData.postalCode}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="PLZ"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-                  Stadt
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                  placeholder="Stadt"
-                  required
-                />
-              </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="street"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Straße
+                    </label>
+                    <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Straße"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="houseNumber"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Hausnummer
+                    </label>
+                    <input
+                      type="text"
+                      id="houseNumber"
+                      name="houseNumber"
+                      value={formData.houseNumber}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Hausnummer"
+                      required
+                    />
+                  </div>
+                </div>
 
-              <button
-                type="button"
-                onClick={handlePreviousStep}
-                className="w-full px-4 py-2 font-semibold text-white bg-gray-600 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="postalCode"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      PLZ
+                    </label>
+                    <input
+                      type="text"
+                      id="postalCode"
+                      name="postalCode"
+                      value={formData.postalCode}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="PLZ"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Stadt
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Stadt"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handlePreviousStep}
+                  className="w-full py-3 bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                >
+                  Zurück
+                </button>
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  Registrieren
+                </button>
+              </>
+            )}
+          </form>
+          <div className="mt-6 text-center">
+            <p className="text-gray-400 text-sm">
+              Schon registriert?{" "}
+              <Link
+                to="/login"
+                className="text-green-500 hover:text-green-400 font-medium"
               >
-                Zurück
-              </button>
-              <button
-                type="submit"
-                className="w-full px-4 py-2 font-semibold text-white bg-green-700 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-              >
-                Register
-              </button>
-            </>
-          )}
-        </form>
+                Einloggen
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

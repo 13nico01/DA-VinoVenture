@@ -1,36 +1,33 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Eye } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import API_BASE_URL from "../../constants/constants";
 
 function LoginComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (username === "" || password === "") {
-      setError("Username and Password are required");
+      setError("Benutzername und Passwort sind erforderlich.");
       return;
     }
 
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/user-login/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/user-login/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);
         localStorage.setItem("username", username);
 
         if (data.user_id) {
@@ -40,62 +37,103 @@ function LoginComponent() {
         }
         navigate("/");
       } else {
-        setError(data.message || "Invalid username or password");
+        setError(data.message || "Ungültiger Benutzername oder Passwort.");
       }
     } catch (error) {
-      setError("An error occurred while logging in. Please try again.");
+      setError(
+        "Beim Einloggen ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+      );
     }
   };
 
-  addEventListener("keypress", function (event) {
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleLogin();
     }
-  });
+  };
 
-  const showPswd = () => {
-    var x = document.getElementById("passwordInput");
-    if (x.type === "password") {
-      x.type = "text";
-    } else {
-      x.type = "password";
-    }
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-neutral-200 shadow-md rounded-lg px-16 py-16 text-center">
-        <h2 className="text-2xl font-bold mb-4 text-black">Login</h2>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          className="border border-gray-300 p-2 rounded-xl w-full mb-4 text-white bg-gray-800"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          id="passwordInput"
-          className="border border-gray-300 p-2 rounded-xl w-full mb-4 text-white bg-gray-800"
-        />
-        <div className="">
-          <input
-            onClick={showPswd}
-            type="checkbox"
-            className=" mb-4 text-white"
-          />
+    <div className="flex flex-col items-center justify-center min-h-screen text-white px-4">
+      <div className="bg-gray-800 shadow-lg rounded-lg p-10 w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-green-600">
+          Willkommen zurück
+        </h2>
+        <p className="text-gray-400 mb-8 text-center">
+          Bitte melden Sie sich mit Ihrem Konto an
+        </p>
+        <div className="space-y-6">
+          <div>
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium mb-2 text-gray-300"
+            >
+              Benutzername
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Geben Sie Ihren Benutzernamen ein"
+              className="w-full border border-gray-600 p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+              onKeyPress={handleKeyPress}
+            />
+          </div>
+
+          <div className="relative">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium mb-2 text-gray-300"
+            >
+              Passwort
+            </label>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Geben Sie Ihr Passwort ein"
+              className="w-full border border-gray-600 p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-3 flex items-center text-gray-300 hover:text-green-500"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+          {error && (
+            <p className="text-red-500 text-sm font-medium text-center">
+              {error}
+            </p>
+          )}
+
+          <button
+            onClick={handleLogin}
+            className="w-full bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
+          >
+            Einloggen
+          </button>
         </div>
 
-        {error && <p className="text-red-500 mb-3 font-normal">{error}</p>}
-        <button
-          onClick={handleLogin}
-          className="w-1/2 bg-gradient-to-r from-green-600 to-green-900 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-2xl"
-        >
-          Login
-        </button>
+        <div className="mt-6 text-center">
+          <p className="text-gray-400 text-sm">
+            Noch kein Konto?{" "}
+            <Link
+              to="/register"
+              className="text-green-500 hover:text-green-400 font-medium"
+            >
+              Registrieren
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
