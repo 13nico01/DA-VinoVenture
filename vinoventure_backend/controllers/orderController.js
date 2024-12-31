@@ -32,10 +32,10 @@ exports.addOrder = async (req, res) => {
 
         // SQL-Query zum Hinzufügen einer Bestellung
         const query = `
-            INSERT INTO orders (user_id, total_amount, status, shipping_cart_id, customerEmail)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
+            VALUES (?, ?, ?, ?)
         `;
-        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id, customerEmail]);
+        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id,]);
 
         // E-Mail senden
         const order = {
