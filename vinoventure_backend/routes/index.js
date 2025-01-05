@@ -21,7 +21,7 @@ router.use("/users", registerRoutes);
 router.use("/admin", adminAuthRoutes);
 router.use("/wine-packages", winePackageRoutes);
 router.use("/user-manager", userManagerRoutes);
-router.use("/user", loginRoutes);
+router.use("/user-login", loginRoutes);
 router.use("/shop", shopRoutes);
 router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);
