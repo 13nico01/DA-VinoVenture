@@ -2,6 +2,6 @@ const express = require("express");
 const router = express.Router();
 const orderManagerController = require("../controllers/orderManagerController");
 
-router.get("/get-orders", orderManagerController.getOrders);
+router.get("/getOrders", orderManagerController.getOrders);
 
 module.exports = router;

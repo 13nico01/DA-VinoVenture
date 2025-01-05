@@ -17,7 +17,7 @@ function LoginComponent() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/user-login/login`, {
+      const response = await fetch(`${API_BASE_URL}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

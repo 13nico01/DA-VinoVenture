@@ -22,7 +22,7 @@ const AddPackage = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/wine-packages/add-package`,
+        `${API_BASE_URL}/api/wine-packages/addPackage`,
         {
           method: "POST",
           headers: {

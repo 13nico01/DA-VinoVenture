@@ -4,13 +4,13 @@ const imageController = require('../controllers/imageController');
 const wineController = require('../controllers/wineController');
 
 
-router.post('/update-image-paths', imageController.updateImagePaths);
-router.get('/get-wines-by-id/:packageId', imageController.getWinesByPackageId);
-router.get('/get-images-by-id/:packageId', imageController.getImagesByPackageId);
-router.post('/upload-image', imageController.uploadImage);
-router.get('/get-wine', wineController.getWine)
-router.get('/get-wine-by-id/:id', wineController.getWineById);
-router.delete('/delete-wine/:id', wineController.deleteWine);
-router.get('/test-image', imageController.getTestImageRoute)
+router.post('/updateImagePaths', imageController.updateImagePaths);
+router.get('/getWinesByID/:packageId', imageController.getWinesByPackageId);
+router.get('/getImagesByID/:packageId', imageController.getImagesByPackageId);
+router.post('/uploadImage', imageController.uploadImage);
+router.get('/getWine', wineController.getWine)
+router.get('/getWineByID/:id', wineController.getWineById);
+router.delete('/deleteWine/:id', wineController.deleteWine);
+router.get('/testImage', imageController.getTestImageRoute)
 
 module.exports = router;

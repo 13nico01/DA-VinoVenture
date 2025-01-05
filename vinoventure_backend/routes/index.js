@@ -4,7 +4,7 @@ const path = require("path");
 
 
 const orderRoutes = require("./orderRoutes");
-const authRoutes = require("./authRoutes");
+const registerRoutes = require("./registerRoutes");
 const adminAuthRoutes = require("./adminAuthRoutes");
 const winePackageRoutes = require("./winePackageRoutes");
 const userManagerRoutes = require("./userManagerRoutes");
@@ -17,11 +17,11 @@ const wineRoutes = require("./wineRoutes");
 
 router.use('/images', express.static(path.join(__dirname, 'images')));
 router.use("/order", orderRoutes)
-router.use("/users", authRoutes);
+router.use("/users", registerRoutes);
 router.use("/admin", adminAuthRoutes);
 router.use("/wine-packages", winePackageRoutes);
 router.use("/user-manager", userManagerRoutes);
-router.use("/user-login", loginRoutes);
+router.use("/user", loginRoutes);
 router.use("/shop", shopRoutes);
 router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);

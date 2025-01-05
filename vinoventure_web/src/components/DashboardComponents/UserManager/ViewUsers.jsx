@@ -8,7 +8,7 @@ const ViewUsers = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/api/user-manager/get-users`
+          `${API_BASE_URL}/api/user-manager/getUsers`
         );
         if (!response.ok) {
           throw new Error("Fehler beim Abrufen der User!");

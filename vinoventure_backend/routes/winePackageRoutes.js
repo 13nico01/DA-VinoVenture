@@ -3,14 +3,14 @@ const winePackageController = require('../controllers/winePackageController')
 
 const router = express.Router();
 
-router.post('/add-package', winePackageController.addWinePackage);
+router.post('/addPackage', winePackageController.addWinePackage);
 
-router.get('/get-packages', winePackageController.getWinePackages);
+router.get('/getPackages', winePackageController.getWinePackages);
 
 router.get('/getPackagebyId/:id', winePackageController.getWinePackageById);
 
-router.get('/get-package-count', winePackageController.getPackageCount);
+router.get('/getPackageCount', winePackageController.getPackageCount);
 
-router.delete('/delete-package/:id',winePackageController.deleteWinePackage);
+router.delete('/deletePackage/:id',winePackageController.deleteWinePackage);
 
 module.exports = router;

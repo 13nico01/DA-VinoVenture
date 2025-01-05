@@ -4,4 +4,4 @@ const shoppingCartController = require('../controllers/shoppingCartController')
 
 const router = express.Router();
 
-router.get('/get-shoppingCartsByID', shoppingCartController.getShoppingCartById);
+router.get('/getShoppingCartsByID', shoppingCartController.getShoppingCartById);

@@ -58,7 +58,7 @@ const ViewPackages = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/api/wine-packages/delete-package/${pkgId}`,
+          `${API_BASE_URL}/api/wine-packages/deletePackage/${pkgId}`,
           {
             method: "DELETE",
           }

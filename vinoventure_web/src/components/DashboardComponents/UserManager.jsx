@@ -4,4 +4,4 @@ function UserManager() {
   )
 }
 
-export default UserManager
+export default UserManager;

@@ -3,10 +3,10 @@ const userManagerController = require("../controllers/userManagerController");
 
 const router = express.Router();
 
-router.get('/get-users', userManagerController.getUsers);
+router.get('/getUsers', userManagerController.getUsers);
 
-router.get('/get-user-count', userManagerController.getUserCount);
+router.get('/getUserCount', userManagerController.getUserCount);
 
-router.delete('/delete-user', userManagerController.deleteUser);
+router.delete('/deleteUser', userManagerController.deleteUser);
 
 module.exports = router;

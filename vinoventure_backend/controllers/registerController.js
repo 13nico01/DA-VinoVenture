@@ -140,34 +140,4 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
 
-  try {
-    const [user] = await db.query("SELECT * FROM users WHERE username = ?", [
-      username,
-    ]);
-
-    if (user.length === 0) {
-      return res.status(400).json({ error: "Ungültiger Benutzer/Passwort" });
-    }
-
-    const foundUser = user[0];
-    const isPasswordValid = await bcrypt.compare(password, foundUser.password);
-
-    if (isPasswordValid) {
-      const token = jwt.sign(
-        { userId: foundUser.id, email: foundUser.email },
-        secretKey,
-        { expiresIn: "1h" }
-      );
-
-      return res.status(200).json({ message: "Login erfolgreich", token });
-    } else {
-      return res.status(400).json({ error: "Ungültiges Passwort" });
-    }
-  } catch (err) {
-    console.error("Error during login", err);
-    return res.status(500).json({ error: "Datenbankfehler" });
-  }
-};
