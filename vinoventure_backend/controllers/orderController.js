@@ -2,25 +2,39 @@ const path = require('path');
 const transporter = require('../config/nodemailerConfig');
 const { db } = require('../config/database');
 
-// Bestellbestätigungs E-Mail
-const sendOrderConfirmationEmail = (order) => {
-    const emailOptions = {
-        from: '"Vino Venture" <no-reply@vino-venture.com>',
-        to: order.customerEmail,
-        subject: 'Deine Bestellung wurde erfolgreich aufgegeben!',
-        text: `Deine Bestellung mit der ID ${order.id} wurde erfolgreich aufgegeben. Du erhältst eine weitere E-Mail, sobald dein Paket versandt wird.`,
-    };
+// Funktion zum Senden der Bestellbestätigungs-E-Mail
+const sendOrderConfirmationEmail = async (order, winePackages) => {
+    try {
+        // Formatieren der Weinpakete für die E-Mail
+        const winePackageList = winePackages
+            .map(pkg => `- ${pkg.package_name} (${pkg.quantity}x)`)
+            .join('\n');
 
-    transporter.sendMail(emailOptions)
-        .then(() => {
-            console.log('Bestellbestätigung erfolgreich versendet.');
-        })
-        .catch(error => {
-            console.error('Fehler beim Senden der Bestellbestätigung:', error);
-        });
+        // E-Mail-Optionen mit dynamischen Inhalten
+        const emailOptions = {
+            from: '"Vino Venture" <no-reply@vino-venture.com>',
+            to: order.customerEmail,
+            subject: 'Deine Bestellung wurde erfolgreich aufgegeben!',
+            text: `Hallo,
+
+Deine Bestellung wurde erfolgreich aufgegeben. Du erhältst eine weitere E-Mail, sobald dein Paket versandt wird.
+
+Hier sind die Details deiner Bestellung:
+${winePackageList}
+
+Vielen Dank für deine Bestellung bei Vino Venture!
+            `,
+        };
+
+        // E-Mail senden
+        await transporter.sendMail(emailOptions);
+        console.log('Bestellbestätigung erfolgreich versendet.');
+    } catch (error) {
+        console.error('Fehler beim Senden der Bestellbestätigung:', error);
+    }
 };
 
-
+// Funktion zum Hinzufügen einer Bestellung
 exports.addOrder = async (req, res) => {
     try {
         const { user_id, total_amount, status, shipping_cart_id, customerEmail } = req.body;
@@ -35,7 +49,18 @@ exports.addOrder = async (req, res) => {
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
             VALUES (?, ?, ?, ?)
         `;
-        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id,]);
+        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id]);
+
+        // Weinpakete basierend auf der shipping_cart_id abrufen
+        const [winePackages] = await db.query(
+            `
+            SELECT wp.package_name, wpsc.quantity
+            FROM wine_packages_shipping_cart wpsc
+            JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
+            WHERE wpsc.shipping_cart_id = ?
+            `,
+            [shipping_cart_id]
+        );
 
         // E-Mail senden
         const order = {
@@ -43,7 +68,7 @@ exports.addOrder = async (req, res) => {
             customerEmail,
         };
 
-        sendOrderConfirmationEmail(order);
+        await sendOrderConfirmationEmail(order, winePackages);
 
         // Erfolgsantwort senden
         res.status(201).json({
@@ -59,17 +84,17 @@ exports.addOrder = async (req, res) => {
     }
 };
 
-
-
+// Funktion zum Abrufen aller Bestellungen
 exports.getAllOrders = async (req, res) => {
     try {
-      const [rows] = await db.query(`SELECT * FROM orders`); 
-      res.json({ users: rows });
+        const [rows] = await db.query(`SELECT * FROM orders`);
+        res.json({ orders: rows });
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: err.message });
     }
-  };
+};
 
+// Funktion zum Abrufen der Bestellungen eines bestimmten Nutzers
 exports.getUserOrders = async (req, res) => {
     const userId = req.params.user_id;
 
@@ -88,4 +113,4 @@ exports.getUserOrders = async (req, res) => {
         console.error("Error fetching user orders:", err);
         return res.status(500).json({ error: err.message });
     }
-}
+};
