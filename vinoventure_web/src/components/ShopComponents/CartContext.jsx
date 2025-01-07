@@ -24,7 +24,7 @@ export const CartProvider = ({ children }) => {
     if (userId) {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/cart/getCart/${userId}`
+          `${API_BASE_URL}/api/cart/get-Cart/${userId}`
         );
         setCart(response.data.cart);
       } catch (error) {
@@ -56,7 +56,7 @@ export const CartProvider = ({ children }) => {
     if (existingProduct) {
       // Wenn das Produkt schon im Warenkorb ist, die Menge erhöhen
       try {
-        await axios.put(`${API_BASE_URL}/api/cart/updateCart/${userId}`, {
+        await axios.put(`${API_BASE_URL}/api/cart/update-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
           quantity: existingProduct.quantity + 1,
         });
@@ -73,7 +73,7 @@ export const CartProvider = ({ children }) => {
     } else {
       // Andernfalls das Produkt zum Warenkorb hinzufügen
       try {
-        await axios.post(`${API_BASE_URL}/api/cart/addCart/${userId}`, {
+        await axios.post(`${API_BASE_URL}/api/cart/add-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
           quantity: 1,
         });
@@ -98,7 +98,7 @@ export const CartProvider = ({ children }) => {
 
       // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
       await axios.delete(
-        `${API_BASE_URL}/api/cart/deleteCart/${userId}/${wine_package_id}`
+        `${API_BASE_URL}/api/cart/delete-Cart/${userId}/${wine_package_id}`
       );
       setCart((prevCart) =>
         prevCart.filter((item) => item.wine_package_id !== wine_package_id)

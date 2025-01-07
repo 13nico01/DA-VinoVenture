@@ -61,7 +61,7 @@ const CartOverview = () => {
           <input
             type="text"
             placeholder="Rabattcode"
-            className="px-4 py-2 text-black rounded-lg w-2/3"
+            className="px-4 py-2 text-white rounded-lg w-2/3"
           />
           <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
             Anwenden
