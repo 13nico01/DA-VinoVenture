@@ -15,7 +15,7 @@ const ViewPackages = () => {
     const fetchPackages = async () => {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/api/wine-packages/get-packages`
+          `${API_BASE_URL}/api/wine-packages/getPackages`
         );
         const data = await response.json();
         if (response.ok) {
