@@ -12,7 +12,7 @@ const sendOrderConfirmationEmail = async (order, winePackages) => {
 
         // E-Mail-Optionen mit dynamischen Inhalten
         const emailOptions = {
-            from: '"Vino Venture" <no-reply@vino-venture.com>',
+            from: '"VinoVenture" <no-reply@vino-venture.com>',
             to: order.customerEmail,
             subject: 'Deine Bestellung wurde erfolgreich aufgegeben!',
             text: `Hallo,
