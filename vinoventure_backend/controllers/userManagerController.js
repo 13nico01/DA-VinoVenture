@@ -149,3 +149,31 @@ exports.deleteUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+exports.updateUser = async (req, res) => {
+  const { id } = req.params; // Benutzer-ID aus der URL
+  const { username, firstname, lastname, street, house_number, postal_code, city} = req.body; // Neue Benutzerdaten aus dem Body
+
+  // Überprüfen, ob alle erforderlichen Felder vorhanden sind
+  if (!username || !firstname || !lastname || !street || !house_number || !postal_code || !city) {
+    return res.status(400).json({ error: "Name, Email und Passwort sind erforderlich." });
+  }
+
+  try {
+  
+
+    // Benutzer aktualisieren
+    const [result] = await db.query(
+      `UPDATE users SET username = ?,  firstname = ?, lastname = ? , street = ?, house_number = ?, postal_code = ?, city =? WHERE id = ?`,
+      [username, firstname, lastname, street, house_number, postal_code, city, id]
+    );
+
+    // Überprüfen, ob ein Benutzer aktualisiert wurde
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Benutzer nicht gefunden." });
+    }
+
+    res.json({ message: "Benutzerdaten erfolgreich aktualisiert." });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
