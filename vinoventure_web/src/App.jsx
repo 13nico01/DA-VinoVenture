@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Products from "./pages/Products";
 import { CartProvider } from "./components/ShopComponents/CartContext";
 import Cart from "./pages/Cart";
+import UserProfile from "./pages/UserProfile";
 
 const App = () => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/user" element={<UserProfile/>}/>
           <Route path="/register" element={<Register />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLogin onLogin={handleLogin} />} />
