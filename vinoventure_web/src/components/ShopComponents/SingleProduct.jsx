@@ -61,7 +61,7 @@ const SingleProduct = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-6">
-      <h1 className="text-4xl font-semibold text-center mb-6 text-white">
+      <h1 className="text-4xl font-semibold text-center mb-16 text-white">
         {product.package_name}
       </h1>
       <div className="flex flex-col lg:flex-row gap-6 mb-10">

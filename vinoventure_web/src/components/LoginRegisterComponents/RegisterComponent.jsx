@@ -120,7 +120,6 @@ const RegisterComponent = () => {
 
   return (
     <div className="relative">
-      <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
 
       <div className="flex justify-center items-center min-h-screen text-white px-4">
         <div className="w-full max-w-md p-10 space-y-6 bg-gray-800 rounded-lg shadow-lg">

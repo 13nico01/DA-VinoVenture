@@ -45,9 +45,7 @@ const MainShop = () => {
 
   return (
     <div className="relative">
-      <div className="absolute top-0 z-[-2] w-full bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] h-full"></div>
-      
-      <div className="max-w-screen-xl mx-auto px-4 py-6 relative z-10">
+      <div className="max-w-screen-xl mx-auto px-4 pt-6 pb-20 relative z-10">
         <h1 className="text-3xl font-bold text-center mb-6">Produkte</h1>
 
         <div className="flex justify-between mb-6">
