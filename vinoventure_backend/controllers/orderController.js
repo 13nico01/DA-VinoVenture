@@ -14,15 +14,15 @@ const sendOrderConfirmationEmail = async (order, winePackages) => {
         const emailOptions = {
             from: '"VinoVenture" <no-reply@vino-venture.com>',
             to: order.customerEmail,
-            subject: 'Deine Bestellung wurde erfolgreich aufgegeben!',
-            text: `Hallo,
+            subject: 'Ihre Bestellung wurde erfolgreich aufgegeben!',
+            text: `Guten Tag,
 
-Deine Bestellung wurde erfolgreich aufgegeben. Du erhältst eine weitere E-Mail, sobald dein Paket versandt wird.
+Ihre Bestellung wurde erfolgreich aufgegeben. Sie erhalten eine weitere E-Mail, sobald Ihr Paket versandt wird.
 
-Hier sind die Details deiner Bestellung:
+Hier sind die Details Ihrer Bestellung:
 ${winePackageList}
 
-Vielen Dank für deine Bestellung bei Vino Venture!
+Vielen Dank für Ihre Bestellung bei VinoVenture!
             `,
         };
 
@@ -33,6 +33,39 @@ Vielen Dank für deine Bestellung bei Vino Venture!
         console.error('Fehler beim Senden der Bestellbestätigung:', error);
     }
 };
+
+// Funktion zum Senden der Bestellbestätigungs-E-Mail
+const sendShippingEmail = async (order, winePackages) => {
+    try {
+        // Formatieren der Weinpakete für die E-Mail
+        const winePackageList = winePackages
+            .map(pkg => `- ${pkg.package_name} (${pkg.quantity}x)`)
+            .join('\n');
+
+        // E-Mail-Optionen mit dynamischen Inhalten
+        const emailOptions = {
+            from: '"VinoVenture" <no-reply@vino-venture.com>',
+            to: order.customerEmail,
+            subject: 'Ihre Bestellung wurde erfolgreich versandt!',
+            text: `Guten Tag,
+
+Ihre Bestellung wurde erfolgreich versandt.
+Hier sind die Details Ihrer Bestellung:
+${winePackageList}
+
+Vielen Dank für Ihre Bestellung bei VinoVenture!
+            `,
+        };
+
+        // E-Mail senden
+        await transporter.sendMail(emailOptions);
+        console.log('Versandsbestätigung erfolgreich versendet.');
+    } catch (error) {
+        console.error('Fehler beim Senden der Versandsbestätigung:', error);
+    }
+};
+
+
 
 // Funktion zum Hinzufügen einer Bestellung
 exports.addOrder = async (req, res) => {
