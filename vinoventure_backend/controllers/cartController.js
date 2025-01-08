@@ -232,7 +232,6 @@ const { db } = require("../config/database");
  *                   type: string
  */
 
-
 exports.getCart = async (req, res) => {
   const userId = req.params.user_id;
   try {
@@ -245,10 +244,6 @@ exports.getCart = async (req, res) => {
       WHERE sc.user_id = ?`,
       [userId]
     );
-
-    if (rows.length === 0) {
-      console.log("Warenkorb leer");
-    }
 
     res.json({ cart: rows });
   } catch (err) {
@@ -391,7 +386,7 @@ exports.removeFromCart = async (req, res) => {
 
 exports.clearCart = async (req, res) => {
   const userId = req.params.user_id;
-  
+
   try {
     // Überprüfen, ob der Benutzer einen Warenkorb hat
     const [cartResult] = await db.query(
