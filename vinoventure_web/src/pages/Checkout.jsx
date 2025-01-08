@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/MainComponents/Navbar";
 import { useCart } from "../components/ShopComponents/CartContext";
+import API_BASE_URL from "../constants/constants";
+import axios from "axios";
 
 const Checkout = () => {
   const { cart, calculateTotal } = useCart();
@@ -15,24 +17,57 @@ const Checkout = () => {
   const localID = localStorage.getItem("userID");
   const total = calculateTotal();
 
-  formData.user_id = localID;
-  formData.total_amount = total;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/user-manager/getUserByID/${localID}`
+        );
+        // Zugriff auf die korrekten Werte in der Antwortstruktur
+        const { email, shipping_cart_id } = response.data.packages[0];
+
+        // Aktualisiere den State mit den abgerufenen Daten
+        setFormData((prevData) => ({
+          ...prevData,
+          user_id: localID,
+          total_amount: total,
+          shipping_cart_id,
+          customerEmail: email,
+        }));
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+      }
+    };
+
+    if (localID) {
+      fetchUserData();
+    }
+  }, [localID, total]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !formData.user_id ||
+      !formData.total_amount ||
+      !formData.shipping_cart_id ||
+      !formData.customerEmail
+    ) {
+      alert("Einige Daten fehlen. Bitte versuche es erneut.");
+      return;
+    }
+
     try {
-      const response = await fetch(
-        "https://vino-venture.com/3000/api/order/addOrder",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/order/addOrder`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
       const data = await response.json();
+
       if (response.status === 201) {
         alert("Bestellung erfolgreich aufgegeben");
         setFormData({
@@ -46,11 +81,12 @@ const Checkout = () => {
         alert(data.error || "Es ist ein Fehler aufgetreten");
       }
     } catch (error) {
-      console.error("Fehler beim absenden der Daten", error);
+      console.error("Fehler beim Absenden der Daten:", error);
       alert("Server nicht erreichbar");
     }
   };
-  console.log(formData)
+
+
   return (
     <>
       <Navbar />
