@@ -132,7 +132,7 @@ exports.getUserById = async (req, res) => {
     const [rows] = await db.query(`
       SELECT 
         users.*, 
-        shipping_cart.id AS shipping_cart_id 
+        shipping_cart.shipping_cart_id AS shipping_cart_id 
       FROM 
         users 
       LEFT JOIN 
