@@ -23,10 +23,8 @@ const Checkout = () => {
         const response = await axios.get(
           `${API_BASE_URL}/api/user-manager/getUserByID/${localID}`
         );
-        // Zugriff auf die korrekten Werte in der Antwortstruktur
         const { email, shipping_cart_id } = response.data.packages[0];
 
-        // Aktualisiere den State mit den abgerufenen Daten
         setFormData((prevData) => ({
           ...prevData,
           user_id: localID,
@@ -47,29 +45,44 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.user_id ||
-      !formData.total_amount ||
-      !formData.shipping_cart_id ||
-      !formData.customerEmail
-    ) {
-      alert("Einige Daten fehlen. Bitte versuche es erneut.");
-      return;
-    }
-
     try {
       const response = await fetch(`${API_BASE_URL}/api/order/addOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), 
       });
 
       const data = await response.json();
 
       if (response.status === 201) {
         alert("Bestellung erfolgreich aufgegeben");
+
+        const resetResponse = await fetch(
+          `${API_BASE_URL}/api/user-manager/updateShippingCart/${localID}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ shipping_cart_id: null }), 
+          }
+        );
+
+        const resetData = await resetResponse.json();
+
+        if (resetResponse.status === 200) {
+          console.log("Shipping-Cart-ID zurückgesetzt:", resetData);
+          alert("Warenkorb wurde erfolgreich geleert.");
+        } else {
+          console.error(
+            "Fehler beim Zurücksetzen der Shipping-Cart-ID:",
+            resetData.error
+          );
+          alert("Fehler beim Zurücksetzen des Warenkorbs.");
+        }
+
         setFormData({
           user_id: "",
           total_amount: "",
@@ -85,7 +98,6 @@ const Checkout = () => {
       alert("Server nicht erreichbar");
     }
   };
-
 
   return (
     <>
