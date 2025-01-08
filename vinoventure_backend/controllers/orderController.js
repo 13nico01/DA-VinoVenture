@@ -65,8 +65,6 @@ Vielen Dank für Ihre Bestellung bei VinoVenture!
     }
 };
 
-
-
 // Funktion zum Hinzufügen einer Bestellung
 exports.addOrder = async (req, res) => {
     try {
@@ -116,6 +114,7 @@ exports.addOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 exports.shipOrder = async (req, res) => {
