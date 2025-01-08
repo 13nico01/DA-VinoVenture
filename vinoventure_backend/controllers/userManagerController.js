@@ -129,7 +129,22 @@ exports.getUsers = async (req, res) => {
 exports.getUserByID = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.query(`SELECT * FROM users WHERE user_id = ?`, [id]);
+    const [rows] = await db.query(
+      `
+      SELECT 
+        users.*, 
+        shipping_cart.shipping_cart_id 
+      FROM 
+        users
+      JOIN 
+        shipping_cart 
+      ON 
+        users.user_id = shipping_cart.user_id
+      WHERE 
+        users.user_id = ?
+      `,
+      [id]
+    );
     res.json({ packages: rows });
   } catch (err) {
     console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler
