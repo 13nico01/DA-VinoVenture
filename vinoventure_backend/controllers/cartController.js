@@ -388,3 +388,46 @@ exports.removeFromCart = async (req, res) => {
     return res.status(500).json({ error: "Interner Serverfehler" });
   }
 };
+
+exports.updateShippingID = async (req, res) => {
+  const userId = req.params.user_id;
+  const { shipping_cart_id } = req.body;
+
+  // Überprüfen, ob eine shipping_id übergeben wurde
+  if (!shipping_cart_id) {
+    return res.status(400).json({ message: "Shipping ID ist erforderlich" });
+  }
+
+  try {
+    // Überprüfen, ob der Benutzer einen Warenkorb hat
+    const [cartResult] = await db.query(
+      "SELECT shipping_cart_id FROM shipping_cart WHERE user_id = ?",
+      [userId]
+    );
+
+    if (!cartResult || cartResult.length === 0) {
+      return res.status(404).json({ message: "Warenkorb nicht gefunden" });
+    }
+
+    const shippingCartId = cartResult[0].shipping_cart_id;
+
+    // Aktualisieren der shipping_id im Warenkorb
+    const [updateResult] = await db.query(
+      `
+      UPDATE shipping_cart
+      SET shipping_cart_id = ?
+      WHERE shipping_cart_id = ?
+      `,
+      [shipping_id, shippingCartId]
+    );
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(404).json({ message: "Warenkorb konnte nicht aktualisiert werden" });
+    }
+
+    res.json({ message: "Shipping ID erfolgreich aktualisiert" });
+  } catch (err) {
+    console.error("Fehler beim Aktualisieren der Shipping ID:", err);
+    return res.status(500).json({ error: err.message });
+  }
+};
