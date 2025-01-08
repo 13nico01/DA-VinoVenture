@@ -415,7 +415,7 @@ exports.updateShippingID = async (req, res) => {
     const [updateResult] = await db.query(
       `
       UPDATE shipping_cart
-      SET shipping_cart_id = ?
+      SET shipping_id = ?
       WHERE shipping_cart_id = ?
       `,
       [shipping_id, shippingCartId]
