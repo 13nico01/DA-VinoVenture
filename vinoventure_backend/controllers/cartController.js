@@ -391,10 +391,10 @@ exports.removeFromCart = async (req, res) => {
 
 exports.updateShippingID = async (req, res) => {
   const userId = req.params.user_id;
-  const { shipping_cart_id } = req.body;
+  const { shipping_id } = req.body;
 
   // Überprüfen, ob eine shipping_id übergeben wurde
-  if (!shipping_cart_id) {
+  if (!shipping_id) {
     return res.status(400).json({ message: "Shipping ID ist erforderlich" });
   }
 
