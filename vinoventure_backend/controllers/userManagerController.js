@@ -136,7 +136,7 @@ exports.getUserByID = async (req, res) => {
         shipping_cart.shipping_cart_id 
       FROM 
         users
-      JOIN 
+      LEFT JOIN 
         shipping_cart 
       ON 
         users.user_id = shipping_cart.user_id
