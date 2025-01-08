@@ -59,37 +59,27 @@ const Checkout = () => {
       if (response.status === 201) {
         alert("Bestellung erfolgreich aufgegeben");
 
-        const resetResponse = await fetch(
-          `${API_BASE_URL}/api/user-manager/updateShippingCart/${localID}`,
+        const clearCartResponse = await fetch(
+          `https://vino-venture.com/3000/api/cart/clearCart/${localID}`,
           {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ shipping_cart_id: null }),
+            method: "DELETE",
           }
         );
 
-        const resetData = await resetResponse.json();
+        if (clearCartResponse.ok) {
+          console.log("Warenkorb erfolgreich geleert");
+          setFormData({
+            user_id: "",
+            total_amount: "",
+            status: "pending",
+            shipping_cart_id: "",
+            customerEmail: "",
+          });
 
-        if (resetResponse.status === 200) {
-          console.log("Shipping-Cart-ID zurückgesetzt:", resetData);
-          alert("Warenkorb wurde erfolgreich geleert.");
+          window.location.reload();
         } else {
-          console.error(
-            "Fehler beim Zurücksetzen der Shipping-Cart-ID:",
-            resetData.error
-          );
-          alert("Fehler beim Zurücksetzen des Warenkorbs.");
+          console.error("Fehler beim Leeren des Warenkorbs");
         }
-
-        setFormData({
-          user_id: "",
-          total_amount: "",
-          status: "pending",
-          shipping_cart_id: "",
-          customerEmail: "",
-        });
       } else {
         alert(data.error || "Es ist ein Fehler aufgetreten");
       }

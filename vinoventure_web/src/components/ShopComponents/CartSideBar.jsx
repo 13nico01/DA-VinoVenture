@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingBasket, X } from "lucide-react";
+import { ShoppingBasket} from "lucide-react";
 import { useCart } from "./CartContext";
 import { Link } from "react-router-dom";
 import { Plus, Minus } from "lucide-react";
@@ -13,7 +13,7 @@ const CartSidebar = () => {
   return (
     <div className="relative">
       <div
-        className={`fixed top-16 right-0 h-full w-80 bg-gray-100 shadow-lg transform transition-transform duration-300 ${
+        className={`fixed top-20 right-0 h-full w-80 bg-gray-100 shadow-lg transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

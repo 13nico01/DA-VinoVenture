@@ -20,18 +20,18 @@ const ProfileButton = () => {
     <div className="pt-1">
       <button
         onClick={toggleDropdown}
-        className="hover:text-green-700 transition-all duration-500"
+        className="hover:text-green-700 transition-all duration-500 border-2 rounded-2xl p-1 hover:border-green-600"
       >
         <User className="font-extralight" />
       </button>
       {isOpen && (
         <div
-          className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="absolute right-12 mt-4 w-56 rounded-md shadow-lg bg-neutral-400 ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
         >
-          <div className="py-1" role="none">
+          <div className="" role="none">
             <Link
               to="/user-settings"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -47,7 +47,7 @@ const ProfileButton = () => {
               Profile
             </Link>
             <Link
-              className="block px-4 py-2 text-sm bg-red-600 text-gray-700"
+              className="block px-4 py-2 text-sm bg-red-600 text-gray-700 hover:bg-red-700"
               role="menuitem"
               onClick={handleLogout}
             >

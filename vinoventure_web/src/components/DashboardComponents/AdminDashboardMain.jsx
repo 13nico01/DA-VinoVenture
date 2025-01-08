@@ -15,7 +15,7 @@ function AdminDashboardSidebar() {
       "Möchten Sie sich wirklich ausloggen?"
     );
     if (confirmLogout) {
-      localStorage.removeItem("isAdminLoggedIn");
+        localStorage.removeItem("isAdminLoggedIn");
       localStorage.removeItem("username");
       localStorage.removeItem("userID")
 

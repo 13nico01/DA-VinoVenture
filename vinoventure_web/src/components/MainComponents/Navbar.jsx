@@ -71,7 +71,7 @@ const Navbar = () => {
             <>
               <CartSidebar />
               <ProfileButton />
-              <span className="text-white border-2 border-black rounded-lg px-3 py-1 bg-gradient-to-r from-green-600 to-green-950">
+              <span className="text-white border-2 border-black rounded-2xl px-3 py-1 bg-green-800">
                 {username}
               </span>
             </>
@@ -153,7 +153,7 @@ const Navbar = () => {
                   to="/register"
                   className="py-2 px-4 rounded-md bg-gradient-to-r from-green-600 to-green-950 text-white"
                 >
-                  Create Account
+                  Account erstellen
                 </Link>
               </>
             )}
