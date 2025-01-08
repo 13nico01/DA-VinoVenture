@@ -391,11 +391,11 @@ exports.removeFromCart = async (req, res) => {
 
 exports.updateShippingID = async (req, res) => {
   const userId = req.params.user_id;
-  const { shipping_id } = req.body;
+  const { shipping_cart_id } = req.body; // Wir nehmen an, dass du die shipping_cart_id übergeben möchtest
 
-  // Überprüfen, ob eine shipping_id übergeben wurde
-  if (!shipping_id) {
-    return res.status(400).json({ message: "Shipping ID ist erforderlich" });
+  // Überprüfen, ob eine shipping_cart_id übergeben wurde
+  if (!shipping_cart_id) {
+    return res.status(400).json({ message: "Shipping Cart ID ist erforderlich" });
   }
 
   try {
@@ -409,25 +409,31 @@ exports.updateShippingID = async (req, res) => {
       return res.status(404).json({ message: "Warenkorb nicht gefunden" });
     }
 
-    const shippingCartId = cartResult[0].shipping_cart_id;
+    const existingCartId = cartResult[0].shipping_cart_id;
 
-    // Aktualisieren der shipping_id im Warenkorb
+    // Wenn die shipping_cart_id übereinstimmt, aktualisieren wir den Warenkorb
+    if (existingCartId === shipping_cart_id) {
+      return res.status(400).json({ message: "Shipping Cart ID ist bereits gesetzt" });
+    }
+
+    // Hier kannst du die tatsächliche Logik einfügen, um die Versand-ID zu aktualisieren
     const [updateResult] = await db.query(
       `
       UPDATE shipping_cart
-      SET shipping_id = ?
-      WHERE shipping_cart_id = ?
+      SET shipping_cart_id = ?
+      WHERE user_id = ?
       `,
-      [shipping_id, shippingCartId]
+      [shipping_cart_id, userId]
     );
 
     if (updateResult.affectedRows === 0) {
       return res.status(404).json({ message: "Warenkorb konnte nicht aktualisiert werden" });
     }
 
-    res.json({ message: "Shipping ID erfolgreich aktualisiert" });
+    res.json({ message: "Shipping Cart ID erfolgreich aktualisiert" });
   } catch (err) {
-    console.error("Fehler beim Aktualisieren der Shipping ID:", err);
+    console.error("Fehler beim Aktualisieren der Shipping Cart ID:", err);
     return res.status(500).json({ error: err.message });
   }
 };
+
