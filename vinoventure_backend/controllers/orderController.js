@@ -67,8 +67,6 @@ Vielen Dank für Ihre Bestellung bei VinoVenture!
 
 
 
-const { v4: uuidv4 } = require('uuid'); // Für eindeutige IDs (npm install uuid)
-
 // Funktion zum Hinzufügen einer Bestellung
 exports.addOrder = async (req, res) => {
     try {
@@ -79,17 +77,14 @@ exports.addOrder = async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        // Eindeutige Shipping Cart ID generieren
-        const uniqueShippingCartId = `${shipping_cart_id}-${uuidv4()}`;
-
         // SQL-Query zum Hinzufügen einer Bestellung
         const query = `
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
             VALUES (?, ?, ?, ?)
         `;
-        const [result] = await db.execute(query, [user_id, total_amount, status, uniqueShippingCartId]);
+        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id]);
 
-        // Weinpakete basierend auf der originalen shipping_cart_id abrufen
+        // Weinpakete basierend auf der shipping_cart_id abrufen
         const [winePackages] = await db.query(
             `
             SELECT wp.package_name, wpsc.quantity
@@ -121,7 +116,6 @@ exports.addOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
-
 
 
 exports.shipOrder = async (req, res) => {
