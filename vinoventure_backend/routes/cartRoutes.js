@@ -11,4 +11,6 @@ router.put("/update-Cart/:user_id", cartController.updateCartItem);
 
 router.delete("/delete-Cart/:user_id/:wine_package_id", cartController.removeFromCart);
 
+router.delete("/clearCart/:user_id", cartController.clearCart);
+
 module.exports = router;

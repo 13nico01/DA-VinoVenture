@@ -389,3 +389,39 @@ exports.removeFromCart = async (req, res) => {
   }
 };
 
+exports.clearCart = async (req, res) => {
+  const userId = req.params.user_id;
+  
+  try {
+    // Überprüfen, ob der Benutzer einen Warenkorb hat
+    const [cartResult] = await db.query(
+      "SELECT shipping_cart_id FROM shipping_cart WHERE user_id = ?",
+      [userId]
+    );
+
+    if (!cartResult || cartResult.length === 0) {
+      return res.status(404).json({ message: "Warenkorb nicht gefunden" });
+    }
+
+    const shippingCartId = cartResult[0].shipping_cart_id;
+
+    // Löschen des Weinpakets aus dem Warenkorb
+    const [deleteResult] = await db.query(
+      `
+      DELETE FROM wine_packages_shipping_cart
+      WHERE shipping_cart_id = ?`,
+      [shippingCartId]
+    );
+
+    if (!deleteResult.affectedRows) {
+      return res
+        .status(404)
+        .json({ message: "Weinpaket nicht im Warenkorb gefunden" });
+    }
+
+    return res.json({ message: "Alle Weinpakete aus dem Warenkorb entfernt" });
+  } catch (err) {
+    console.error("Fehler beim Entfernen der Weinpakete:", err);
+    return res.status(500).json({ error: "Interner Serverfehler" });
+  }
+};
