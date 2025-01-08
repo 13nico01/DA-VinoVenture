@@ -138,9 +138,9 @@ exports.getUserById = async (req, res) => {
       LEFT JOIN 
         shipping_cart 
       ON 
-        users.id = shipping_cart.user_id 
+        users.user_id = shipping_cart.user_id 
       WHERE 
-        users.id = ?`, 
+        users.user_id = ?`, 
       [userId]
     ); 
     if (rows.length === 0) {
