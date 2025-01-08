@@ -126,6 +126,34 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id; 
+    const [rows] = await db.query(`
+      SELECT 
+        users.*, 
+        shipping_cart.id AS shipping_cart_id 
+      FROM 
+        users 
+      LEFT JOIN 
+        shipping_cart 
+      ON 
+        users.id = shipping_cart.user_id 
+      WHERE 
+        users.id = ?`, 
+      [userId]
+    ); 
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "User not found" }); // Wenn kein Benutzer gefunden wurde
+    }
+    res.json({ user: rows[0] }); // Benutzer mit shippingcart_id zurückgeben
+  } catch (err) {
+    return res.status(500).json({ error: err.message }); // Fehlerbehandlung
+  }
+};
+
+
+
 exports.getUserCount = async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT COUNT(*) AS count FROM users`); // Verwende db.query()
@@ -142,7 +170,7 @@ exports.deleteUser = async (req, res) => {
       id,
     ]); // Verwende db.query()
     if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "User nicht gefunden!" }); // Überprüfe, ob ein Benutzer gelöscht wurde
+      return res.status(404).json({ error: "User nicht gefunden!" });
     }
     res.json({ message: "User gelöscht!" });
   } catch (err) {

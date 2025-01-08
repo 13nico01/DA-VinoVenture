@@ -117,6 +117,11 @@ exports.addOrder = async (req, res) => {
     }
 };
 
+
+exports.shipOrder = async (req, res) => {
+
+}
+
 // Funktion zum Abrufen aller Bestellungen
 exports.getAllOrders = async (req, res) => {
     try {
@@ -147,3 +152,4 @@ exports.getUserOrders = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+

@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get('/getUsers', userManagerController.getUsers);
 
+router.get('/getUserByID/:user_id', userManagerController.getUserById);
+
 router.get('/getUserCount', userManagerController.getUserCount);
 
 router.delete('/deleteUser', userManagerController.deleteUser);
