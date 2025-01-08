@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X} from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import CartSidebar from "../ShopComponents/CartSideBar";
@@ -51,7 +51,7 @@ const Navbar = () => {
         isScrolled ? "bg-opacity-90" : "bg-opacity-80"
       }`}
     >
-      <div className="container px-4 mx-auto flex justify-between items-center text-sm">
+      <div className="container px-2 mx-auto flex justify-between items-center text-sm">
         <div className="flex items-center">
           <img className="h-10 w-10 mr-3" src={logo} alt="logo" />
           <Link
@@ -92,7 +92,7 @@ const Navbar = () => {
             </>
           )}
         </div>
-        <div className="lg:hidden flex items-center space-x-6">
+        <div className="lg:hidden flex items-center space-x-2 lg:space-x-6">
           <button onClick={toggleNavbar} className="text-white">
             {mobileDrawerOpen ? <X size={30} /> : <Menu size={30} />}
           </button>

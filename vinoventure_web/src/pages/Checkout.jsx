@@ -51,7 +51,7 @@ const Checkout = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData), 
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -66,7 +66,7 @@ const Checkout = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ shipping_cart_id: null }), 
+            body: JSON.stringify({ shipping_cart_id: null }),
           }
         );
 
@@ -102,45 +102,53 @@ const Checkout = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-20 pb-6">
-        <div className="flex justify-center">
-          <h2 className="text-4xl font-bold text-center">Checkout</h2>
-        </div>
-        <div className="mx-auto px-4 py-6">
-          <ul className="space-y-4 border-2 border-white p-4 rounded-lg">
-            {cart.map((item) => (
-              <li
-                key={item.wine_package_id}
-                className="flex items-center justify-between border-b pb-4 last:border-none"
-              >
-                <div className="flex-1">
-                  <h4 className="text-lg font-semibold text-white">
-                    {item.package_name}
-                  </h4>
-                  <p className="text-sm text-gray-300">{item.price} EUR</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <p className="text-sm text-gray-400">
-                    Anzahl: {item.quantity}
-                  </p>
-                  <div className="flex items-center space-x-2"></div>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className="flex justify-end py-2">
-            <h3 className="font-bold text-xl">Gesamt: {calculateTotal()}</h3>
+      {total === 0 ? (
+        <p className="flex justify-center items-center min-h-screen text-red-500 text-2xl">
+          Nichts im Warenkorb...
+        </p>
+      ) : (
+        <div className="pt-24 pb-6">
+          <div className="flex justify-center">
+            <h2 className="text-4xl font-bold text-center">Checkout</h2>
+          </div>
+          <div className="px-8 py-6">
+            <ul className="space-y-4 border-2 border-white p-4 rounded-lg">
+              {cart.map((item) => (
+                <li
+                  key={item.wine_package_id}
+                  className="flex items-center justify-between border-b pb-4 last:border-none"
+                >
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-white">
+                      {item.package_name}
+                    </h4>
+                    <p className="text-sm text-gray-300">{item.price} EUR</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <p className="text-sm text-gray-400">
+                      Anzahl: {item.quantity}
+                    </p>
+                    <div className="flex items-center space-x-2"></div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="flex justify-start py-2">
+              <h3 className="font-bold text-xl">
+                Gesamt: {calculateTotal().toFixed(2)} EUR
+              </h3>
+            </div>
+          </div>
+          <div className=" flex justify-start py-2">
+            <button
+              onClick={handleSubmit}
+              className="mx-8 w-full border-2 px-4 py-3 border-green-900 rounded-2xl bg-green-800 hover:text-neutral-900 hover:bg-green-700 transition-all duration-500 hover:shadow-lg "
+            >
+              Jetzt zahlungspflichtig bestellen
+            </button>
           </div>
         </div>
-        <div className=" flex justify-center py-2">
-          <button
-            onClick={handleSubmit}
-            className=" border-2 px-4 py-2 border-white rounded-2xl hover:text-green-600 transition-all duration-500 hover:shadow-lg "
-          >
-            Jetzt bestellen
-          </button>
-        </div>
-      </div>
+      )}
     </>
   );
 };

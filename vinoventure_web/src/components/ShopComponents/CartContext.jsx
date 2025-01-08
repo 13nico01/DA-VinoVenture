@@ -24,6 +24,9 @@ export const CartProvider = ({ children }) => {
           `${API_BASE_URL}/api/cart/get-Cart/${userId}`
         );
         setCart(response.data.cart);
+        if (cart.length === 0) {
+          console.log("Warenkorb ist leer");
+        }
       } catch (error) {
         console.error("Fehler beim Abrufen des Warenkorbs:", error);
       } finally {
