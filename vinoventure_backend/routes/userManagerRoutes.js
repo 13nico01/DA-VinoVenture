@@ -13,6 +13,5 @@ router.delete('/deleteUser', userManagerController.deleteUser);
 
 router.patch('/updateUser', userManagerController.updateUser);
 
-router.patch('/updateShippingCart', userManagerController.updateUserShippingCart);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const { db } = require("../config/database");
-require("mysql2/promise");
+require("mysql2/promise")
 
 /**
  * @swagger
@@ -116,6 +116,7 @@ require("mysql2/promise");
  *                   example: Internal server error
  */
 
+
 exports.getUsers = async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM users`); // Verwende db.query() anstelle von db.all()
@@ -151,37 +152,6 @@ exports.getUserByID = async (req, res) => {
   }
 };
 
-exports.updateUserShippingCart = async (req, res) => {
-  try {
-    const { user_id } = req.params; // User-ID aus der Route
-    const { shipping_cart_id } = req.body; // Neuer Wert für shipping_cart_id
-
-    // Überprüfen, ob die User-ID vorhanden ist
-    if (!user_id) {
-      return res.status(400).json({ error: "User-ID erforderlich" });
-    }
-
-    // SQL-Query zum Aktualisieren der shipping_cart_id
-    const query = `
-          UPDATE users
-          SET shipping_cart_id = ?
-          WHERE user_id = ?
-      `;
-
-    const [result] = await db.execute(query, [shipping_cart_id, user_id]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Benutzer nicht gefunden" });
-    }
-
-    res
-      .status(200)
-      .json({ message: "Shipping-Cart-ID erfolgreich aktualisiert" });
-  } catch (error) {
-    console.error("Fehler beim Aktualisieren der Shipping-Cart-ID:", error);
-    res.status(500).json({ error: "Serverfehler" });
-  }
-};
 
 exports.getUserCount = async (req, res) => {
   try {
@@ -208,45 +178,20 @@ exports.deleteUser = async (req, res) => {
 };
 exports.updateUser = async (req, res) => {
   const { id } = req.params; // Benutzer-ID aus der URL
-  const {
-    username,
-    firstname,
-    lastname,
-    street,
-    house_number,
-    postal_code,
-    city,
-  } = req.body; // Neue Benutzerdaten aus dem Body
+  const { username, firstname, lastname, street, house_number, postal_code, city} = req.body; // Neue Benutzerdaten aus dem Body
 
   // Überprüfen, ob alle erforderlichen Felder vorhanden sind
-  if (
-    !username ||
-    !firstname ||
-    !lastname ||
-    !street ||
-    !house_number ||
-    !postal_code ||
-    !city
-  ) {
-    return res
-      .status(400)
-      .json({ error: "Name, Email und Passwort sind erforderlich." });
+  if (!username || !firstname || !lastname || !street || !house_number || !postal_code || !city) {
+    return res.status(400).json({ error: "Name, Email und Passwort sind erforderlich." });
   }
 
   try {
+  
+
     // Benutzer aktualisieren
     const [result] = await db.query(
       `UPDATE users SET username = ?,  firstname = ?, lastname = ? , street = ?, house_number = ?, postal_code = ?, city =? WHERE id = ?`,
-      [
-        username,
-        firstname,
-        lastname,
-        street,
-        house_number,
-        postal_code,
-        city,
-        id,
-      ]
+      [username, firstname, lastname, street, house_number, postal_code, city, id]
     );
 
     // Überprüfen, ob ein Benutzer aktualisiert wurde
@@ -258,4 +203,4 @@ exports.updateUser = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-};
+}
