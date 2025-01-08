@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/getUsers', userManagerController.getUsers);
 
-router.get('/getUserByID/:userId', userManagerController.getUserById);
+router.get('/getUserByID/:id', userManagerController.getUserByID);
 
 router.get('/getUserCount', userManagerController.getUserCount);
 

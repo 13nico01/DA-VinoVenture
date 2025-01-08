@@ -126,20 +126,14 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUserByID = async (req, res) => {
+  const { id } = req.params;
   try {
-    const userId = req.params.id; 
-    const [rows] = await db.query(`
-      SELECT * from users WHERE user_id =  ?
-        `, 
-      [userId]
-    ); 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "User not found" }); // Wenn kein Benutzer gefunden wurde
-    }
-    res.json({ user: rows[0] }); // Benutzer mit shippingcart_id zurückgeben
+    const [rows] = await db.query(`SELECT * FROM users WHERE user_id = ?`, [id]);
+    res.json({ packages: rows });
   } catch (err) {
-    return res.status(500).json({ error: err.message }); // Fehlerbehandlung
+    console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler
+    return res.status(500).json({ error: err.message });
   }
 };
 
