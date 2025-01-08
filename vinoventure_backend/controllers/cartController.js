@@ -391,9 +391,8 @@ exports.removeFromCart = async (req, res) => {
 
 exports.updateShippingID = async (req, res) => {
   const userId = req.params.user_id;
-  const { shipping_cart_id } = req.body; // Wir nehmen an, dass du die shipping_cart_id übergeben möchtest
+  const { shipping_cart_id } = req.body;
 
-  // Überprüfen, ob eine shipping_cart_id übergeben wurde
   if (!shipping_cart_id) {
     return res.status(400).json({ message: "Shipping Cart ID ist erforderlich" });
   }
@@ -411,12 +410,18 @@ exports.updateShippingID = async (req, res) => {
 
     const existingCartId = cartResult[0].shipping_cart_id;
 
-    // Wenn die shipping_cart_id übereinstimmt, aktualisieren wir den Warenkorb
+    // Wenn der Warenkorb bereits die gewünschte shipping_cart_id hat, gibt es nichts zu tun
     if (existingCartId === shipping_cart_id) {
       return res.status(400).json({ message: "Shipping Cart ID ist bereits gesetzt" });
     }
 
-    // Hier kannst du die tatsächliche Logik einfügen, um die Versand-ID zu aktualisieren
+    // Zuerst den Fremdschlüssel in der orders-Tabelle aktualisieren
+    await db.query(
+      `UPDATE orders SET shipping_cart_id = ? WHERE shipping_cart_id = ?`,
+      [shipping_cart_id, existingCartId]
+    );
+
+    // Jetzt den shipping_cart_id in der shipping_cart-Tabelle aktualisieren
     const [updateResult] = await db.query(
       `
       UPDATE shipping_cart
@@ -436,4 +441,3 @@ exports.updateShippingID = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
-
