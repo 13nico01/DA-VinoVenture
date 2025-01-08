@@ -1,6 +1,6 @@
-import React from "react";
 import { useCart } from "./CartContext";
 import { Plus, Minus, Trash } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CartOverview = () => {
   const { cart, removeFromCart, calculateTotal, updateQuantity } = useCart();
@@ -73,12 +73,11 @@ const CartOverview = () => {
         <h3 className="text-xl font-bold text-white">
           Gesamtsumme: {calculateTotal().toFixed(2)} EUR
         </h3>
-        <button
-          onClick={() => alert("Zur Kasse gehen")}
-          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-        >
-          Zur Kasse
-        </button>
+        <Link to="/checkout">
+          <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            Zur Kasse
+          </button>
+        </Link>
       </div>
     </div>
   );

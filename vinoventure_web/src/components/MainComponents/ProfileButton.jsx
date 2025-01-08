@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ProfileButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,8 +8,6 @@ const ProfileButton = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("username");
@@ -35,12 +33,14 @@ const ProfileButton = () => {
         >
           <div className="py-1" role="none">
             <Link
+              to="/user-settings"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
             >
               Settings
             </Link>
             <Link
+              to="/user"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
             >

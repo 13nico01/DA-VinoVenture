@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ShoppingBasket, X } from "lucide-react";
 import { useCart } from "./CartContext";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { Plus, Minus } from "lucide-react";
 
 const CartSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { cart, removeFromCart, calculateTotal } = useCart();
+  const { cart, addToCart, removeFromCart,calculateTotal, decreaseFromCart} = useCart();
 
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
@@ -37,10 +37,16 @@ const CartSidebar = () => {
                       Anzahl: {item.quantity}
                     </p>
                     <div className="px-2 pt-0.5 space-x-1">
-                      <button className="border-2 border-neutral-500">
+                      <button
+                        className="border-2 border-neutral-500"
+                        onClick={() => addToCart(item)} 
+                      >
                         <Plus size={14} />
                       </button>
-                      <button className="border-2 border-neutral-500">
+                      <button
+                        className="border-2 border-neutral-500"
+                        onClick={() => decreaseFromCart(item)} 
+                      >
                         <Minus size={14} />
                       </button>
                     </div>
@@ -59,9 +65,11 @@ const CartSidebar = () => {
           <h3 className="text-xl font-bold mt-4 text-white">
             Gesamtsumme: {calculateTotal().toFixed(2)} EUR
           </h3>
-          <button className="mt-4 w-full bg-gray-200 text-black py-2 rounded-xl">
-            <Link to="/cart">Zum Warenkorb</Link>
-          </button>
+          <Link to="/cart">
+            <button className="mt-4 w-full bg-gray-200 text-black py-2 rounded-xl">
+              Zum Warenkorb
+            </button>
+          </Link>
         </div>
       </div>
       <button

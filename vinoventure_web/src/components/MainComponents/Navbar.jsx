@@ -54,7 +54,10 @@ const Navbar = () => {
       <div className="container px-4 mx-auto flex justify-between items-center text-sm">
         <div className="flex items-center">
           <img className="h-10 w-10 mr-3" src={logo} alt="logo" />
-          <Link to="/" className="text-2xl font-semibold text-white tracking-wide">
+          <Link
+            to="/"
+            className="text-2xl font-semibold text-white tracking-wide"
+          >
             VinoVenture
           </Link>
         </div>
@@ -74,7 +77,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="py-2 px-4 border rounded-md text-white hover:bg-gray-700 transition-all duration-300">
+              <Link
+                to="/login"
+                className="py-2 px-4 border rounded-md text-white hover:bg-gray-700 transition-all duration-300"
+              >
                 Login
               </Link>
               <Link
@@ -100,17 +106,26 @@ const Navbar = () => {
         >
           <ul className="space-y-6 text-white text-xl">
             <li>
-              <Link to="/" className="hover:text-green-500 transition-all duration-300">
+              <Link
+                to="/"
+                className="hover:text-green-500 transition-all duration-300"
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/Shop" className="hover:text-green-500 transition-all duration-300">
+              <Link
+                to="/Shop"
+                className="hover:text-green-500 transition-all duration-300"
+              >
                 Shop
               </Link>
             </li>
             <li>
-              <Link to="/About" className="hover:text-green-500 transition-all duration-300">
+              <Link
+                to="/About"
+                className="hover:text-green-500 transition-all duration-300"
+              >
                 About
               </Link>
             </li>

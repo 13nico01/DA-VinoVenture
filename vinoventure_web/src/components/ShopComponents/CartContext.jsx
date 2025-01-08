@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from "../../constants/constants";
 
@@ -8,18 +8,15 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [userId, setUserId] = useState(null); // Benutzer-ID wird aus localStorage abgerufen
-  const [isCartLoaded, setIsCartLoaded] = useState(false); // Flag, um zu wissen, ob der Warenkorb geladen wurde
-
-  // Funktion zum Abrufen der Benutzer-ID aus localStorage
+  const [userId, setUserId] = useState(null);
+  const [isCartLoaded, setIsCartLoaded] = useState(false);
   useEffect(() => {
     const storedUserId = localStorage.getItem("userID");
     if (storedUserId) {
-      setUserId(storedUserId); // Wenn userID im localStorage vorhanden ist, setze sie
+      setUserId(storedUserId);
     }
   }, []);
 
-  // Funktion zum Abrufen des Warenkorbs des Benutzers
   const getCart = async () => {
     if (userId) {
       try {
@@ -35,17 +32,15 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Abrufen des Warenkorbs, wenn die Benutzer-ID gesetzt wurde
   useEffect(() => {
     if (userId && !isCartLoaded) {
       getCart();
     }
   }, [userId, isCartLoaded]);
 
-  // Funktion zum Hinzufügen von Produkten zum Warenkorb
   const addToCart = async (product) => {
     if (!userId) {
-      console.error("Fehler: Keine Benutzer-ID im localStorage gefunden.");
+      console.log("Not logged in");
       return;
     }
 
@@ -54,7 +49,6 @@ export const CartProvider = ({ children }) => {
     );
 
     if (existingProduct) {
-      // Wenn das Produkt schon im Warenkorb ist, die Menge erhöhen
       try {
         await axios.put(`${API_BASE_URL}/api/cart/update-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
@@ -71,7 +65,6 @@ export const CartProvider = ({ children }) => {
         console.error("Fehler beim Aktualisieren des Warenkorbs:", error);
       }
     } else {
-      // Andernfalls das Produkt zum Warenkorb hinzufügen
       try {
         await axios.post(`${API_BASE_URL}/api/cart/add-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
@@ -96,7 +89,6 @@ export const CartProvider = ({ children }) => {
     try {
       console.log(`Lösche Produkt mit wine_package_id: ${wine_package_id}`);
 
-      // package_id wird jetzt als URL-Parameter übergeben, nicht im Body
       await axios.delete(
         `${API_BASE_URL}/api/cart/delete-Cart/${userId}/${wine_package_id}`
       );
@@ -111,7 +103,37 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Berechnung des Gesamtbetrags des Warenkorbs
+  const decreaseFromCart = async (product) => {
+    if (!userId) {
+      console.error("Fehler: Keine Benutzer-ID im localStorage gefunden.");
+      return;
+    }
+
+    const existingProduct = cart.find(
+      (item) => item.wine_package_id === product.wine_package_id
+    );
+
+    if (existingProduct && existingProduct.quantity > 1) {
+      try {
+        await axios.put(`${API_BASE_URL}/api/cart/update-Cart/${userId}`, {
+          wine_package_id: product.wine_package_id,
+          quantity: existingProduct.quantity - 1,
+        });
+        setCart((prevCart) =>
+          prevCart.map((item) =>
+            item.wine_package_id === product.wine_package_id
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+        );
+      } catch (error) {
+        console.error("Fehler beim Aktualisieren des Warenkorbs:", error);
+      }
+    } else {
+      removeFromCart(product.wine_package_id);
+    }
+  };
+
   const calculateTotal = () =>
     cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -122,7 +144,8 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         calculateTotal,
-        userId, // Die Benutzer-ID wird auch bereitgestellt, falls benötigt
+        decreaseFromCart,
+        userId,
       }}
     >
       {children}
