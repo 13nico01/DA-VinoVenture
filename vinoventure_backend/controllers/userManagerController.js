@@ -130,17 +130,8 @@ exports.getUserById = async (req, res) => {
   try {
     const userId = req.params.id; 
     const [rows] = await db.query(`
-      SELECT 
-        users.*, 
-        shipping_cart.shipping_cart_id AS shipping_cart_id 
-      FROM 
-        users 
-      LEFT JOIN 
-        shipping_cart 
-      ON 
-        users.user_id = shipping_cart.user_id 
-      WHERE 
-        users.user_id = ?`, 
+      SELECT * from users WHERE user_id =  ?
+        `, 
       [userId]
     ); 
     if (rows.length === 0) {
