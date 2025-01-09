@@ -67,14 +67,6 @@ Vielen Dank für Ihre Bestellung bei VinoVenture!
 
 
 
-const checkShippingCartExists = async (shipping_cart_id) => {
-    const [rows] = await db.query(
-        `SELECT * FROM shipping_cart WHERE shipping_cart_id = ?`,
-        [shipping_cart_id]
-    );
-    return rows.length > 0;
-};
-
 exports.addOrder = async (req, res) => {
     try {
         const { user_id, total_amount, status, shipping_cart_id, customerEmail } = req.body;
@@ -82,12 +74,6 @@ exports.addOrder = async (req, res) => {
         // Überprüfen, ob alle erforderlichen Felder vorhanden sind
         if (!user_id || !total_amount || !status || !shipping_cart_id || !customerEmail) {
             return res.status(400).json({ error: 'Missing required fields' });
-        }
-
-        // Überprüfen, ob die shipping_cart_id existiert
-        const shippingCartExists = await checkShippingCartExists(shipping_cart_id);
-        if (!shippingCartExists) {
-            return res.status(404).json({ error: 'Shipping cart ID does not exist' });
         }
 
         // Bestellung in die Datenbank einfügen
@@ -134,6 +120,7 @@ exports.addOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 
