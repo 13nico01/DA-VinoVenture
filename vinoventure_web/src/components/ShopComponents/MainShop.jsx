@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import API_BASE_URL from "../../constants/constants";
+import placeholder from "../../assets/Images/placeholder-square.jpg";
 
 const MainShop = () => {
   const [products, setProducts] = useState([]);
@@ -72,13 +73,13 @@ const MainShop = () => {
                 className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
               >
                 <img
-                  src={product.image_url}
+                  src={placeholder}
                   alt={product.package_name}
-                  className="w-full h-64 object-cover transition-transform duration-300"
+                  className="w-full h-64 p-2 rounded-lg object-cover transition-transform duration-300"
                   loading="lazy"
                 />
                 <div className="p-4">
-                  <h3 className="text-sm font-semibold text-gray-900 product-name">
+                  <h3 className="text-md font-semibold text-gray-900 product-name">
                     {product.package_name}
                   </h3>
                   <p className="text-lg text-gray-700 mt-2 product-price">
@@ -86,15 +87,15 @@ const MainShop = () => {
                   </p>
                   <div className="justify-center">
                     <Link to={`/product/${product.wine_package_id}`}>
-                      <button className="mt-4 px-4 py-2 bg-green-700 text-white text-sm rounded-lg hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300">
+                      <button className="mt-4 w-full px-4 py-2 bg-green-700 text-white text-sm rounded-lg hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300">
                         Details ansehen
                       </button>
                     </Link>
                     <button
                       onClick={() => addToCart(product)}
-                      className="mt-4 px-4 py-2 bg-green-900 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
+                      className="mt-2 px-4 py-2 w-full bg-green-900 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
                     >
-                      Warenkorb
+                      Zum Warenkorb hinzufügen
                     </button>
                   </div>
                   <div className="flex items-center mt-2">

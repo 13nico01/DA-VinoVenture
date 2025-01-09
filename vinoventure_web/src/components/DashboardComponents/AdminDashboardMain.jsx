@@ -4,10 +4,10 @@ import { useState } from "react";
 import PackageManager from "./PackageManager";
 import AdminManager from "./AdminManager";
 import UserManagerMain from "../DashboardComponents/UserManager/UserManagerMain";
+import ViewOrders from "./ViewOrders";
 
 function AdminDashboardSidebar() {
   const navigate = useNavigate();
-  // Set the default content to "Admin-Home" for the Home page
   const [content, setContent] = useState("Paket-Manager");
 
   const handleLogout = () => {
@@ -66,7 +66,7 @@ function AdminDashboardSidebar() {
             <li>
               <a
                 href="#"
-                onClick={() => handleMenuClick("User-Overview")}
+                onClick={() => handleMenuClick("Order-Overview")}
                 className="flex border-2 items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 hover:text-black group"
               >
                 <Truck
@@ -128,6 +128,7 @@ function AdminDashboardSidebar() {
             {content === "Paket-Manager" && <PackageManager />}
             {content === "Admin-Settings" && <AdminManager />}
             {content === "User-Overview" && <UserManagerMain />}
+            {content === "Order-Overview" && <ViewOrders/>}
           </div>
         </div>
       </div>
