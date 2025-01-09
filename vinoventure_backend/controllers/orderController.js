@@ -67,6 +67,7 @@ Vielen Dank für Ihre Bestellung bei VinoVenture!
 
 
 
+// Funktion zum Hinzufügen einer Bestellung
 exports.addOrder = async (req, res) => {
     try {
         const { user_id, total_amount, status, shipping_cart_id, customerEmail } = req.body;
@@ -76,7 +77,7 @@ exports.addOrder = async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        // Bestellung in die Datenbank einfügen
+        // SQL-Query zum Hinzufügen einer Bestellung
         const query = `
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
             VALUES (?, ?, ?, ?)
@@ -106,10 +107,7 @@ exports.addOrder = async (req, res) => {
         res.status(201).json({
             message: 'Order created successfully',
             order_id: result.insertId,
-            winePackages, // Weinpakete in der Antwort zurückgeben
         });
-
-        // **Kein Löschen des Warenkorbs hier**
     } catch (err) {
         console.error(err);
         if (err.code === 'ER_DUP_ENTRY') {
@@ -118,7 +116,6 @@ exports.addOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
-
 
 
 exports.shipOrder = async (req, res) => {
@@ -135,24 +132,21 @@ exports.getAllOrders = async (req, res) => {
     }
 };
 
+// Funktion zum Abrufen der Bestellungen eines bestimmten Nutzers
 exports.getUserOrders = async (req, res) => {
     const userId = req.params.user_id;
 
     try {
-        // Bestellungen abrufen
-        const [orders] = await db.query(`SELECT * FROM orders WHERE user_id = ?`, [userId]);
+        const [rows] = await db.query(
+            `SELECT * FROM orders WHERE user_id = ?`,
+            [userId]
+        );
 
-        if (orders.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({ message: 'No orders found for this user' });
         }
 
-        // Weinpakete sind nicht mehr verfügbar, daher leere Liste als Platzhalter
-        const ordersWithWinePackages = orders.map(order => ({
-            ...order,
-            winePackages: [] // Kein Zugriff mehr auf Weinpakete
-        }));
-
-        res.json({ orders: ordersWithWinePackages });
+        res.json({ orders: rows });
     } catch (err) {
         console.error("Error fetching user orders:", err);
         return res.status(500).json({ error: err.message });
