@@ -66,6 +66,7 @@ Vielen Dank für Ihre Bestellung bei VinoVenture!
 };
 
 
+
 exports.addOrder = async (req, res) => {
     try {
         const { user_id, total_amount, status, shipping_cart_id, customerEmail } = req.body;
@@ -76,50 +77,47 @@ exports.addOrder = async (req, res) => {
         }
 
         // Bestellung in die Datenbank einfügen
-        const insertOrderQuery = `
+        const query = `
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
             VALUES (?, ?, ?, ?)
         `;
-        const [insertResult] = await db.execute(insertOrderQuery, [user_id, total_amount, status, shipping_cart_id]);
+        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id]);
 
         // Weinpakete basierend auf der shipping_cart_id abrufen
-        const fetchWinePackagesQuery = `
+        const [winePackages] = await db.query(
+            `
             SELECT wp.package_name, wpsc.quantity
             FROM wine_packages_shipping_cart wpsc
             JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
             WHERE wpsc.shipping_cart_id = ?
-        `;
-        const [winePackages] = await db.query(fetchWinePackagesQuery, [shipping_cart_id]);
+            `,
+            [shipping_cart_id]
+        );
 
-        // Bestellung für die E-Mail-Vorbereitung erstellen
+        // E-Mail senden
         const order = {
-            id: insertResult.insertId,
+            id: result.insertId,
             customerEmail,
         };
 
-        // Bestellbestätigungs-E-Mail senden
         await sendOrderConfirmationEmail(order, winePackages);
 
-        // Erfolgsantwort zurückgeben
+        // Erfolgsantwort senden
         res.status(201).json({
             message: 'Order created successfully',
-            order_id: insertResult.insertId,
+            order_id: result.insertId,
             winePackages, // Weinpakete in der Antwort zurückgeben
         });
 
         // **Kein Löschen des Warenkorbs hier**
     } catch (err) {
-        console.error('Error while creating order:', err);
+        console.error(err);
         if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ error: 'Shipping cart ID must be unique' });
         }
         return res.status(500).json({ error: err.message });
     }
 };
-
-
-
-
 
 
 
@@ -141,41 +139,22 @@ exports.getUserOrders = async (req, res) => {
     const userId = req.params.user_id;
 
     try {
-        // Abrufen der Bestellungen eines Nutzers
-        const [orders] = await db.query(
-            `SELECT * FROM orders WHERE user_id = ?`,
-            [userId]
-        );
+        // Bestellungen abrufen
+        const [orders] = await db.query(`SELECT * FROM orders WHERE user_id = ?`, [userId]);
 
         if (orders.length === 0) {
             return res.status(404).json({ message: 'No orders found for this user' });
         }
 
-        // Abrufen der Weinpakete für jede Bestellung
-        const ordersWithWinePackages = await Promise.all(
-            orders.map(async (order) => {
-                const [winePackages] = await db.query(
-                    `
-                    SELECT wp.package_name, wpsc.quantity
-                    FROM wine_packages_shipping_cart wpsc
-                    JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
-                    WHERE wpsc.shipping_cart_id = ?
-                    `,
-                    [order.shipping_cart_id]
-                );
+        // Weinpakete sind nicht mehr verfügbar, daher leere Liste als Platzhalter
+        const ordersWithWinePackages = orders.map(order => ({
+            ...order,
+            winePackages: [] // Kein Zugriff mehr auf Weinpakete
+        }));
 
-                return { ...order, winePackages };
-            })
-        );
-
-        // Antwort mit den Bestellungen und den Weinpaketen zurückgeben
         res.json({ orders: ordersWithWinePackages });
     } catch (err) {
-        console.error('Error fetching user orders:', err);
+        console.error("Error fetching user orders:", err);
         return res.status(500).json({ error: err.message });
     }
 };
-
-
-
-
