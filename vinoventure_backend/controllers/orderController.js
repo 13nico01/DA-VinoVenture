@@ -66,7 +66,6 @@ Vielen Dank für Ihre Bestellung bei VinoVenture!
 };
 
 
-
 exports.addOrder = async (req, res) => {
     try {
         const { user_id, total_amount, status, shipping_cart_id, customerEmail } = req.body;
@@ -83,7 +82,7 @@ exports.addOrder = async (req, res) => {
         `;
         const [insertResult] = await db.execute(insertOrderQuery, [user_id, total_amount, status, shipping_cart_id]);
 
-        // Abrufen der Weinpakete, die mit der shipping_cart_id verknüpft sind
+        // Weinpakete basierend auf der shipping_cart_id abrufen
         const fetchWinePackagesQuery = `
             SELECT wp.package_name, wpsc.quantity
             FROM wine_packages_shipping_cart wpsc
@@ -108,18 +107,16 @@ exports.addOrder = async (req, res) => {
             winePackages, // Weinpakete in der Antwort zurückgeben
         });
 
+        // **Kein Löschen des Warenkorbs hier**
     } catch (err) {
         console.error('Error while creating order:', err);
-
-        // Duplikateintrag-Fehler behandeln
         if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ error: 'Shipping cart ID must be unique' });
         }
-
-        // Allgemeiner Fehler
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 
