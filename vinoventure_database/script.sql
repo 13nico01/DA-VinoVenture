@@ -100,7 +100,7 @@ CREATE TABLE
         ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         total_amount DECIMAL(10, 2),
         status VARCHAR(255),
-        shipping_cart_id INT,
+        shipping_cart_id INT UNIQUE,
         FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
         FOREIGN KEY (shipping_cart_id) REFERENCES shipping_cart (shipping_cart_id) ON DELETE CASCADE
     ) CHARACTER
