@@ -137,20 +137,43 @@ exports.getUserOrders = async (req, res) => {
     const userId = req.params.user_id;
 
     try {
-        const [rows] = await db.query(
+        // Abrufen aller Bestellungen des Nutzers
+        const [orders] = await db.query(
             `SELECT * FROM orders WHERE user_id = ?`,
             [userId]
         );
 
-        if (rows.length === 0) {
+        if (orders.length === 0) {
             return res.status(404).json({ message: 'No orders found for this user' });
         }
 
-        res.json({ orders: rows });
+        // Für jede Bestellung die zugehörigen Weinpakete abrufen
+        const ordersWithWinePackages = await Promise.all(
+            orders.map(async (order) => {
+                const [winePackages] = await db.query(
+                    `
+                    SELECT wp.package_name, wpsc.quantity
+                    FROM wine_packages_shipping_cart wpsc
+                    JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
+                    WHERE wpsc.shipping_cart_id = ?
+                    `,
+                    [order.shipping_cart_id]
+                );
+
+                return {
+                    ...order,
+                    winePackages,
+                };
+            })
+        );
+
+        // Bestellungen mit Weinpaketen in der Antwort zurückgeben
+        res.json({ orders: ordersWithWinePackages });
     } catch (err) {
         console.error("Error fetching user orders:", err);
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
