@@ -77,44 +77,47 @@ exports.addOrder = async (req, res) => {
         }
 
         // Bestellung in die Datenbank einfügen
-        const query = `
+        const insertOrderQuery = `
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
             VALUES (?, ?, ?, ?)
         `;
-        const [result] = await db.execute(query, [user_id, total_amount, status, shipping_cart_id]);
+        const [insertResult] = await db.execute(insertOrderQuery, [user_id, total_amount, status, shipping_cart_id]);
 
-        // Weinpakete basierend auf der shipping_cart_id abrufen
-        const [winePackages] = await db.query(
-            `
+        // Abrufen der Weinpakete, die mit der shipping_cart_id verknüpft sind
+        const fetchWinePackagesQuery = `
             SELECT wp.package_name, wpsc.quantity
             FROM wine_packages_shipping_cart wpsc
             JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
             WHERE wpsc.shipping_cart_id = ?
-            `,
-            [shipping_cart_id]
-        );
+        `;
+        const [winePackages] = await db.query(fetchWinePackagesQuery, [shipping_cart_id]);
 
-        // E-Mail senden
+        // Bestellung für die E-Mail-Vorbereitung erstellen
         const order = {
-            id: result.insertId,
+            id: insertResult.insertId,
             customerEmail,
         };
 
+        // Bestellbestätigungs-E-Mail senden
         await sendOrderConfirmationEmail(order, winePackages);
 
-        // Erfolgsantwort senden
+        // Erfolgsantwort zurückgeben
         res.status(201).json({
             message: 'Order created successfully',
-            order_id: result.insertId,
+            order_id: insertResult.insertId,
             winePackages, // Weinpakete in der Antwort zurückgeben
         });
 
         // **Kein Löschen des Warenkorbs hier**
     } catch (err) {
-        console.error(err);
+        console.error('Error while creating order:', err);
+
+        // Duplikateintrag-Fehler behandeln
         if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ error: 'Shipping cart ID must be unique' });
         }
+
+        // Allgemeiner Fehler
         return res.status(500).json({ error: err.message });
     }
 };
@@ -139,7 +142,7 @@ exports.getUserOrders = async (req, res) => {
     const userId = req.params.user_id;
 
     try {
-        // Abrufen der Bestellungen des Nutzers
+        // Abrufen der Bestellungen eines Nutzers
         const [orders] = await db.query(
             `SELECT * FROM orders WHERE user_id = ?`,
             [userId]
@@ -162,17 +165,18 @@ exports.getUserOrders = async (req, res) => {
                     [order.shipping_cart_id]
                 );
 
-                return { ...order, winePackages }; // Weinpakete zur Bestellung hinzufügen
+                return { ...order, winePackages };
             })
         );
 
-        // Bestellungen mit Weinpaketen zurückgeben
+        // Antwort mit den Bestellungen und den Weinpaketen zurückgeben
         res.json({ orders: ordersWithWinePackages });
     } catch (err) {
-        console.error("Error fetching user orders:", err);
+        console.error('Error fetching user orders:', err);
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 
