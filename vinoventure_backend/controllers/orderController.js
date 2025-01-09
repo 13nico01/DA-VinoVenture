@@ -76,6 +76,12 @@ exports.addOrder = async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
+        // Überprüfen, ob die shipping_cart_id bereits in der orders-Tabelle existiert
+        const [existingOrder] = await db.query('SELECT * FROM orders WHERE shipping_cart_id = ?', [shipping_cart_id]);
+        if (existingOrder.length > 0) {
+            return res.status(409).json({ error: 'Shipping cart ID already used in an existing order' });
+        }
+
         // Bestellung in die Datenbank einfügen
         const insertOrderQuery = `
             INSERT INTO orders (user_id, total_amount, status, shipping_cart_id)
