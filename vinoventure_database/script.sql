@@ -100,14 +100,20 @@ CREATE TABLE
         ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         total_amount DECIMAL(10, 2),
         status VARCHAR(255),
-        shipping_cart_id INT UNIQUE,
+        shipping_cart_id INT,
         FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
         FOREIGN KEY (shipping_cart_id) REFERENCES shipping_cart (shipping_cart_id) ON DELETE CASCADE
     ) CHARACTER
 SET
     utf8mb4 COLLATE utf8mb4_general_ci;
 
-
+CREATE TABLE order_wine_packages (
+    order_id INT,
+    wine_package_id INT,
+    quantity INT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (wine_package_id) REFERENCES wine_packages(wine_package_id)
+);
 
 
 CREATE TABLE
