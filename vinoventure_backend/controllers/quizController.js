@@ -27,10 +27,9 @@ exports.createQuiz = async (req, res) => {
         WHEN a.is_correct = 3 THEN a.answer3
         WHEN a.is_correct = 4 THEN a.answer4
         ELSE 'No correct answer'
-    END AS correct_answer, 
+    END AS correct_answer,
     w.wine_name,  
-    wp.package_name, 
-    ho.username AS host_name  
+    wp.package_name,  
 FROM
     participant p
 LEFT JOIN
