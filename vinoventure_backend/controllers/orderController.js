@@ -194,7 +194,7 @@ exports.getAllOrders = async (req, res) => {
             SELECT * FROM orders
         `);
 
-        // Für jede Bestellung die zugehörigen Weinpakete abrufen
+        // Für jede Bestellung die zugehörigen Weinpakete und Benutzerinformationen abrufen
         for (let order of orders) {
             // Abrufen der Weinpakete für die aktuelle Bestellung
             const [winePackages] = await db.query(`
@@ -206,15 +206,30 @@ exports.getAllOrders = async (req, res) => {
 
             // Weinpakete zur Bestellung hinzufügen
             order.wine_packages = winePackages;
+
+            // Abrufen der Benutzerinformationen (Name und Adresse)
+            const [userInfo] = await db.query(`
+                SELECT u.username, u.street, u.house_number, u.postal_code, u.city
+                FROM users u
+                WHERE u.user_id = ?
+            `, [order.user_id]);
+
+            // Benutzerinformationen zur Bestellung hinzufügen
+            if (userInfo.length > 0) {
+                order.user = userInfo[0];
+            } else {
+                order.user = null;  // Falls keine Benutzerinformationen gefunden werden
+            }
         }
 
-        // Erfolgreiche Antwort mit Bestellungen und Weinpaketen
+        // Erfolgreiche Antwort mit Bestellungen, Weinpaketen und Benutzerinformationen
         res.json({ orders });
     } catch (err) {
         console.error("Error fetching orders:", err);
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 
