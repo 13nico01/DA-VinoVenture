@@ -1,6 +1,8 @@
 const path = require('path');
 const transporter = require('../config/nodemailerConfig');
 const { db } = require('../config/database');
+const { createQuiz } = require('./quizController');
+
 
 // Funktion zum Senden der Bestellbestätigungs-E-Mail
 const sendOrderConfirmationEmail = async (order, winePackages) => {
@@ -126,17 +128,14 @@ exports.addOrder = async (req, res) => {
 };
 
 
-// Funktion zum Versenden einer Bestellung
 exports.shipOrder = async (req, res) => {
     try {
         const { order_id } = req.body;
 
-        // Überprüfen, ob die order_id bereitgestellt wurde
         if (!order_id) {
             return res.status(400).json({ error: 'Missing required field: order_id' });
         }
 
-        // Überprüfen, ob die Bestellung existiert und die user_id abrufen
         const [order] = await db.query(
             `SELECT user_id FROM orders WHERE order_id = ?`,
             [order_id]
@@ -148,7 +147,6 @@ exports.shipOrder = async (req, res) => {
 
         const user_id = order[0].user_id;
 
-        // Kunden-E-Mail-Adresse aus der users-Tabelle abrufen
         const [user] = await db.query(
             `SELECT email FROM users WHERE user_id = ?`,
             [user_id]
@@ -160,23 +158,25 @@ exports.shipOrder = async (req, res) => {
 
         const customerEmail = user[0].email;
 
-        // Status der Bestellung auf "shipped" setzen
-        const updateQuery = `
-            UPDATE orders
-            SET status = 'shipped'
-            WHERE order_id = ?
-        `;
-        await db.execute(updateQuery, [order_id]);
+        await db.execute(
+            `UPDATE orders SET status = 'shipped' WHERE order_id = ?`,
+            [order_id]
+        );
 
-        // E-Mail senden
         await sendShippingEmail({
             orderId: order_id,
             customerEmail,
         });
 
-        // Erfolgsantwort senden
+        // Rufe die Funktion createQuiz auf
+        const quizData = {
+            order_id, // Beispiel: Übergib die order_id als Parameter
+            user_id,
+        };
+        await createQuiz(quizData); // Falls createQuiz async ist, warte auf den Abschluss
+
         res.status(200).json({
-            message: 'Order status updated to shipped successfully',
+            message: 'Order status updated to shipped successfully, quiz created.',
             order_id,
         });
     } catch (err) {
@@ -184,6 +184,7 @@ exports.shipOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 
 // Funktion zum Abrufen aller Bestellungen
