@@ -107,6 +107,17 @@ CREATE TABLE
 SET
     utf8mb4 COLLATE utf8mb4_general_ci;
 
+CREATE TABLE order_wine_packages (
+    order_id INT,
+    wine_package_id INT,
+    quantity INT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (wine_package_id) REFERENCES wine_packages(wine_package_id)
+);CHARACTER
+SET
+    utf8mb4 COLLATE utf8mb4_general_ci;
+
+
 CREATE TABLE
     IF NOT EXISTS wine_package_reviews (
         review_id INT AUTO_INCREMENT PRIMARY KEY,
