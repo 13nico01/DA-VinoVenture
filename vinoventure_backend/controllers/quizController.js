@@ -29,7 +29,7 @@ exports.createQuiz = async (req, res) => {
         ELSE 'No correct answer'
     END AS correct_answer,
     w.wine_name,  
-    wp.package_name,  
+    wp.package_name  
 FROM
     participant p
 LEFT JOIN
