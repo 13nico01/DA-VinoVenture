@@ -178,12 +178,12 @@ exports.shipOrder = async (req, res) => {
 };
 
 
-// Funktion zum Abrufen aller Bestellungen inklusive der Weinpaketnamen
+// Funktion zum Abrufen aller Bestellungen inklusive der Weinpaketnamen und shipping_cart_id
 exports.getAllOrders = async (req, res) => {
     try {
-        // SQL-Abfrage zum Abrufen aller Bestellungen mit den zugehörigen Weinpaketnamen
+        // SQL-Abfrage zum Abrufen aller Bestellungen mit den zugehörigen Weinpaketnamen und shipping_cart_id
         const query = `
-            SELECT o.order_id, o.user_id, o.total_amount, o.status, wp.package_name
+            SELECT o.order_id, o.user_id, o.total_amount, o.status, o.shipping_cart_id, wp.package_name
             FROM orders o
             LEFT JOIN wine_packages_shipping_cart wpsc ON o.shipping_cart_id = wpsc.shipping_cart_id
             LEFT JOIN wine_packages wp ON wpsc.wine_package_id = wp.wine_package_id
@@ -206,6 +206,7 @@ exports.getAllOrders = async (req, res) => {
                     user_id: row.user_id,
                     total_amount: row.total_amount,
                     status: row.status,
+                    shipping_cart_id: row.shipping_cart_id,
                     wine_packages: []
                 };
                 orders.push(order);
@@ -215,7 +216,7 @@ exports.getAllOrders = async (req, res) => {
             }
         });
 
-        // Rückgabe der Bestellungen mit den zugehörigen Weinpaketnamen
+        // Rückgabe der Bestellungen mit den zugehörigen Weinpaketnamen und shipping_cart_id
         res.json({ orders });
     } catch (err) {
         console.error(err);
