@@ -241,10 +241,27 @@ exports.getWinePackages = async (req, res) => {
 exports.getWinePackageById = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.query(`SELECT * FROM wine_packages WHERE wine_package_id = ?`, [id]);
-    res.json({ packages: rows });
+    // Abfrage für das Weinpaket und die zugehörigen Weine
+    const [packageRows] = await db.query(
+      `SELECT * FROM wine_packages WHERE wine_package_id = ?`,
+      [id]
+    );
+
+    if (packageRows.length === 0) {
+      return res.status(404).json({ error: "Wine package not found" });
+    }
+
+    const [wineRows] = await db.query(
+      `SELECT * FROM wines WHERE wine_package_id = ?`,
+      [id]
+    );
+
+    res.json({
+      package: packageRows[0], // Nur ein Paket wird erwartet
+      wines: wineRows, // Alle zugehörigen Weine
+    });
   } catch (err) {
-    console.error("Datenbankabfrage fehlgeschlagen:", err); // Logging für Fehler
+    console.error("Database query failed:", err); // Logging für Fehler
     return res.status(500).json({ error: err.message });
   }
 };
