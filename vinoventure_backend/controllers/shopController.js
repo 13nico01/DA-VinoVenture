@@ -121,13 +121,13 @@ require("mysql2/promise");
     const [packages] = await db.query(`SELECT * FROM wine_packages`);
 
     // Abfrage für alle Weine, die zu den Weinpaketen gehören
-    const [wines] = await db.query(`SELECT * FROM wines`);
+    const [wine] = await db.query(`SELECT * FROM wines`);
 
     // Zuordnung der Weine zu den jeweiligen Weinpaketen
     const products = packages.map((pkg) => {
       return {
         ...pkg,
-        wines: wines.filter((wine) => wine.wine_package_id === pkg.wine_package_id),
+        wine: wine.filter((wine) => wine.wine_package_id === pkg.wine_package_id),
       };
     });
 
