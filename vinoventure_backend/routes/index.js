@@ -10,7 +10,6 @@ const winePackageRoutes = require("./winePackageRoutes");
 const userManagerRoutes = require("./userManagerRoutes");
 const loginRoutes = require("./loginRoutes");
 const shopRoutes = require("./shopRoutes");
-const orderManagerRoutes = require("./orderManagerRoutes");
 const cartRoutes = require("./cartRoutes");
 const quizRoutes = require("./quizRoutes");
 const wineRoutes = require("./wineRoutes");
