@@ -115,15 +115,29 @@ require("mysql2/promise");
 
 
 
-exports.getProducts = async (req, res) => {
-    try {
-      const [rows] = await db.query(`SELECT * FROM wine_packages`);
-      res.json({ products: rows });
-    } catch (err) {
-      console.error("Datenbankabfrage fehlgeschlagen:", err); 
-      return res.status(500).json({ error: err.message });
-    }
-  };
+ exports.getProducts = async (req, res) => {
+  try {
+    // Abfrage für alle Weinpakete
+    const [packages] = await db.query(`SELECT * FROM wine_packages`);
+
+    // Abfrage für alle Weine, die zu den Weinpaketen gehören
+    const [wines] = await db.query(`SELECT * FROM wines`);
+
+    // Zuordnung der Weine zu den jeweiligen Weinpaketen
+    const products = packages.map((pkg) => {
+      return {
+        ...pkg,
+        wines: wines.filter((wine) => wine.wine_package_id === pkg.wine_package_id),
+      };
+    });
+
+    res.json({ products });
+  } catch (err) {
+    console.error("Datenbankabfrage fehlgeschlagen:", err);
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 
   exports.getProductById = async (req, res) => {
     try {
