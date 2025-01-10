@@ -1,7 +1,3 @@
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
 function AdminLoginHero({
   username,
   setUsername,
@@ -10,7 +6,6 @@ function AdminLoginHero({
   handleLogin,
   error,
 }) {
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">

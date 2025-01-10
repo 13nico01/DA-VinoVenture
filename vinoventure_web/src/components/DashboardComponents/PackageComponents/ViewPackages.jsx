@@ -15,7 +15,7 @@ const ViewPackages = () => {
     const fetchPackages = async () => {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/api/wine-packages/getPackages`
+          `${API_BASE_URL}/wine-packages/getPackages`
         );
         const data = await response.json();
         if (response.ok) {
@@ -58,7 +58,7 @@ const ViewPackages = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/api/wine-packages/deletePackage/${pkgId}`,
+          `${API_BASE_URL}/wine-packages/deletePackage/${pkgId}`,
           {
             method: "DELETE",
           }
@@ -105,7 +105,6 @@ const ViewPackages = () => {
     <div className="container mx-auto mt-4">
       <h2 className="text-2xl font-bold text-center mb-4">Verfügbare Pakete</h2>
 
-      {/* Toolbar */}
       <div className="flex justify-between mb-4">
         <input
           type="text"

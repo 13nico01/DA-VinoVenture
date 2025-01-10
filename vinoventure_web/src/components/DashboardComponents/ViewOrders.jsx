@@ -7,7 +7,7 @@ const ViewOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/order/getOrders`);
+        const response = await fetch(`${API_BASE_URL}/order/getOrders`);
         const data = await response.json();
         if (response.ok) {
           setOrders(data.orders);

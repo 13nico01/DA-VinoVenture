@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "./CartContext";
 import API_BASE_URL from "../../constants/constants";
+import placeholder from "../../assets/Images/placeholder-square.jpg"
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -14,17 +15,20 @@ const SingleProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/shop/products/${id}`)
+      .get(`${API_BASE_URL}/shop/products/${id}`)
       .then((response) => {
         setProduct(response.data.product);
         setIsLoading(false);
-        const currentProductId = parseInt(id, 10); 
+        const currentProductId = parseInt(id, 10);
 
-        const nextProductIds = Array.from({ length: 4}, (_, index) => currentProductId + index + 1);
+        const nextProductIds = Array.from(
+          { length: 4 },
+          (_, index) => currentProductId + index + 1
+        );
 
         return axios.all(
           nextProductIds.map((productId) =>
-            axios.get(`${API_BASE_URL}/api/shop/products/${productId}`)
+            axios.get(`${API_BASE_URL}/shop/products/${productId}`)
           )
         );
       })
@@ -66,17 +70,32 @@ const SingleProduct = () => {
       </h1>
       <div className="flex flex-col lg:flex-row gap-6 mb-10">
         <img
-          src={product.image_url}
+          src={placeholder}
           alt={product.package_name}
           className="w-full lg:w-1/2 object-cover h-96 rounded-lg shadow-lg"
           loading="lazy"
         />
         <div className="flex flex-col justify-center lg:w-1/2">
-          <p className="text-xl mt-2 font-bold text-white">{product.price} EUR</p>
+          <p className="text-xl mt-2 font-bold text-white">
+            {product.price} EUR
+          </p>
           <p className="text-md mt-4 text-gray-100">{product.description}</p>
+          <h2 className="mt-6 text-lg font-semibold text-gray-100">
+            Enthaltene Weine:
+          </h2>
+          <ul className="mt-2 list-disc list-inside text-gray-200">
+            {product.wines.map((wine) => (
+              <li key={wine.wine_id} className="text-sm pt-2">
+                {wine.wine_name}
+              </li>
+            ))}
+          </ul>
           <p className="text-sm mt-4 text-gray-400">
             <span className="font-semibold text-gray-400">Geeignet für:</span>{" "}
             {product.suitable_for_persons} Personen
+          </p>
+          <p className="text-sm mt-4 text-gray-400 font-semibold">
+            Winzer: <span className="text-white">{product.vintner}</span>
           </p>
           <div className="mt-6">
             <button
@@ -93,7 +112,9 @@ const SingleProduct = () => {
       </div>
 
       <div className="my-20">
-        <h2 className="text-2xl font-semibold text-center mb-6">Weitere Produkte</h2>
+        <h2 className="text-2xl font-semibold text-center mb-6">
+          Weitere Produkte
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {relatedProducts.length > 0 ? (
             relatedProducts.map((relatedProduct) => (
@@ -108,8 +129,12 @@ const SingleProduct = () => {
                   loading="lazy"
                 />
                 <div className="p-4">
-                  <h3 className="text-sm font-semibold text-gray-900">{relatedProduct.package_name}</h3>
-                  <p className="text-lg text-gray-700 mt-2">{relatedProduct.price} €</p>
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    {relatedProduct.package_name}
+                  </h3>
+                  <p className="text-lg text-gray-700 mt-2">
+                    {relatedProduct.price} €
+                  </p>
                   <Link to={`/product/${relatedProduct.wine_package_id}`}>
                     <button className="mt-4 px-4 py-2 bg-green-700 text-white text-sm rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300">
                       Details ansehen
@@ -119,7 +144,9 @@ const SingleProduct = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">Keine weiteren Produkte gefunden.</p>
+            <p className="text-center text-gray-500">
+              Keine weiteren Produkte gefunden.
+            </p>
           )}
         </div>
       </div>

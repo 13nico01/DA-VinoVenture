@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import API_BASE_URL from "../../../constants/constants";
 
 const AddPackage = () => {
@@ -22,7 +22,7 @@ const AddPackage = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/wine-packages/addPackage`,
+        `${API_BASE_URL}/wine-packages/addPackage`,
         {
           method: "POST",
           headers: {

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AddPackage from "./AddPackage";
 import ViewPackages from "./ViewPackages";
-import { useEffect } from "react";
 
 const AddWinePackage = () => {
   return (
@@ -25,10 +24,8 @@ const DefaultContent = () => {
 };
 
 const PackageNavbar = () => {
-  // Zustand für den aktuell ausgewählten Inhalt
   const [activeContent, setActiveContent] = useState("view");
 
-  // Funktion zum Setzen des Inhalts basierend auf der Auswahl
   const handleContentChange = (content) => {
     setActiveContent(content);
   };

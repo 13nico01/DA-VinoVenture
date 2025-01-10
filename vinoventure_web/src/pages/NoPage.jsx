@@ -4,7 +4,6 @@ function NoPage() {
   return (
     <>
       <Navbar />
-      <Error />
     </>
   );
 }

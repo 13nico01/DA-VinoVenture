@@ -31,7 +31,7 @@ const UserOrders = () => {
         <h1 className="text-2xl mb-4">Deine Bestellungen</h1>
 
         {orders.length > 0 ? (
-          <table className="table-auto border-collapse w-full mx-auto">
+          <table className="min-w-full border border-gray-300 rounded-lg shadow-lg">
             <thead>
               <tr>
                 <th className="border px-4 py-2">ID</th>

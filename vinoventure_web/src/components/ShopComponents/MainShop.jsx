@@ -9,13 +9,13 @@ const MainShop = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
 
   useEffect(() => {
-    setLoading(true); 
+    setLoading(true);
     axios
-      .get(`${API_BASE_URL}/api/shop/products`)
+      .get(`${API_BASE_URL}/shop/products`)
       .then((response) => {
         if (Array.isArray(response.data.products)) {
           setProducts(response.data.products);
@@ -28,7 +28,7 @@ const MainShop = () => {
         console.error("Fehler beim Abrufen der Produkte", error);
       })
       .finally(() => {
-        setLoading(false); 
+        setLoading(false);
       });
   }, []);
 

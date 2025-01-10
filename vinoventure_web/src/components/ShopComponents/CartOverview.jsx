@@ -68,6 +68,9 @@ const CartOverview = () => {
               </li>
             ))}
           </ul>
+          <h3 className="text-lg font-bold text-white mt-2">
+              Gesamtsumme: {calculateTotal().toFixed(2)} EUR
+            </h3>
 
           <div className="mt-6">
             <h4 className="text-white text-lg font-semibold">Rabattcode</h4>
@@ -77,22 +80,18 @@ const CartOverview = () => {
                 placeholder="Rabattcode"
                 className="px-4 py-2 text-white rounded-lg w-2/3"
               />
-              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-800 transition duration-700">
                 Anwenden
               </button>
             </div>
           </div>
 
-          <div className="flex justify-between mt-6">
-            <h3 className="text-xl font-bold text-white">
-              Gesamtsumme: {calculateTotal().toFixed(2)} EUR
-            </h3>
+            
             <Link to="/checkout">
-              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+              <button className="px-6 py-2 bg-green-600 hover:bg-green-800 transition duration-700 text-white rounded-lg w-full  mt-4 ">
                 Zur Kasse
               </button>
             </Link>
-          </div>
         </div>
       )}
     </>

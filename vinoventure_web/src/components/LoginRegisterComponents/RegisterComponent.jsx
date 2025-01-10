@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../constants/constants";
 
 const RegisterComponent = () => {
   const [step, setStep] = useState(1);
@@ -73,7 +74,7 @@ const RegisterComponent = () => {
 
     try {
       const response = await fetch(
-        "https://vino-venture.com/3000/api/users/signup",
+        `${API_BASE_URL}/users/signup`,
         {
           method: "POST",
           headers: {

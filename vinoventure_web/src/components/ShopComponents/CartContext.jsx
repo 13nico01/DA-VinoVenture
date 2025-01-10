@@ -54,7 +54,7 @@ export const CartProvider = ({ children }) => {
 
     if (existingProduct) {
       try {
-        await axios.put(`${API_BASE_URL}/api/cart/update-Cart/${userId}`, {
+        await axios.put(`${API_BASE_URL}/cart/update-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
           quantity: existingProduct.quantity + 1,
         });
@@ -70,7 +70,7 @@ export const CartProvider = ({ children }) => {
       }
     } else {
       try {
-        await axios.post(`${API_BASE_URL}/api/cart/add-Cart/${userId}`, {
+        await axios.post(`${API_BASE_URL}/cart/add-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
           quantity: 1,
         });
@@ -94,7 +94,7 @@ export const CartProvider = ({ children }) => {
       console.log(`Lösche Produkt mit wine_package_id: ${wine_package_id}`);
 
       await axios.delete(
-        `${API_BASE_URL}/api/cart/delete-Cart/${userId}/${wine_package_id}`
+        `${API_BASE_URL}/cart/delete-Cart/${userId}/${wine_package_id}`
       );
       setCart((prevCart) =>
         prevCart.filter((item) => item.wine_package_id !== wine_package_id)
@@ -119,7 +119,7 @@ export const CartProvider = ({ children }) => {
 
     if (existingProduct && existingProduct.quantity > 1) {
       try {
-        await axios.put(`${API_BASE_URL}/api/cart/update-Cart/${userId}`, {
+        await axios.put(`${API_BASE_URL}/cart/update-Cart/${userId}`, {
           wine_package_id: product.wine_package_id,
           quantity: existingProduct.quantity - 1,
         });

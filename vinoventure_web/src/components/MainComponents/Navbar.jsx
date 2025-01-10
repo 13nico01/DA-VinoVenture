@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CartSidebar from "../ShopComponents/CartSideBar";
 import ProfileButton from "./ProfileButton";
 
@@ -123,7 +123,7 @@ const Navbar = () => {
                 About
               </Link>
             </li>
-          </ul>
+          </ul> 
           <div className="mt-8 flex flex-col space-y-6 items-center text-white">
             {username ? (
               <>
