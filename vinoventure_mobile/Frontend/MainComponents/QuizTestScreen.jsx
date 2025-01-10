@@ -11,14 +11,11 @@ const QuizTestScreen = () => {
     useEffect(() => {
         const fetchQuizData = async () => {
             try {
-                const response = await axios.get(`https://vino-venture.com/3000/api/quiz/get-answers/3}`, {
+                const response = await axios.get(`https://vino-venture.com/3000/api/quiz/getAnswers/3`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                 });
-
-                console.log(response);
-                Alert.alert('Debug message', response.data.message);
 
                 if (response.status === 200) {
                     setQuizData(response.data);

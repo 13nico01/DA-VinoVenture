@@ -10,7 +10,7 @@ const JoinQuiz = ({ navigation }) => {
     //}
 
         try {
-            const response = await axios.get(`https://vino-venture.com/3000/api/quiz/get-answers/3`, {
+            const response = await axios.get(`${API_BASE_URL}api/quiz/getAnswers/3`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
