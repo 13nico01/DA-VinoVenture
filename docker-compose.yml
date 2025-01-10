@@ -50,5 +50,23 @@ services:
     depends_on:
       - backend
 
+  expo:
+    container_name: expo # Fester Name für den Expo-Container
+    image: node:16 # Wir verwenden das Node.js-Image als Basis
+    working_dir: /app
+    volumes:
+      - ./vinoventure_mobile:/app # Mount das Verzeichnis für die mobile App
+      - /app/node_modules # Verhindert Konflikte mit node_modules
+    command: ["npx", "expo", "start", "--tunnel"]
+    ports:
+      - "19000:19000"  # Expo-Entwicklungsserver
+      - "19001:19001"  # Expo-Web-UI
+      - "19002:19002"  # Expo-Remote-Dev-Tools
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      EXPO_DEVTOOLS_LISTEN_ADDRESS: 0.0.0.0 # Stellt sicher, dass das Expo Dev-Tool von außen zugänglich ist
+
 volumes:
   db_data:
