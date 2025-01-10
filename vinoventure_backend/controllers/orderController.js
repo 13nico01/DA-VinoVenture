@@ -128,15 +128,29 @@ exports.shipOrder = async (req, res) => {
             return res.status(400).json({ error: 'Missing required field: order_id' });
         }
 
-        // Überprüfen, ob die Bestellung existiert
+        // Überprüfen, ob die Bestellung existiert und die user_id abrufen
         const [order] = await db.query(
-            `SELECT * FROM orders WHERE order_id = ?`,
+            `SELECT user_id FROM orders WHERE order_id = ?`,
             [order_id]
         );
 
         if (order.length === 0) {
             return res.status(404).json({ error: 'Order not found' });
         }
+
+        const user_id = order[0].user_id;
+
+        // Kunden-E-Mail-Adresse aus der users-Tabelle abrufen
+        const [user] = await db.query(
+            `SELECT email FROM users WHERE user_id = ?`,
+            [user_id]
+        );
+
+        if (user.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const customerEmail = user[0].email;
 
         // Status der Bestellung auf "shipped" setzen
         const updateQuery = `
@@ -147,7 +161,6 @@ exports.shipOrder = async (req, res) => {
         await db.execute(updateQuery, [order_id]);
 
         // E-Mail senden
-        const customerEmail = order[0].customerEmail; // Annahme: customerEmail ist in der orders-Tabelle
         await sendShippingEmail({
             orderId: order_id,
             customerEmail,
@@ -163,6 +176,7 @@ exports.shipOrder = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 
 // Funktion zum Abrufen aller Bestellungen
 exports.getAllOrders = async (req, res) => {
