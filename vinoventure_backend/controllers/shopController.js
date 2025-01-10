@@ -114,29 +114,39 @@ require("mysql2/promise");
 
 
 
-
  exports.getProducts = async (req, res) => {
   try {
     // Abfrage für alle Weinpakete
     const [packages] = await db.query(`SELECT * FROM wine_packages`);
 
-    // Abfrage für alle Weine, die zu den Weinpaketen gehören
-    const [wine] = await db.query(`SELECT * FROM wine`);
+    // Abfrage für die Zuordnung von Weinen zu Weinpaketen
+    const [packageWineRelations] = await db.query(`SELECT * FROM wine_package_wine`);
+
+    // Abfrage für alle Weine
+    const [wines] = await db.query(`SELECT * FROM wine`);
 
     // Zuordnung der Weine zu den jeweiligen Weinpaketen
     const products = packages.map((pkg) => {
+      const relatedWines = packageWineRelations
+        .filter((rel) => rel.wine_package_id === pkg.id) // Match package id
+        .map((rel) => {
+          const wine = wines.find((wine) => wine.id === rel.wine_id); // Match wine id
+          return { ...wine, quantity: rel.quantity }; // Include quantity from relation
+        });
+
       return {
         ...pkg,
-        wine: wine.filter((wine) => wine.wine_package_id === pkg.wine_package_id),
+        wines: relatedWines,
       };
     });
 
-    res.json({ products });
-  } catch (err) {
-    console.error("Datenbankabfrage fehlgeschlagen:", err);
-    return res.status(500).json({ error: err.message });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 
   exports.getProductById = async (req, res) => {
