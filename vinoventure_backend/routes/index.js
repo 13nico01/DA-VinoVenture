@@ -23,7 +23,6 @@ router.use("/wine-packages", winePackageRoutes);
 router.use("/user-manager", userManagerRoutes);
 router.use("/user-login", loginRoutes);
 router.use("/shop", shopRoutes);
-router.use("/order-manager", orderManagerRoutes);
 router.use("/cart", cartRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/wine", wineRoutes);
