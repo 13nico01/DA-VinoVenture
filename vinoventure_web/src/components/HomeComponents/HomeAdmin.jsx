@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import backgroundHero from "../../assets/Images/image21.jpg";
 
 function HomeAdmin() {
   const [username, setUsername] = useState("");
-  const navigate = useNavigate(); // Für die Navigation verwenden
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -18,11 +17,9 @@ function HomeAdmin() {
       "Möchten Sie sich wirklich ausloggen?"
     );
     if (confirmLogout) {
-      localStorage.removeItem("isAdminLoggedIn");
-      localStorage.removeItem("username");
+      localStorage.clear();
 
-      navigate("/"); // Weiterleitung zur /home Seite
-      window.location.reload(); // Seite neu laden
+      window.location.reload();
     }
   };
 
@@ -46,7 +43,7 @@ function HomeAdmin() {
           <p
             className="mt-6 text-white"
             style={{
-              fontSize: "clamp(1rem, 2vw, 1.5rem)", // Dynamische Anpassung der Fontgröße
+              fontSize: "clamp(1rem, 2vw, 1.5rem)",
               lineHeight: "1.5",
             }}
           >

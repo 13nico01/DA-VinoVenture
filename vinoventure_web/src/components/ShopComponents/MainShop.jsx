@@ -9,9 +9,11 @@ const MainShop = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const { addToCart } = useCart();
 
   useEffect(() => {
+    setLoading(true); 
     axios
       .get(`${API_BASE_URL}/api/shop/products`)
       .then((response) => {
@@ -24,6 +26,9 @@ const MainShop = () => {
       })
       .catch((error) => {
         console.error("Fehler beim Abrufen der Produkte", error);
+      })
+      .finally(() => {
+        setLoading(false); 
       });
   }, []);
 
@@ -65,54 +70,60 @@ const MainShop = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div
-                key={product.wine_package_id}
-                className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
-              >
-                <img
-                  src={placeholder}
-                  alt={product.package_name}
-                  className="w-full h-64 p-2 rounded-lg object-cover transition-transform duration-300"
-                  loading="lazy"
-                />
-                <div className="p-4">
-                  <h3 className="text-md font-semibold text-gray-900 product-name">
-                    {product.package_name}
-                  </h3>
-                  <p className="text-lg text-gray-700 mt-2 product-price">
-                    {product.price} €
-                  </p>
-                  <div className="justify-center">
-                    <Link to={`/product/${product.wine_package_id}`}>
-                      <button className="mt-4 w-full px-4 py-2 bg-green-700 text-white text-sm rounded-lg hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300">
-                        Details ansehen
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="loader"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div
+                  key={product.wine_package_id}
+                  className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
+                >
+                  <img
+                    src={placeholder}
+                    alt={product.package_name}
+                    className="w-full h-64 p-2 rounded-lg object-cover transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-md font-semibold text-gray-900 product-name">
+                      {product.package_name}
+                    </h3>
+                    <p className="text-lg text-gray-700 mt-2 product-price">
+                      {product.price} €
+                    </p>
+                    <div className="justify-center">
+                      <Link to={`/product/${product.wine_package_id}`}>
+                        <button className="mt-4 w-full px-4 py-2 bg-green-700 text-white text-sm rounded-lg hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300">
+                          Details ansehen
+                        </button>
+                      </Link>
+                      <button
+                        onClick={() => addToCart(product)}
+                        className="mt-2 px-4 py-2 w-full bg-green-900 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
+                      >
+                        Zum Warenkorb hinzufügen
                       </button>
-                    </Link>
-                    <button
-                      onClick={() => addToCart(product)}
-                      className="mt-2 px-4 py-2 w-full bg-green-900 text-white text-sm rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
-                    >
-                      Zum Warenkorb hinzufügen
-                    </button>
-                  </div>
-                  <div className="flex items-center mt-2">
-                    <span className="text-yellow-500">★★★★☆</span>
-                    <span className="ml-2 text-sm text-gray-600">
-                      (4.5 von 5 Sternen)
-                    </span>
+                    </div>
+                    <div className="flex items-center mt-2">
+                      <span className="text-yellow-500">★★★★☆</span>
+                      <span className="ml-2 text-sm text-gray-600">
+                        (4.5 von 5 Sternen)
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-red-500">
-              Keine Produkte gefunden oder falsche Datenstruktur
-            </p>
-          )}
-        </div>
+              ))
+            ) : (
+              <p className="text-center text-red-500">
+                Keine Produkte gefunden oder falsche Datenstruktur
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

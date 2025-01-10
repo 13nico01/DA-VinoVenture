@@ -10,9 +10,7 @@ const ProfileButton = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("userID");
-    setUsername("");
+    localStorage.clear();
     window.location.reload();
   };
 

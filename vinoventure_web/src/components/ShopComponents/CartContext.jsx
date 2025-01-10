@@ -44,6 +44,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product) => {
     if (!userId) {
       console.log("Not logged in");
+      alert("Nicht eingeloggt!")
       return;
     }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/MainComponents/Navbar";
 import API_BASE_URL from "../constants/constants";
@@ -8,7 +8,7 @@ function AdminLogin({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false); 
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,6 +34,12 @@ function AdminLogin({ onLogin }) {
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred while logging in.");
+    }
+  };
+
+  const handleKey = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
     }
   };
 
@@ -63,6 +69,7 @@ function AdminLogin({ onLogin }) {
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Benutzername"
+                onKeyPress={handleKey}
                 required
               />
             </div>
@@ -83,6 +90,7 @@ function AdminLogin({ onLogin }) {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Passwort"
+                  onKeyPress={handleKey}
                   required
                 />
                 <button

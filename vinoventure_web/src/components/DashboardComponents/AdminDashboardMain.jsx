@@ -1,5 +1,4 @@
 import { ShieldBan, Package, Users, LogOut, Menu, Truck } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PackageManager from "./PackageManager";
 import AdminManager from "./AdminManager";
@@ -7,7 +6,6 @@ import UserManagerMain from "../DashboardComponents/UserManager/UserManagerMain"
 import ViewOrders from "./ViewOrders";
 
 function AdminDashboardSidebar() {
-  const navigate = useNavigate();
   const [content, setContent] = useState("Paket-Manager");
 
   const handleLogout = () => {
@@ -15,11 +13,8 @@ function AdminDashboardSidebar() {
       "Möchten Sie sich wirklich ausloggen?"
     );
     if (confirmLogout) {
-        localStorage.removeItem("isAdminLoggedIn");
-      localStorage.removeItem("username");
-      localStorage.removeItem("userID")
-
-      navigate("/");
+      localStorage.clear();
+      window.location.reload();
     }
   };
 
@@ -50,7 +45,7 @@ function AdminDashboardSidebar() {
       >
         <div className="h-full px-3 mt-16 py-6 overflow-y-auto bg-gradient-to-br from-green-800 to-green-950 dark:bg-gray-900">
           <ul className="space-y-4 font-medium">
-          <li>
+            <li>
               <a
                 href="#"
                 onClick={() => handleMenuClick("Paket-Manager")}
@@ -73,7 +68,9 @@ function AdminDashboardSidebar() {
                   className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                 />
-                <span className="flex-1 ms-3 whitespace-nowrap">Bestellungen</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Bestellungen
+                </span>
               </a>
             </li>
             <li>
@@ -128,7 +125,7 @@ function AdminDashboardSidebar() {
             {content === "Paket-Manager" && <PackageManager />}
             {content === "Admin-Settings" && <AdminManager />}
             {content === "User-Overview" && <UserManagerMain />}
-            {content === "Order-Overview" && <ViewOrders/>}
+            {content === "Order-Overview" && <ViewOrders />}
           </div>
         </div>
       </div>

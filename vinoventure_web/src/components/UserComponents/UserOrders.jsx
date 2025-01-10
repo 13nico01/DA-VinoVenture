@@ -44,7 +44,15 @@ const UserOrders = () => {
               {orders.map((order) => (
                 <tr key={order.order_id} className="border-b">
                   <td className="border px-4 py-2">{order.order_id}</td>
-                  <td className="border px-4 py-2">{order.ordered_at}</td>
+                  <td className="border-b-2 border-r-2 px-2">
+                    {new Intl.DateTimeFormat("de-DE", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }).format(new Date(order.ordered_at))}
+                  </td>
                   <td className="border px-4 py-2">{order.status}</td>
                   <td className="border px-4 py-2">€{order.total_amount}</td>
                 </tr>

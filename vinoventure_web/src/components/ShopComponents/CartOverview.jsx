@@ -9,9 +9,14 @@ const CartOverview = () => {
   return (
     <>
       {total === 0 ? (
-        <p className="flex justify-center items-center min-h-screen text-red-500 text-2xl">
-          Nichts im Warenkorb...
-        </p>
+        <div className="flex justify-center flex-col items-center min-h-screen">
+          <p className=" text-red-500 text-2xl">Nichts im Warenkorb...</p>
+          <Link to="/shop">
+            <p className="text-xl mt-4 hover:text-green-700 transition-all duration-500">
+              Zum Shop
+            </p>
+          </Link>
+        </div>
       ) : (
         <div className="max-w-screen-lg mx-auto px-4 py-6">
           <h1 className="text-3xl font-bold text-center mb-6 text-white">

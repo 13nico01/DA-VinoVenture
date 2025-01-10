@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X} from "lucide-react";
+import { Menu, X } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import CartSidebar from "../ShopComponents/CartSideBar";
@@ -9,8 +9,6 @@ const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [username, setUsername] = useState("");
-
-  const navigate = useNavigate();
 
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
@@ -37,12 +35,8 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("userID");
-    localStorage.removeItem("isAdminLoggedIn");
-    setUsername("");
+    localStorage.clear();
     window.location.reload();
-    navigate("/");
   };
 
   return (

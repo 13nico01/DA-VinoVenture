@@ -58,9 +58,11 @@ const ViewOrders = () => {
                   <td
                     className={`border-b-2 border-r-2 px-2 ${
                       order.status === "pending"
-                        ? "text-orange-400"
+                        ? "text-red-500"
                         : order.status === "delivered"
                         ? "text-green-500"
+                        : order.status === "shipped"
+                        ? "text-orange-400"
                         : "text-white"
                     }`}
                   >

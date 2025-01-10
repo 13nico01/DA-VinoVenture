@@ -32,7 +32,7 @@ const Hero = () => {
           <p
             className="mt-6 text-white"
             style={{
-              fontSize: "clamp(1rem, 2vw, 1.5rem)", // Dynamische Anpassung der Fontgröße
+              fontSize: "clamp(1rem, 2vw, 1.5rem)",
               lineHeight: "1.5",
             }}
           >
@@ -46,9 +46,12 @@ const Hero = () => {
             >
               Shop
             </Link>
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/about"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               Über uns <span aria-hidden="true">→</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
