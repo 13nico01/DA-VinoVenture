@@ -118,9 +118,51 @@ exports.addOrder = async (req, res) => {
 };
 
 
+// Funktion zum Versenden einer Bestellung
 exports.shipOrder = async (req, res) => {
+    try {
+        const { order_id } = req.body;
 
-}
+        // Überprüfen, ob die order_id bereitgestellt wurde
+        if (!order_id) {
+            return res.status(400).json({ error: 'Missing required field: order_id' });
+        }
+
+        // Überprüfen, ob die Bestellung existiert
+        const [order] = await db.query(
+            `SELECT * FROM orders WHERE order_id = ?`,
+            [order_id]
+        );
+
+        if (order.length === 0) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        // Status der Bestellung auf "shipped" setzen
+        const updateQuery = `
+            UPDATE orders
+            SET status = 'shipped'
+            WHERE order_id = ?
+        `;
+        await db.execute(updateQuery, [order_id]);
+
+        // E-Mail senden
+        const customerEmail = order[0].customerEmail; // Annahme: customerEmail ist in der orders-Tabelle
+        await sendShippingEmail({
+            orderId: order_id,
+            customerEmail,
+        });
+
+        // Erfolgsantwort senden
+        res.status(200).json({
+            message: 'Order status updated to shipped successfully',
+            order_id,
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: err.message });
+    }
+};
 
 // Funktion zum Abrufen aller Bestellungen
 exports.getAllOrders = async (req, res) => {

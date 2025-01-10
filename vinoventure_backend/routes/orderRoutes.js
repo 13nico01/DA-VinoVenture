@@ -7,6 +7,8 @@ router.post('/addOrder', orderController.addOrder);
 
 router.get('/getOrders', orderController.getAllOrders);
 
+router.patch('/shipOrder/:order_id', orderController.shipOrder);
+
 router.get('/getUsersOrders/:user_id', orderController.getUserOrders);
 
 module.exports = router;
