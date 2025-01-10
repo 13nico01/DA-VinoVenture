@@ -41,11 +41,10 @@ JOIN
     answer a ON pa.answer_id = a.answer_id  
 JOIN
     wine w ON a.wine_id = w.wine_id 
+JOIN
     quiz q ON a.quiz_id = q.quiz_id  
 JOIN
     wine_packages wp ON q.wine_package_id = wp.wine_package_id 
-JOIN
-    users ho ON q.host_id = ho.user_id  
 ORDER BY
     wp.package_name, w.wine_name; `); 
    res.json({ 
