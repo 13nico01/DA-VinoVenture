@@ -127,25 +127,32 @@ require("mysql2/promise");
 
     // Zuordnung der Weine zu den jeweiligen Weinpaketen
     const products = packages.map((pkg) => {
-      const relatedWines = packageWineRelations
-        .filter((rel) => rel.wine_package_id === pkg.id) // Match package id
-        .map((rel) => {
-          const wine = wines.find((wine) => wine.id === rel.wine_id); // Match wine id
-          return { ...wine, quantity: rel.quantity }; // Include quantity from relation
-        });
+      // Finde alle Weinbeziehungen für das aktuelle Paket
+      const relatedWineIds = packageWineRelations
+        .filter((relation) => relation.wine_package_id === pkg.wine_package_id) // Übereinstimmung der wine_package_id
+        .map((relation) => relation.wine_id); // Extrahiere die wine_id
 
+      // Finde die Weine anhand der wine_ids und gebe nur den Namen zurück
+      const relatedWines = wines.filter((wine) => relatedWineIds.includes(wine.wine_id))
+        .map((wine) => ({
+          wine_id: wine.wine_id,
+          wine_name: wine.wine_name, // Nur den Wein-Namen ausgeben
+        }));
+
+      // Rückgabe des Weinpakets mit den zugehörigen Weinen
       return {
         ...pkg,
         wines: relatedWines,
       };
     });
-
+    // Antwort mit den Produkten (Weinpaketen und zugehörige Weine)
     res.status(200).json(products);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({ error: "Internal server error" });
+  } catch (err) {
+    console.error("Fehler beim Abrufen der Produkte:", err);
+    res.status(500).json({ error: "Interner Serverfehler" });
   }
 };
+
 
 
 
