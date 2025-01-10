@@ -113,9 +113,7 @@ CREATE TABLE order_wine_packages (
     quantity INT,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (wine_package_id) REFERENCES wine_packages(wine_package_id)
-);CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
+);
 
 
 CREATE TABLE
